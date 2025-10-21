@@ -17,4 +17,21 @@ public class Producto {
 	private LugarRecogida recogida;
 	private Usuario vendedor;
 	
+	public Producto(String id, String titulo, String descripcion, float precio, EnumEstado estado,
+			LocalDateTime fechaPubli, Categoria categoria, int visualizaciones, boolean envioDispo,
+			LugarRecogida recogida, Usuario vendedor) {
+		this.id = id;
+		this.titulo = titulo;
+		this.descripcion = descripcion;
+		this.precio = precio;
+		this.estado = estado;
+		this.fechaPubli = fechaPubli;
+		this.categoria = categoria;
+		this.visualizaciones = visualizaciones;
+		this.envioDispo = envioDispo;
+		this.recogida = recogida;
+		this.vendedor = vendedor;
+	}
+	
+	
 }

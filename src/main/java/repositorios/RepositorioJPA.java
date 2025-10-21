@@ -1,13 +1,10 @@
 package repositorios;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
-
 import utils.EntityManagerHelper;
 
 public abstract class RepositorioJPA<T extends Identificable> implements RepositorioString<T> {
