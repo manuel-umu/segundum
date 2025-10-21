@@ -1,15 +1,15 @@
 package servicios;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import modelo.Usuario;
+import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
 import repositorios.Repositorio;
-import repositorios.RepositorioUsuarios;
 import repositorios.RepositorioException;
 
 public class ServicioUsuarios implements IServicioUsuario {
-
 	private Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
@@ -36,8 +36,33 @@ public class ServicioUsuarios implements IServicioUsuario {
 
 		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
 
-		String id = repositorio.add(usuario);
-
-		return id;
+		if(!existeUsuario(email)) {		//TODO: Implementar con patron especificacion
+			return repositorio.add(usuario);
+		}else {
+			return null;
+		}
+	}
+	
+	/*
+	 * Los parametros no cambiados deben de ser los originales
+	 */
+	void modificarUsuario(String id, String nombre, String apellidos, String clave, LocalDate fecha, String telefono) throws RepositorioException, EntidadNoEncontrada {
+		Usuario u = repositorio.getById(id);
+		Usuario u2 = new Usuario(nombre, apellidos, u.getEmail(), fecha, clave, telefono);
+		u2.setId(u.getId());
+		repositorio.update(u2);
+	}
+	
+	/*
+	 * Dado un email comprobar si existe en el repositorio un usuario con dicho email
+	 */
+	private boolean existeUsuario(String email) throws RepositorioException {
+		List<Usuario> usuarios = repositorio.getAll();
+		for(Usuario u : usuarios) {
+			if(u.getEmail().equals(email)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
