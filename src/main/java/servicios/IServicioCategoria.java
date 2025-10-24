@@ -1,0 +1,16 @@
+package servicios;
+
+import java.util.LinkedList;
+
+import modelo.Categoria;
+import repositorios.RepositorioException;
+
+public interface IServicioCategoria {
+	public void cargarCategoria(String ruta) throws RepositorioException;
+	
+	public void modificarCategoria(String id, String descripcion) throws RepositorioException;
+
+	public LinkedList<Categoria> recuperarCategoriaRaiz() throws RepositorioException;
+	
+	public LinkedList<Categoria> recuperarDescCategoria(String id) throws RepositorioException;
+}
