@@ -62,6 +62,10 @@ public class Categoria implements Identificable {
 		return descripcion;
 	}
 	
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
 	@XmlAttribute
 	public String getRuta() {
 		return ruta;
