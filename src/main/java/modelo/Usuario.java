@@ -1,14 +1,16 @@
 package modelo;
 
 import java.time.LocalDate;
-import java.util.Random;
-
-import javax.persistence.metamodel.IdentifiableType;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import repositorios.Identificable;
 
+@Entity
 public class Usuario implements Identificable {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private String id;
 	private String email;
 	private String nombre;
@@ -17,6 +19,9 @@ public class Usuario implements Identificable {
 	private LocalDate fechaNac;
 	private String telefono;
 	private boolean isAdmin;
+
+	public Usuario() {
+	}
 
 	public Usuario(String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono) {
 		this.email = email;
@@ -46,4 +51,9 @@ public class Usuario implements Identificable {
 		this.email = email;
 	}
 
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + ", clave="
+				+ clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin + "]";
+	}
 }

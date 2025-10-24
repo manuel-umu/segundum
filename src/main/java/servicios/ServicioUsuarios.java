@@ -9,7 +9,7 @@ import repositorios.FactoriaRepositorios;
 import repositorios.Repositorio;
 import repositorios.RepositorioException;
 
-public class ServicioUsuarios implements IServicioUsuario {
+public class ServicioUsuarios implements IServicioUsuarios {
 	private Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
@@ -28,19 +28,14 @@ public class ServicioUsuarios implements IServicioUsuario {
 		if (fecha == null)
 			throw new IllegalArgumentException("fecha: no debe ser nulo");
 
-		if (fecha.isAfter(LocalDate.now()) || apellidos.isEmpty())
+		if (fecha.isAfter(LocalDate.now()))
 			throw new IllegalArgumentException("fecha: debe ser anterior a hoy");
 
 		if (clave == null || clave.isEmpty())
-			throw new IllegalArgumentException("opciones: no debe ser una coleccion nula");
+			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
 
 		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
-
-		if(!existeUsuario(email)) {		//TODO: Implementar con patron especificacion
-			return repositorio.add(usuario);
-		}else {
-			return null;
-		}
+		return repositorio.add(usuario);
 	}
 	
 	/*
@@ -57,7 +52,7 @@ public class ServicioUsuarios implements IServicioUsuario {
 	 * Dado un email comprobar si existe en el repositorio un usuario con dicho email
 	 */
 	private boolean existeUsuario(String email) throws RepositorioException {
-		List<Usuario> usuarios = repositorio.getAll();
+		List<Usuario> usuarios = repositorio.getBy();
 		for(Usuario u : usuarios) {
 			if(u.getEmail().equals(email)) {
 				return true;
