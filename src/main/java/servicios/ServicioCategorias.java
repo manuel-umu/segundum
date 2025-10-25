@@ -13,7 +13,7 @@ import repositorios.FactoriaRepositorios;
 import repositorios.Repositorio;
 import repositorios.RepositorioException;
 
-public class ServicioCategorias implements IServicioCategoria {
+public class ServicioCategorias implements IServicioCategorias {
 	private Repositorio<Categoria, String> repositorio = FactoriaRepositorios.getRepositorio(Categoria.class);
 	
 	@Override
@@ -81,7 +81,7 @@ public class ServicioCategorias implements IServicioCategoria {
 		// Creamos la lista de hijos a devolver
 		LinkedList<Categoria> hijos = new LinkedList<>();
 		Categoria categoria = repositorio.getById(id);
-		// Utilizamos getSubcategorias y de manera recurrente con un método auxiliar vamos añadiendo las subcategorias de subcategorias
+		// Utilizamos getSubcategorias() y de manera recurrente con un método auxiliar vamos añadiendo las subcategorias de subcategorias
 		añadirDescRecursivo(hijos, categoria);
 		return hijos;
 	}

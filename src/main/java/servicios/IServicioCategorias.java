@@ -6,7 +6,8 @@ import modelo.Categoria;
 import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
 
-public interface IServicioCategoria {
+public interface IServicioCategorias {
+	
 	public void cargarCategoria(String ruta) throws RepositorioException;
 	
 	public void modificarCategoria(String id, String descripcion) throws RepositorioException, EntidadNoEncontrada;
