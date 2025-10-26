@@ -4,18 +4,20 @@ import java.util.LinkedList;
 
 import enumerados.EnumEstado;
 import modelo.Producto;
+import repositorios.EntidadNoEncontrada;
+import repositorios.RepositorioException;
 
 public interface IServicioProductos {
 	
-	public String altaProducto(String titulo, String descripcion, float precio, EnumEstado estado, String idCategoria, boolean envioDispo, String idVendedor);
+	public String altaProducto(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria, Boolean envioDispo, String idVendedor) throws RepositorioException, EntidadNoEncontrada;
 	
-	public void asignarRecogida(String id, double longitud, double latitud, String descLugar);
+	public void asignarRecogida(String id, Double longitud, Double latitud, String descLugar) throws RepositorioException, EntidadNoEncontrada;
 	
-	public void modificarProducto(String id, float precio, String descripcion);
+	public void modificarProducto(String id, Float precio, String descripcion) throws RepositorioException, EntidadNoEncontrada;
 
-	public void añadirVisualizacion(String id);
+	public void añadirVisualizacion(String id) throws RepositorioException, EntidadNoEncontrada;
 	
-	public LinkedList<Producto> historialMes(int mes, int año);
+	public LinkedList<Producto> historialMes(Integer mes, Integer año);
 	
-	public LinkedList<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, float precioMax);
+	public LinkedList<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax);
 }
