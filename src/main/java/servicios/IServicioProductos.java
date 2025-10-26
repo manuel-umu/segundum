@@ -1,9 +1,10 @@
 package servicios;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import enumerados.EnumEstado;
 import modelo.Producto;
+import modelo.ProductoRes;
 import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
 
@@ -17,7 +18,7 @@ public interface IServicioProductos {
 
 	public void añadirVisualizacion(String id) throws RepositorioException, EntidadNoEncontrada;
 	
-	public LinkedList<Producto> historialMes(Integer mes, Integer año);
+	public List<ProductoRes> historialMes(Integer mes, Integer año) throws RepositorioException;
 	
-	public LinkedList<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax);
+	public List<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax) throws RepositorioException, EntidadNoEncontrada;
 }

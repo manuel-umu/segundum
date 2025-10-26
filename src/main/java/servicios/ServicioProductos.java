@@ -1,11 +1,15 @@
 package servicios;
 
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import enumerados.EnumEstado;
 import modelo.Categoria;
 import modelo.LugarRecogida;
 import modelo.Producto;
+import modelo.ProductoRes;
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
@@ -16,6 +20,7 @@ public class ServicioProductos implements IServicioProductos {
 	private Repositorio<Producto, String> productoRepo = FactoriaRepositorios.getRepositorio(Producto.class);
 	private Repositorio<Categoria, String> categoriaRepo = FactoriaRepositorios.getRepositorio(Categoria.class);
 	private Repositorio<Usuario, String> usuarioRepo = FactoriaRepositorios.getRepositorio(Usuario.class);
+	private ServicioCategorias servicioC = new ServicioCategorias();
 
 	@Override
 	public String altaProducto(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria,
@@ -90,21 +95,79 @@ public class ServicioProductos implements IServicioProductos {
 		if(id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
 		
+		// Recuperamos el producto y sumamos uno a sus visualizaciones, updateamos después
 		Producto producto = productoRepo.getById(id);
 		producto.setVisualizaciones(producto.getVisualizaciones() + 1);
 		productoRepo.update(producto);
 	}
 
 	@Override
-	public LinkedList<Producto> historialMes(Integer mes, Integer año) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProductoRes> historialMes(Integer mes, Integer año) throws RepositorioException {
+		// Control de integridad de los datos
+		if(mes == null || (mes < 1 || mes > 12))
+			throw new IllegalArgumentException("mes: no debe ser nulo ni menor a 1 o mayor a 12");
+		if(año == null)
+			throw new IllegalArgumentException("año: no debe ser nulo");
+		
+		// Para este método tenemos que crear una clase Producto Resumen que nos ofrezca unicamente los atributos que se nos pide
+		// Primero recuperamos los productos y a partir de streams nos quedamos con .filter solo con los que coincidan en fecha
+		List<Producto> productos = productoRepo.getAll();
+		List<Producto> resultados = productos.stream()
+				.filter(p -> mes.equals(p.getFechaPubli().getMonthValue()) && año.equals(p.getFechaPubli().getYear()))
+				.collect(Collectors.toList());
+		
+		// Podriamos hacer lambdas para la ordenacion pero no podemos comparar int con Integer
+		// Así que utilizamos Comparator con el método getVisualizaciones() y ordenamos de manera desendente con reversed()
+		resultados.sort(Comparator.comparing(Producto::getVisualizaciones).reversed());
+		
+		// Ahora en otro stream a partir de .map pasamos los Productos a ProductosRes cogiendo con los getters los atributos a incluir en el resumen
+		List<ProductoRes> resultadosRes = resultados.stream()
+				.map(r -> new ProductoRes(r.getTitulo(), r.getPrecio(), r.getFechaPubli(), r.getCategoria(), r.getVisualizaciones()))
+				.collect(Collectors.toList());
+	
+		return resultadosRes;
 	}
 
 	@Override
-	public LinkedList<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax) throws RepositorioException, EntidadNoEncontrada {	
+		// Obtenemos todos los productos del repositorio
+		List<Producto> productos = productoRepo.getAll();
+		// Hagamos un analisis de casos para la búsqueda
+		if(idCategoria == null || idCategoria.isEmpty()){
+			// Aquí no hay tratamiento de integridad ya que si es nulo la lista de productos son todos los productos del repositorio
+		}else {
+		// En el caso de que se especifique hacemos uso de ServicioCategorias para poder llamar a la función recurrente que lista hijos de categorías
+			LinkedList<Categoria> categorias = servicioC.recuperarDescCategoria(idCategoria);
+			// En este stream se realiza el siguiente filtro: O la categoría a la que pertenece el producto es una de las subcategorías
+			// O el id es exactamente el mismo del id proporcionado
+			List<Producto> productosCategorias = productos.stream()
+					.filter(p -> (categorias.contains(p.getCategoria()) || p.getCategoria().getId().equals(idCategoria)))
+					.collect(Collectors.toList());
+			productos = productosCategorias;
+		}
+		
+		// Ahora a partir de nuestra lista vamos cribando los demás parámetros dependiendo si estos son vacíos o no
+		// Si son vacíos dejamos la lista como está (hay que incluir todos) de lo contrario vamos filtrando
+		if(texto != null) {
+			productos = productos.stream()
+					.filter(p -> p.getDescripcion().contains(texto))
+					.collect(Collectors.toList());
+		}
+		
+		// Utilizamos ordinal() para saber de que enumerado se trata, los hemos puesto de mejor a peor así que 0 = NUEVO, 6 = REPARAR
+		if(estado != null) {
+			productos = productos.stream()
+					.filter(p -> p.getEstado().ordinal() <= estado.ordinal())
+					.collect(Collectors.toList());
+		}
+		
+		// Nos quedamos con los productos con menos coste de lo introducido
+		if(precioMax != null) {
+			productos = productos.stream()
+					.filter(p -> p.getPrecio() <= precioMax)
+					.collect(Collectors.toList());
+		}
+		
+		return productos;
 	}
-
 }
