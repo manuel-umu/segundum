@@ -2,10 +2,10 @@ package modelo;
 
 public class LugarRecogida {
 	private String descripcion;
-	private int longitud;
-	private int latitud;
+	private Double longitud;
+	private Double latitud;
 	
-	public LugarRecogida(String descripcion, int longitud, int latitud) {
+	public LugarRecogida(String descripcion, Double longitud, Double latitud) {
 		this.descripcion = descripcion;
 		this.longitud = longitud;
 		this.latitud = latitud;
@@ -15,11 +15,11 @@ public class LugarRecogida {
 		return descripcion;
 	}
 
-	public int getLongitud() {
+	public Double getLongitud() {
 		return longitud;
 	}
 
-	public int getLatitud() {
+	public Double getLatitud() {
 		return latitud;
 	}
 	

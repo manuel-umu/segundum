@@ -3,24 +3,22 @@ package modelo;
 import java.time.LocalDateTime;
 
 import enumerados.EnumEstado;
+import repositorios.Identificable;
 
-public class Producto {
+public class Producto implements Identificable{
 	private String id;
 	private String titulo;
 	private String descripcion;
-	private float precio;
+	private Float precio;
 	private EnumEstado estado;
 	private LocalDateTime fechaPubli;
 	private Categoria categoria;
-	private int visualizaciones;
-	private boolean envioDispo;
+	private Integer visualizaciones;
+	private Boolean envioDispo;
 	private LugarRecogida recogida;
 	private Usuario vendedor;
 	
-	public Producto(String id, String titulo, String descripcion, float precio, EnumEstado estado,
-			LocalDateTime fechaPubli, Categoria categoria, int visualizaciones, boolean envioDispo,
-			LugarRecogida recogida, Usuario vendedor) {
-		this.id = id;
+	public Producto(String titulo, String descripcion, Float precio, EnumEstado estado, Categoria categoria, Boolean envioDispo, Usuario vendedor) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -29,7 +27,6 @@ public class Producto {
 		this.categoria = categoria;
 		this.visualizaciones = 0;
 		this.envioDispo = envioDispo;
-		this.recogida = recogida;
 		this.vendedor = vendedor;
 	}
 
