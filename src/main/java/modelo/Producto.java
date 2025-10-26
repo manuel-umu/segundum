@@ -54,7 +54,7 @@ public class Producto implements Identificable{
 		this.descripcion = descripcion;
 	}
 
-	public float getPrecio() {
+	public Float getPrecio() {
 		return precio;
 	}
 
