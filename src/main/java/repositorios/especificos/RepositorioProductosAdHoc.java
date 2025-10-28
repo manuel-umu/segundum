@@ -1,5 +1,8 @@
 package repositorios.especificos;
 
-public class RepositorioProductosAdHoc {
+import modelo.Producto;
+import repositorios.RepositorioString;
+
+public interface RepositorioProductosAdHoc extends RepositorioString<Producto>{
 
 }

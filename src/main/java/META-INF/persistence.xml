@@ -6,6 +6,7 @@
 	<persistence-unit name="segundum">
 		<class>modelo.Usuario</class>
 		<class>modelo.Categoria</class>
+		<class>modelo.Producto</class>
 		<!-- añadir las entidades anotadas con el elemento class -->
 		<properties>
 			<property name="javax.persistence.jdbc.driver"
@@ -14,7 +15,7 @@
 			<property name="javax.persistence.jdbc.password"
 				value="asdfroot1234" />
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/encuestas?serverTimezone=CET" />
+				value="jdbc:mysql://localhost:3306/segundum?serverTimezone=CET" />
 			<property name="eclipselink.ddl-generation"
 				value="create-or-extend-tables" />
 			<property name="eclipselink.query-results-cache"

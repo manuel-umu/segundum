@@ -3,14 +3,16 @@ package servicios;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
+
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
-import repositorios.Repositorio;
 import repositorios.RepositorioException;
+import repositorios.especificos.RepositorioUsuariosAdHoc;
 
 public class ServicioUsuarios implements IServicioUsuarios {
-	private Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
+	private RepositorioUsuariosAdHoc repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
 	public String registrarUsuario(String nombre, String apellidos, String email, LocalDate fecha, String clave,
@@ -34,30 +36,44 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		if (clave == null || clave.isEmpty())
 			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
 
-		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
-		return repositorio.add(usuario);
+		if (!repositorio.isRegistrado(email)) { // Si ya esta registrado, devolver null
+			Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
+			return repositorio.add(usuario);
+		}else {
+			return null;
+		}
+		
+
 	}
-	
+
 	/*
 	 * Los parametros no cambiados deben de ser los originales
 	 */
-	void modificarUsuario(String id, String nombre, String apellidos, String clave, LocalDate fecha, String telefono) throws RepositorioException, EntidadNoEncontrada {
+	@Override
+	public void modificarUsuario(String id, String nombre, String apellidos, String clave, LocalDate fecha,
+			String telefono) throws RepositorioException, EntidadNoEncontrada {
 		Usuario u = repositorio.getById(id);
-		Usuario u2 = new Usuario(nombre, apellidos, u.getEmail(), fecha, clave, telefono);
-		u2.setId(u.getId());
-		repositorio.update(u2);
-	}
-	
-	/*
-	 * Dado un email comprobar si existe en el repositorio un usuario con dicho email
-	 */
-	private boolean existeUsuario(String email) throws RepositorioException {
-		List<Usuario> usuarios = repositorio.getBy();
-		for(Usuario u : usuarios) {
-			if(u.getEmail().equals(email)) {
-				return true;
-			}
+		if (nombre != null && !nombre.isEmpty()) {
+			u.setNombre(nombre);
 		}
-		return false;
+		if (apellidos != null && !apellidos.isEmpty()) {
+			u.setApellidos(apellidos);
+		}
+		if (clave != null && !clave.isEmpty()) {
+			u.setClave(clave);
+		}
+		if (fecha != null) {
+			u.setFechaNac(fecha);
+		}
+		if (telefono != null && !telefono.isEmpty()) {
+			u.setTelefono(telefono);
+		}
+		repositorio.update(u);
 	}
+
+	@Override
+	public Usuario getUsuario(String id) throws RepositorioException, EntidadNoEncontrada {
+		return repositorio.getById(id);
+	}
+
 }

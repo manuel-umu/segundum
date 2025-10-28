@@ -9,7 +9,8 @@ import repositorios.RepositorioString;
 public interface RepositorioUsuariosAdHoc extends RepositorioString<Usuario> {
 
 	// TODO
-	public List<Usuario> getBLABLABLA() throws RepositorioException;
+	public boolean isRegistrado(String email) throws RepositorioException;
 
+	public List<Usuario> getAll() throws RepositorioException;
 
 }
