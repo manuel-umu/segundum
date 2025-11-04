@@ -15,87 +15,95 @@ import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
 import repositorios.Repositorio;
 import repositorios.RepositorioException;
+import repositorios.especificos.RepositorioCategoriasAdHoc;
+import repositorios.especificos.RepositorioProductosAdHoc;
+import repositorios.especificos.RepositorioUsuariosAdHoc;
 
 public class ServicioProductos implements IServicioProductos {
-	private Repositorio<Producto, String> productoRepo = FactoriaRepositorios.getRepositorio(Producto.class);
-	private Repositorio<Categoria, String> categoriaRepo = FactoriaRepositorios.getRepositorio(Categoria.class);
-	private Repositorio<Usuario, String> usuarioRepo = FactoriaRepositorios.getRepositorio(Usuario.class);
+	private RepositorioProductosAdHoc productoRepo = FactoriaRepositorios.getRepositorio(Producto.class);
+	private RepositorioCategoriasAdHoc categoriaRepo = FactoriaRepositorios.getRepositorio(Categoria.class);
+	private RepositorioUsuariosAdHoc usuarioRepo = FactoriaRepositorios.getRepositorio(Usuario.class);
 	private ServicioCategorias servicioC = new ServicioCategorias();
 
 	@Override
 	public String altaProducto(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria,
 			Boolean envioDispo, String idVendedor) throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos
-		if(titulo == null || titulo.isEmpty())
+		if (titulo == null || titulo.isEmpty())
 			throw new IllegalArgumentException("titulo: no debe ser nulo ni vacio");
-		if(descripcion == null || descripcion.isEmpty())
+		if (descripcion == null || descripcion.isEmpty())
 			throw new IllegalArgumentException("descripcion: no debe ser nulo ni vacio");
-		if(precio == null)
+		if (precio == null)
 			throw new IllegalArgumentException("precio: no debe ser nulo ni vacio");
-		if(estado == null)
+		if (estado == null)
 			throw new IllegalArgumentException("estado: no debe ser nulo ni vacio");
-		if(idCategoria == null || idCategoria.isEmpty())
+		if (idCategoria == null || idCategoria.isEmpty())
 			throw new IllegalArgumentException("idCategoria: no debe ser nulo ni vacio");
-		if(envioDispo == null)
+		if (envioDispo == null)
 			throw new IllegalArgumentException("envioDispo: no debe ser nulo ni vacio");
-		if(idVendedor == null || idVendedor.isEmpty())
+		if (idVendedor == null || idVendedor.isEmpty())
 			throw new IllegalArgumentException("idVendedor: no debe ser nulo ni vacio");
-		
-		// Necesitamos realizar 2 consultas en los repos a partir de los ids dados para construir el producto
+
+		// Necesitamos realizar 2 consultas en los repos a partir de los ids dados para
+		// construir el producto
 		Categoria categoria = categoriaRepo.getById(idCategoria);
 		Usuario usuario = usuarioRepo.getById(idVendedor);
 		Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDispo, usuario);
-		
+
 		// Add nos devuelve el id del producto una vez lo damos de "alta"
 		return productoRepo.add(producto);
 	}
 
 	@Override
-	public void asignarRecogida(String id, Double longitud, Double latitud, String descLugar) throws RepositorioException, EntidadNoEncontrada {
+	public void asignarRecogida(String id, Double longitud, Double latitud, String descLugar)
+			throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos
-		if(id == null || id.isEmpty())
+		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
-		if(longitud == null)
+		if (longitud == null)
 			throw new IllegalArgumentException("longitud: no debe ser nulo ni vacio");
-		if(latitud == null)
+		if (latitud == null)
 			throw new IllegalArgumentException("latitud: no debe ser nulo ni vacio");
-		if(descLugar == null || descLugar.isEmpty())
+		if (descLugar == null || descLugar.isEmpty())
 			throw new IllegalArgumentException("descLugar: no debe ser nulo ni vacio");
-		
+
 		// Construimos el LugarRecogida
 		LugarRecogida lugar = new LugarRecogida(descLugar, longitud, latitud);
 		// Recuperamos por la id el producto, añadimos el lugar y updateamos en el repo
 		Producto producto = productoRepo.getById(id);
 		producto.setRecogida(lugar);
-		productoRepo.update(producto);		
+		productoRepo.update(producto);
 	}
 
 	@Override
-	public void modificarProducto(String id, Float precio, String descripcion) throws RepositorioException, EntidadNoEncontrada {
+	public void modificarProducto(String id, Float precio, String descripcion)
+			throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos
-		if(id == null || id.isEmpty())
+		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
-		if(precio == null && (descripcion == null || descripcion.isEmpty()))
+		if (precio == null && (descripcion == null || descripcion.isEmpty()))
 			throw new IllegalArgumentException("precio o descripcion: no debe ser nulo ni vacio");
-		
-		// Recuperamos por la id el producto, comprobamos los campos de descripcion y precio y updateamos
+
+		// Recuperamos por la id el producto, comprobamos los campos de descripcion y
+		// precio y updateamos
 		Producto producto = productoRepo.getById(id);
-		if(precio != null && precio >= 0) {
+		if (precio != null && precio >= 0) {
 			producto.setPrecio(precio);
 		}
-		if(descripcion != null) {
+		if (descripcion != null) {
 			producto.setDescripcion(descripcion);
 		}
-		productoRepo.update(producto);		
+		productoRepo.update(producto);
 	}
 
 	@Override
 	public void añadirVisualizacion(String id) throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos
-		if(id == null || id.isEmpty())
+		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
-		
-		// Recuperamos el producto y sumamos uno a sus visualizaciones, updateamos después
+
+		// Recuperamos el producto y sumamos uno a sus visualizaciones, updateamos
+		// después
 		Producto producto = productoRepo.getById(id);
 		producto.setVisualizaciones(producto.getVisualizaciones() + 1);
 		productoRepo.update(producto);
@@ -104,70 +112,76 @@ public class ServicioProductos implements IServicioProductos {
 	@Override
 	public List<ProductoRes> historialMes(Integer mes, Integer año) throws RepositorioException {
 		// Control de integridad de los datos
-		if(mes == null || (mes < 1 || mes > 12))
+		if (mes == null || (mes < 1 || mes > 12))
 			throw new IllegalArgumentException("mes: no debe ser nulo ni menor a 1 o mayor a 12");
-		if(año == null)
+		if (año == null)
 			throw new IllegalArgumentException("año: no debe ser nulo");
-		
-		// Para este método tenemos que crear una clase Producto Resumen que nos ofrezca unicamente los atributos que se nos pide
-		// Primero recuperamos los productos y a partir de streams nos quedamos con .filter solo con los que coincidan en fecha
+
+		// Para este método tenemos que crear una clase Producto Resumen que nos ofrezca
+		// unicamente los atributos que se nos pide
+		// Primero recuperamos los productos y a partir de streams nos quedamos con
+		// .filter solo con los que coincidan en fecha
 		List<Producto> productos = productoRepo.getAll();
 		List<Producto> resultados = productos.stream()
 				.filter(p -> mes.equals(p.getFechaPubli().getMonthValue()) && año.equals(p.getFechaPubli().getYear()))
 				.collect(Collectors.toList());
-		
-		// Podriamos hacer lambdas para la ordenacion pero no podemos comparar int con Integer
-		// Así que utilizamos Comparator con el método getVisualizaciones() y ordenamos de manera desendente con reversed()
+
+		// Podriamos hacer lambdas para la ordenacion pero no podemos comparar int con
+		// Integer
+		// Así que utilizamos Comparator con el método getVisualizaciones() y ordenamos
+		// de manera desendente con reversed()
 		resultados.sort(Comparator.comparing(Producto::getVisualizaciones).reversed());
-		
-		// Ahora en otro stream a partir de .map pasamos los Productos a ProductosRes cogiendo con los getters los atributos a incluir en el resumen
-		List<ProductoRes> resultadosRes = resultados.stream()
-				.map(r -> new ProductoRes(r.getTitulo(), r.getPrecio(), r.getFechaPubli(), r.getCategoria(), r.getVisualizaciones()))
-				.collect(Collectors.toList());
-	
+
+		// Ahora en otro stream a partir de .map pasamos los Productos a ProductosRes
+		// cogiendo con los getters los atributos a incluir en el resumen
+		List<ProductoRes> resultadosRes = resultados.stream().map(r -> new ProductoRes(r.getTitulo(), r.getPrecio(),
+				r.getFechaPubli(), r.getCategoria(), r.getVisualizaciones())).collect(Collectors.toList());
+
 		return resultadosRes;
 	}
 
 	@Override
-	public List<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax) throws RepositorioException, EntidadNoEncontrada {	
+	public List<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax)
+			throws RepositorioException, EntidadNoEncontrada {
 		// Obtenemos todos los productos del repositorio
 		List<Producto> productos = productoRepo.getAll();
 		// Hagamos un analisis de casos para la búsqueda
-		if(idCategoria == null || idCategoria.isEmpty()){
-			// Aquí no hay tratamiento de integridad ya que si es nulo la lista de productos son todos los productos del repositorio
-		}else {
-		// En el caso de que se especifique hacemos uso de ServicioCategorias para poder llamar a la función recurrente que lista hijos de categorías
+		if (idCategoria == null || idCategoria.isEmpty()) {
+			// Aquí no hay tratamiento de integridad ya que si es nulo la lista de productos
+			// son todos los productos del repositorio
+		} else {
+			// En el caso de que se especifique hacemos uso de ServicioCategorias para poder
+			// llamar a la función recurrente que lista hijos de categorías
 			LinkedList<Categoria> categorias = servicioC.recuperarDescCategoria(idCategoria);
-			// En este stream se realiza el siguiente filtro: O la categoría a la que pertenece el producto es una de las subcategorías
+			// En este stream se realiza el siguiente filtro: O la categoría a la que
+			// pertenece el producto es una de las subcategorías
 			// O el id es exactamente el mismo del id proporcionado
-			List<Producto> productosCategorias = productos.stream()
-					.filter(p -> (categorias.contains(p.getCategoria()) || p.getCategoria().getId().equals(idCategoria)))
+			List<Producto> productosCategorias = productos.stream().filter(
+					p -> (categorias.contains(p.getCategoria()) || p.getCategoria().getId().equals(idCategoria)))
 					.collect(Collectors.toList());
 			productos = productosCategorias;
 		}
-		
-		// Ahora a partir de nuestra lista vamos cribando los demás parámetros dependiendo si estos son vacíos o no
-		// Si son vacíos dejamos la lista como está (hay que incluir todos) de lo contrario vamos filtrando
-		if(texto != null) {
-			productos = productos.stream()
-					.filter(p -> p.getDescripcion().contains(texto))
+
+		// Ahora a partir de nuestra lista vamos cribando los demás parámetros
+		// dependiendo si estos son vacíos o no
+		// Si son vacíos dejamos la lista como está (hay que incluir todos) de lo
+		// contrario vamos filtrando
+		if (texto != null) {
+			productos = productos.stream().filter(p -> p.getDescripcion().contains(texto)).collect(Collectors.toList());
+		}
+
+		// Utilizamos ordinal() para saber de que enumerado se trata, los hemos puesto
+		// de mejor a peor así que 0 = NUEVO, 6 = REPARAR
+		if (estado != null) {
+			productos = productos.stream().filter(p -> p.getEstado().ordinal() <= estado.ordinal())
 					.collect(Collectors.toList());
 		}
-		
-		// Utilizamos ordinal() para saber de que enumerado se trata, los hemos puesto de mejor a peor así que 0 = NUEVO, 6 = REPARAR
-		if(estado != null) {
-			productos = productos.stream()
-					.filter(p -> p.getEstado().ordinal() <= estado.ordinal())
-					.collect(Collectors.toList());
-		}
-		
+
 		// Nos quedamos con los productos con menos coste de lo introducido
-		if(precioMax != null) {
-			productos = productos.stream()
-					.filter(p -> p.getPrecio() <= precioMax)
-					.collect(Collectors.toList());
+		if (precioMax != null) {
+			productos = productos.stream().filter(p -> p.getPrecio() <= precioMax).collect(Collectors.toList());
 		}
-		
+
 		return productos;
 	}
 }
