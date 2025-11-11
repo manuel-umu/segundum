@@ -60,7 +60,7 @@ public class ProductoRes {
 	
 	@Override
 	public String toString() {
-		return "ProductoRes [titulo=" + titulo + ", precio=" + precio + ", fechaPubli=" + fechaPubli + ", categoria="
+		return "Producto [titulo=" + titulo + ", precio=" + precio + ", fechaPubli=" + fechaPubli + ", categoria="
 				+ categoria + ", visualizaciones=" + visualizaciones + "]";
 	}
 }

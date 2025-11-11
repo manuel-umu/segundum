@@ -1,6 +1,7 @@
 package aadd;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import modelo.Categoria;
@@ -27,57 +28,78 @@ public class Test {
 		String telefono = "666777888";
 		
 		// HU1
+		System.out.println("\n=================== H1 ===================\n");
 		String idU = servicioU.registrarUsuario(nombre, apellidos, email, fecha, contra, telefono);
 		System.out.println("Id1 = " + idU);
 		Usuario recuperado = servicioU.getUsuario(idU);
-		System.out.println("Usuario recuperado HU1 = " + recuperado.toString());
+		System.out.println("Usuario recuperado = " + recuperado.toString());
 		String idU2 = servicioU.registrarUsuario(nombre, apellidos, email, fecha, contra, telefono);
-		System.out.println("Id2 = " + idU2); // Debe salir null ya que se esta intentando registrar un usuario con un
+		System.out.println("Id2 (deberia ser null) = " + idU2); // Debe salir null ya que se esta intentando registrar un usuario con un
 												// email ya registrado
 		// HU2
+		System.out.println("\n=================== H2 ===================\n");
 		String idHU1 = servicioU.registrarUsuario(nombre, apellidos, "alfonso@um.es", fecha, contra, telefono);
 		Usuario recuperado2 = servicioU.getUsuario(idHU1);
-		System.out.println("H2 - Antes = " + recuperado2.toString());
-		servicioU.modificarUsuario(idHU1, "Jesus", "De Nazaret", contra, fecha, "111222333");
+		System.out.println("Antes = " + recuperado2.toString());
+		servicioU.modificarUsuario(idHU1, "Jesus", "De Nazaret", "contraActualizada", LocalDate.of(1, 1, 1), "111222333");
 		Usuario recuperado3 = servicioU.getUsuario(idHU1);
-		System.out.println("HU2 - Despues = " + recuperado3.toString());
+		System.out.println("Despues = " + recuperado3.toString());
 
 		// HU3
-		String idP = servicioP.altaProducto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, "11111", false,
-				"9999");
-		System.out.println("ID del producto dado de alta: " + idP);
+		System.out.println("\n=================== H3 ===================\n");
+		String idVendedor = idHU1;
+		servicioC.cargarCategoria("src/main/java/categorias/Bricolaje.xml");
+		LinkedList<Categoria> categorias = servicioC.recuperarCategoriaRaiz();
+		Categoria c1 = categorias.getFirst();
+		System.out.println("ID Categoria 1 = " + c1.getId());
+		String idP = servicioP.altaProducto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, c1.getId(), false,
+				idVendedor);
+		System.out.println("ID = " + idP);
+		Producto recuperadoP = servicioP.getProducto(idP);
+		System.out.println("Producto dado de alta = " + recuperadoP.toString());
 
 		// HU4
-		Usuario u1 = new Usuario();
-		Categoria c1 = new Categoria();
-		Producto producto = new Producto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, c1, false, u1);
-		servicioP.modificarProducto(idP, 10f, "Taladro eléctrico con garantía");
-		System.out.println(
-				"Descripcion nueva: " + producto.getDescripcion() + " y precio nuevo: " + producto.getPrecio());
+		System.out.println("\n=================== H4 ===================\n");
+		String idH4 = servicioP.altaProducto("Destornillador", "En buenisimo estado", 20f, EnumEstado.PARAPIEZAS, c1.getId(), false,
+				idVendedor);
+		Producto recuperadoH4 = servicioP.getProducto(idH4);
+		System.out.println("Producto original. Descripcion = \"" + recuperadoH4.getDescripcion() + "\" y precio = " + recuperadoH4.getPrecio());
+		servicioP.modificarProducto(idH4, 2f, "Alomejor no esta tan bien");
+		Producto recuperadoH4_2 = servicioP.getProducto(idH4);
+		System.out.println("Producto modificado. Descripcion = \"" + recuperadoH4_2.getDescripcion() + "\" y precio nuevo = " + recuperadoH4_2.getPrecio());
 
 		// HU5
-		servicioP.asignarRecogida(idP, 15.0, 16.1, "Biblioteca regional");
-		System.out.println("Nuevo lugar de recogida: " + producto.getRecogida().getDescripcion());
+		System.out.println("\n=================== H5 ===================\n");
+		servicioP.asignarRecogida(idH4, 15.0, 16.1, "Biblioteca regional");
+		Producto recuperadoH5 = servicioP.getProducto(idH4);
+		System.out.println("Nuevo lugar de recogida: " + recuperadoH5.getRecogida().getDescripcion());
 
 		// HU6
-		List<ProductoRes> productosDiciembre = servicioP.historialMes(12, 2021);
+		System.out.println("\n=================== H6 ===================\n");
+		servicioP.añadirVisualizacion(idH4);
+		List<ProductoRes> productosDiciembre = servicioP.historialMes(11, 2025);
 		for (ProductoRes productoRes : productosDiciembre) {
-			System.out.println(productoRes.getTitulo() + productoRes.getPrecio() + productoRes.getVisualizaciones()
-					+ productoRes.getCategoria() + productoRes.getFechaPubli());
+			System.out.println(productoRes.toString());
 		}
 
 		// HU7
+		System.out.println("\n=================== H7 ===================\n");
+		servicioC.cargarCategoria("src/main/java/categorias/Electronica.xml");
+		LinkedList<Categoria> categorias2 = servicioC.recuperarCategoriaRaiz();
+		Categoria c2 = categorias.get(1);
+		String idPH7 = servicioP.altaProducto("Samsung Galaxy S28", "Sin abrir", 20f, EnumEstado.NUEVO, c2.getId(), false,
+				idVendedor);
 		List<Producto> productos1 = servicioP.buscarProductos(null, null, null, null);
 		for (Producto p : productos1) {
 			System.out.println(p.getId());
 		}
 
-		List<Producto> productos2 = servicioP.buscarProductos(c1.getId(), null, null, null);
+		List<Producto> productos2 = servicioP.buscarProductos(c2.getId(), null, null, null);
 		for (Producto p : productos2) {
 			System.out.println(p.getId());
 		}
 
-		List<Producto> productos3 = servicioP.buscarProductos(c1.getId(), "hola", null, null);
+		List<Producto> productos3 = servicioP.buscarProductos(c2.getId(), "hola", null, null);
 		for (Producto p : productos3) {
 			System.out.println(p.getId());
 		}
@@ -93,10 +115,12 @@ public class Test {
 		}
 
 		// HU8
+		System.out.println("\n=================== H8 ===================\n");
 		servicioC.cargarCategoria(c1.getId());
 		System.out.println("ID de la categoría añadida " + servicioC.recuperarDescCategoria(c1.getId()));
 
 		// HU9
+		System.out.println("\n=================== H9 ===================\n");
 		servicioC.modificarCategoria(c1.getId(), "Nueva descripción");
 		System.out.println("Nueva descripción " + servicioC.recuperarDescCategoria(c1.getId()));
 

@@ -9,9 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import enumerados.EnumEstado;
 import repositorios.Identificable;
+import utils.LocalDateTimeAdapter;
 
 @Entity
 @Table(name = "producto")
@@ -90,7 +92,8 @@ public class Producto implements Identificable{
 	public void setEstado(EnumEstado estado) {
 		this.estado = estado;
 	}
-
+	
+	@XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
 	public LocalDateTime getFechaPubli() {
 		return fechaPubli;
 	}
