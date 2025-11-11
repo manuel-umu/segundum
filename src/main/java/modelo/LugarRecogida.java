@@ -1,9 +1,15 @@
 package modelo;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class LugarRecogida {
 	private String descripcion;
 	private Double longitud;
 	private Double latitud;
+	
+	public LugarRecogida() {
+	}
 	
 	public LugarRecogida(String descripcion, Double longitud, Double latitud) {
 		this.descripcion = descripcion;

@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
 import repositorios.Identificable;
 
 @Entity
+@Table (name = "usuario")
 public class Usuario implements Identificable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)

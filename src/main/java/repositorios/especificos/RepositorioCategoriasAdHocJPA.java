@@ -20,13 +20,8 @@ public class RepositorioCategoriasAdHocJPA extends RepositorioCategoriasJPA impl
 			Unmarshaller unmarshaller = contexto.createUnmarshaller();
 			Categoria categoria = (Categoria) unmarshaller.unmarshal(new File(ruta));
 			// Comprobamos que la categoria no es vacía
-			if (categoria.getId() != null) {
-				String id = categoria.getId();
-				// Comprobación de si existe ya la categoría en el repo, solo añadimos si no
-				// estuviese
-				if (getById(id) == null) {
-					add(categoria);
-				}
+			if (categoria != null) {
+				add(categoria);
 			}
 		} catch (Exception e) {
 			throw new RepositorioException("Problema en el desempaquetado", e);

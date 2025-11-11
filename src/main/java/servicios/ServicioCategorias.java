@@ -50,6 +50,9 @@ public class ServicioCategorias implements IServicioCategorias {
 		// Recorremos cada una de ellas y extraemos su ruta
 		for (Categoria categoria : todas) {
 			String ruta = categoria.getRuta();
+			if(ruta == null) {
+				continue;
+			}
 			// Hacemos la resta de la longitud de esta cadena con y sin "|"
 			cont_barras = ruta.length() - ruta.replace("|", "").length();
 			// Si es 2, es padre y por tanto la añadimos a la lista

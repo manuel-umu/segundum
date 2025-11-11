@@ -2,21 +2,42 @@ package modelo;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import enumerados.EnumEstado;
 import repositorios.Identificable;
 
+@Entity
+@Table(name = "producto")
 public class Producto implements Identificable{
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private String id;
 	private String titulo;
 	private String descripcion;
 	private Float precio;
+	@Enumerated( EnumType.STRING )
 	private EnumEstado estado;
 	private LocalDateTime fechaPubli;
+	@ManyToOne
+	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 	private Integer visualizaciones;
 	private Boolean envioDispo;
+	@Embedded
 	private LugarRecogida recogida;
+	@ManyToOne
+	@JoinColumn(name = "vendedor_id")
 	private Usuario vendedor;
+	
+	public Producto() {
+	}
 	
 	public Producto(String titulo, String descripcion, Float precio, EnumEstado estado, Categoria categoria, Boolean envioDispo, Usuario vendedor) {
 		this.titulo = titulo;
