@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import modelo.Categoria;
+import modelo.Producto;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
 import repositorios.Repositorio;
@@ -69,5 +70,10 @@ public class ServicioCategorias implements IServicioCategorias {
 		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
 		return repositorio.getBySubcategorias(id);
+	}
+	
+	@Override
+	public Categoria getCategoria(String id) throws RepositorioException, EntidadNoEncontrada {
+		return repositorio.getById(id);
 	}
 }
