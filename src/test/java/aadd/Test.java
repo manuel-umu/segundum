@@ -95,8 +95,9 @@ public class Test {
 		}
 
 		List<Producto> productos2 = servicioP.buscarProductos(c2.getId(), null, null, null);
+		System.out.println();
 		for (Producto p : productos2) {
-			System.out.println(p.getId());
+			System.out.println(p.getId() + " ");
 		}
 
 		List<Producto> productos3 = servicioP.buscarProductos(c2.getId(), "hola", null, null);
