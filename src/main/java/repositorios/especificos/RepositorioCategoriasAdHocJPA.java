@@ -33,7 +33,7 @@ public class RepositorioCategoriasAdHocJPA extends RepositorioCategoriasJPA impl
 		}
 	}
 
-	public List<Categoria> getBySubcategorias(String id) throws RepositorioException, EntidadNoEncontrada {
+	public LinkedList<Categoria> getBySubcategorias(String id) throws RepositorioException, EntidadNoEncontrada {
 		Categoria padre = getById(id);
 		LinkedList<Categoria> hijos = new LinkedList<>();
 		getSubcategoriasRecursivo(hijos, padre);

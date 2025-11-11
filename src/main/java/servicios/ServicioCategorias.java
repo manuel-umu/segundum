@@ -65,21 +65,6 @@ public class ServicioCategorias implements IServicioCategorias {
 		// Control de integridad de los datos
 		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
-		// Creamos la lista de hijos a devolver
-		LinkedList<Categoria> hijos = new LinkedList<>();
-		Categoria categoria = repositorio.getById(id);
-		// Utilizamos getSubcategorias() y de manera recurrente con un método auxiliar
-		// vamos añadiendo las subcategorias de subcategorias
-		añadirDescRecursivo(hijos, categoria);
-		return hijos;
-	}
-
-	public void añadirDescRecursivo(LinkedList<Categoria> hijos, Categoria categoria) {
-		// Recorremos las subcategorias y añadimos cada hijo a la lista
-		for (Categoria hijo : categoria.getSubcategorias()) {
-			hijos.add(hijo);
-			// Además los hijos añaden a sus hijos a la lista y así hasta el final del árbol
-			añadirDescRecursivo(hijos, hijo);
-		}
+		return repositorio.getBySubcategorias(id);
 	}
 }

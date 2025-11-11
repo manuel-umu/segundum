@@ -23,8 +23,4 @@ public interface Repositorio <T, K> {
 
 	List<K> getIds() throws RepositorioException;
 
-	// Patrón especificación
-	default List<T> getByEspecificacion(Especificacion<T> spec) throws RepositorioException {
-		return getAll().stream().filter(obj -> spec.isSatisfiedBy(obj)).collect(Collectors.toList());
-	};
 }

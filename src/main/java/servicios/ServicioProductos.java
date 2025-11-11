@@ -110,22 +110,16 @@ public class ServicioProductos implements IServicioProductos {
 	}
 
 	@Override
-	public List<ProductoRes> historialMes(Integer mes, Integer año) throws RepositorioException {
+	public List<ProductoRes> historialMes(Integer mes, Integer year) throws RepositorioException {
 		// Control de integridad de los datos
 		if (mes == null || (mes < 1 || mes > 12))
 			throw new IllegalArgumentException("mes: no debe ser nulo ni menor a 1 o mayor a 12");
-		if (año == null)
+		if (year == null)
 			throw new IllegalArgumentException("año: no debe ser nulo");
-
 		// Para este método tenemos que crear una clase Producto Resumen que nos ofrezca
 		// unicamente los atributos que se nos pide
-		// Primero recuperamos los productos y a partir de streams nos quedamos con
-		// .filter solo con los que coincidan en fecha
-		List<Producto> productos = productoRepo.getAll();
-		List<Producto> resultados = productos.stream()
-				.filter(p -> mes.equals(p.getFechaPubli().getMonthValue()) && año.equals(p.getFechaPubli().getYear()))
-				.collect(Collectors.toList());
-
+		// Primero recuperamos los productos con la fecha especificada
+		List<Producto> resultados = productoRepo.getByFecha(mes, year);
 		// Podriamos hacer lambdas para la ordenacion pero no podemos comparar int con
 		// Integer
 		// Así que utilizamos Comparator con el método getVisualizaciones() y ordenamos
@@ -144,22 +138,18 @@ public class ServicioProductos implements IServicioProductos {
 	public List<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax)
 			throws RepositorioException, EntidadNoEncontrada {
 		// Obtenemos todos los productos del repositorio
-		List<Producto> productos = productoRepo.getAll();
+		List<Producto> productos;
 		// Hagamos un analisis de casos para la búsqueda
 		if (idCategoria == null || idCategoria.isEmpty()) {
 			// Aquí no hay tratamiento de integridad ya que si es nulo la lista de productos
 			// son todos los productos del repositorio
+			productos = productoRepo.getAll();
 		} else {
 			// En el caso de que se especifique hacemos uso de ServicioCategorias para poder
 			// llamar a la función recurrente que lista hijos de categorías
 			LinkedList<Categoria> categorias = servicioC.recuperarDescCategoria(idCategoria);
-			// En este stream se realiza el siguiente filtro: O la categoría a la que
-			// pertenece el producto es una de las subcategorías
-			// O el id es exactamente el mismo del id proporcionado
-			List<Producto> productosCategorias = productos.stream().filter(
-					p -> (categorias.contains(p.getCategoria()) || p.getCategoria().getId().equals(idCategoria)))
-					.collect(Collectors.toList());
-			productos = productosCategorias;
+			
+			productos = productoRepo.getByCategorias(idCategoria, categorias);
 		}
 
 		// Ahora a partir de nuestra lista vamos cribando los demás parámetros
