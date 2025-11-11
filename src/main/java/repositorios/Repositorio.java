@@ -2,7 +2,6 @@ package repositorios;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import especificacion.Especificacion;
 
 /*
  *  Repositorio para entidades gestionadas con identificador.
