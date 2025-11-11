@@ -174,4 +174,9 @@ public class ServicioProductos implements IServicioProductos {
 
 		return productos;
 	}
+	
+	@Override
+	public Producto getProducto(String id) throws RepositorioException, EntidadNoEncontrada {
+		return productoRepo.getById(id);
+	}
 }

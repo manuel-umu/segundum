@@ -24,7 +24,6 @@ import repositorios.Identificable;
 @Table(name = "categoria")
 public class Categoria implements Identificable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
 	private String id;
 	private String nombre;
 	private String descripcion;
@@ -57,6 +56,10 @@ public class Categoria implements Identificable {
 	public String getNombre() {
 		return nombre;
 	}
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
 	@XmlTransient
 	public String getDescripcion() {
@@ -70,6 +73,10 @@ public class Categoria implements Identificable {
 	@XmlAttribute
 	public String getRuta() {
 		return ruta;
+	}
+	
+	public void setRuta(String ruta) {
+		this.ruta = ruta;
 	}
 	
 	@XmlElement(name="categoria")

@@ -45,12 +45,16 @@ public class Test {
 
 		// HU3
 		String idVendedor = idHU1;
+		
 		servicioC.cargarCategoria("src/main/java/categorias/Bricolaje.xml");
 		LinkedList<Categoria> categorias = servicioC.recuperarCategoriaRaiz();
 		Categoria c1 = categorias.getFirst();
+		System.out.println("Categoria 1: " + c1.getId());
 		String idP = servicioP.altaProducto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, c1.getId(), false,
 				idVendedor);
 		System.out.println("ID del producto dado de alta: " + idP);
+		Producto recuperadoP = servicioP.getProducto(idP);
+		System.out.println("HU3 - Después = " + recuperadoP.toString());
 
 		// HU4
 		Producto producto = new Producto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, c1, false, recuperado3);

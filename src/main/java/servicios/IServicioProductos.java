@@ -21,4 +21,6 @@ public interface IServicioProductos {
 	public List<ProductoRes> historialMes(Integer mes, Integer año) throws RepositorioException;
 	
 	public List<Producto> buscarProductos(String idCategoria, String texto, EnumEstado estado, Float precioMax) throws RepositorioException, EntidadNoEncontrada;
+
+	public Producto getProducto(String id) throws RepositorioException, EntidadNoEncontrada;
 }
