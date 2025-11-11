@@ -4,18 +4,28 @@ import java.time.LocalDateTime;
 
 public class ProductoRes {
 
+	private String id;
 	private String titulo;
 	private Float precio;
 	private LocalDateTime fechaPubli;
-	private Categoria categoria;
+	private String categoria;
 	private Integer visualizaciones;
 	
-	public ProductoRes(String titulo, Float precio, LocalDateTime fechaPubli, Categoria categoria, Integer visualizaciones) {
+	public ProductoRes(String id, String titulo, Float precio, LocalDateTime fechaPubli, String categoria, Integer visualizaciones) {
+		this.id = id;
 		this.titulo = titulo;
 		this.precio = precio;
 		this.fechaPubli = fechaPubli;
 		this.categoria = categoria;
 		this.visualizaciones = visualizaciones;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getTitulo() {
@@ -42,11 +52,11 @@ public class ProductoRes {
 		this.fechaPubli = fechaPubli;
 	}
 
-	public Categoria getCategoria() {
+	public String getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
 
@@ -57,10 +67,11 @@ public class ProductoRes {
 	public void setVisualizaciones(Integer visualizaciones) {
 		this.visualizaciones = visualizaciones;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Producto [titulo=" + titulo + ", precio=" + precio + ", fechaPubli=" + fechaPubli + ", categoria="
-				+ categoria + ", visualizaciones=" + visualizaciones + "]";
+		return "ProductoRes [id=" + id + ", titulo=" + titulo + ", precio=" + precio + ", fechaPubli=" + fechaPubli
+				+ ", categoria=" + categoria + ", visualizaciones=" + visualizaciones + "]";
 	}
+	
 }

@@ -60,7 +60,7 @@ public class Test {
 
 		// HU4
 		System.out.println("\n=================== HU4 ===================\n");
-		String idH4 = servicioP.altaProducto("Destornillador", "En buenisimo estado", 20f, EnumEstado.PARAPIEZAS, c1.getId(), false,
+		String idH4 = servicioP.altaProducto("Destornillador", "En buenisimo estado", 20f, EnumEstado.PARAPIEZAS_O_REPARAR, c1.getId(), false,
 				idVendedor);
 		Producto recuperadoH4 = servicioP.getProducto(idH4);
 		System.out.println("Producto original. Descripcion = \"" + recuperadoH4.getDescripcion() + "\" y precio = " + recuperadoH4.getPrecio());
@@ -89,7 +89,7 @@ public class Test {
 		Categoria c2 = categorias2.getFirst();
 		String idPH71 = servicioP.altaProducto("Samsung Galaxy S28", "Sin abrir", 20f, EnumEstado.NUEVO, c2.getId(), false,
 				idVendedor);
-		String idPH72 = servicioP.altaProducto("Samsung Galaxy S29", "Roto", 20f, EnumEstado.REPARAR, c2.getId(), false,
+		String idPH72 = servicioP.altaProducto("Samsung Galaxy S29", "Roto", 20f, EnumEstado.PARAPIEZAS_O_REPARAR, c2.getId(), false,
 				idVendedor);
 		String idPH73 = servicioP.altaProducto("Samsung Galaxy S30", "Casi nuevo", 20f, EnumEstado.COMONUEVO, c2.getId(), false,
 				idVendedor);
@@ -140,6 +140,11 @@ public class Test {
 		System.out.println("Nueva descripción: " + servicioC.getCategoria(c1.getId()));
 
 		// Pruebas adicionales del paquete servicios no probados en las HU:
+		
+		// Cargar una categoría ya existente (no se debe dejar)
+		System.out.println("\n=================== Prueba extra 1 ===================\n");
+		servicioC.cargarCategoria("src/main/java/categorias/Electronica.xml");
+		
 
 	}
 }

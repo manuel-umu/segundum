@@ -2,7 +2,6 @@ package repositorios.especificos;
 
 import java.io.File;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -21,7 +20,17 @@ public class RepositorioCategoriasAdHocJPA extends RepositorioCategoriasJPA impl
 			Categoria categoria = (Categoria) unmarshaller.unmarshal(new File(ruta));
 			// Comprobamos que la categoria no es vacía
 			if (categoria != null) {
-				add(categoria);
+				try {
+					// Ahora comprobamos que la categoría no existe! (ya que no se puede añadir si existe según el enunciado)
+					Categoria antigua = getById(categoria.getId());
+					if(antigua != null) {
+						System.out.println("Categoría anteriormente añadida. No se realiza la operación.");
+						return;
+					}
+				} catch (Exception e) {
+					// De no ser así añadimos
+					add(categoria);
+				}
 			}
 		} catch (Exception e) {
 			throw new RepositorioException("Problema en el desempaquetado", e);

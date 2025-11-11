@@ -13,7 +13,6 @@ import modelo.ProductoRes;
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
-import repositorios.Repositorio;
 import repositorios.RepositorioException;
 import repositorios.especificos.RepositorioCategoriasAdHoc;
 import repositorios.especificos.RepositorioProductosAdHoc;
@@ -128,8 +127,8 @@ public class ServicioProductos implements IServicioProductos {
 
 		// Ahora en otro stream a partir de .map pasamos los Productos a ProductosRes
 		// cogiendo con los getters los atributos a incluir en el resumen
-		List<ProductoRes> resultadosRes = resultados.stream().map(r -> new ProductoRes(r.getTitulo(), r.getPrecio(),
-				r.getFechaPubli(), r.getCategoria(), r.getVisualizaciones())).collect(Collectors.toList());
+		List<ProductoRes> resultadosRes = resultados.stream().map(r -> new ProductoRes(r.getId(), r.getTitulo(), r.getPrecio(),
+				r.getFechaPubli(), r.getCategoria().getNombre(), r.getVisualizaciones())).collect(Collectors.toList());
 
 		return resultadosRes;
 	}
@@ -161,7 +160,7 @@ public class ServicioProductos implements IServicioProductos {
 		}
 
 		// Utilizamos ordinal() para saber de que enumerado se trata, los hemos puesto
-		// de mejor a peor así que 0 = NUEVO, 6 = REPARAR
+		// de mejor a peor así que 0 = NUEVO, 5 = PARAPIEZAS_O_REPARAR
 		if (estado != null) {
 			productos = productos.stream().filter(p -> p.getEstado().ordinal() <= estado.ordinal())
 					.collect(Collectors.toList());
