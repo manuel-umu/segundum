@@ -1,17 +1,11 @@
 package servicios;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
 import modelo.Categoria;
-import modelo.Producto;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
-import repositorios.Repositorio;
 import repositorios.RepositorioException;
 import repositorios.especificos.RepositorioCategoriasAdHoc;
 

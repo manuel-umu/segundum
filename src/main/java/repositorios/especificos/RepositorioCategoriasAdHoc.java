@@ -1,7 +1,6 @@
 package repositorios.especificos;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import modelo.Categoria;
 import repositorios.EntidadNoEncontrada;

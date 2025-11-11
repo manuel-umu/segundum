@@ -4,7 +4,6 @@ import java.util.List;
 
 import modelo.Categoria;
 import modelo.Producto;
-import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
 import repositorios.RepositorioString;
 

@@ -1,12 +1,10 @@
 package repositorios.especificos;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import modelo.Categoria;
 import modelo.Producto;
-import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
 
 public class RepositorioProductosAdHocJPA extends RepositorioProductosJPA implements RepositorioProductosAdHoc {
