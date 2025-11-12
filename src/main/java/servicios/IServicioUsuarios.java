@@ -14,4 +14,9 @@ public interface IServicioUsuarios {
 			String telefono) throws RepositorioException, EntidadNoEncontrada;
 
 	public Usuario getUsuario(String id) throws RepositorioException, EntidadNoEncontrada;
+
+	public boolean login(String email, String passwd) throws RepositorioException, EntidadNoEncontrada;
+	
+	
+	public void hacerAdmin(String id) throws RepositorioException, EntidadNoEncontrada;
 }

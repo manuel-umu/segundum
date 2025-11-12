@@ -17,4 +17,6 @@ public interface IServicioCategorias {
 	public LinkedList<Categoria> recuperarDescCategoria(String id) throws RepositorioException, EntidadNoEncontrada;
 
 	public Categoria getCategoria(String id) throws RepositorioException, EntidadNoEncontrada;
+	
+	public boolean comprobarAdmin();
 }

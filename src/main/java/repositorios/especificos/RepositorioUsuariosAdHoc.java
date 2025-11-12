@@ -11,6 +11,6 @@ public interface RepositorioUsuariosAdHoc extends RepositorioString<Usuario> {
 	// TODO
 	public boolean isRegistrado(String email) throws RepositorioException;
 
-	public List<Usuario> getAll() throws RepositorioException;
-
+	public List<Usuario> getByEmail(String email) throws RepositorioException;
+	
 }

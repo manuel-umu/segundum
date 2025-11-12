@@ -26,7 +26,7 @@ public class Test {
 		LocalDate fecha = LocalDate.of(2000, 12, 1);
 		String contra = "hola1234";
 		String telefono = "666777888";
-		
+
 		// HU1
 		System.out.println("\n=================== HU1 ===================\n");
 		String idU = servicioU.registrarUsuario(nombre, apellidos, email, fecha, contra, telefono);
@@ -34,39 +34,45 @@ public class Test {
 		Usuario recuperado = servicioU.getUsuario(idU);
 		System.out.println("Usuario recuperado = " + recuperado.toString());
 		String idU2 = servicioU.registrarUsuario(nombre, apellidos, email, fecha, contra, telefono);
-		System.out.println("Id2 (deberia ser null) = " + idU2); // Debe salir null ya que se esta intentando registrar un usuario con un
-												// email ya registrado
+		System.out.println("Id2 (deberia ser null) = " + idU2); // Debe salir null ya que se esta intentando registrar
+																// un usuario con un
+		// email ya registrado
 		// HU2
 		System.out.println("\n=================== HU2 ===================\n");
-		String idHU1 = servicioU.registrarUsuario(nombre, apellidos, "alfonso@um.es", fecha, contra, telefono);
-		Usuario recuperado2 = servicioU.getUsuario(idHU1);
+		String idHU2 = servicioU.registrarUsuario(nombre, apellidos, "alfonso@um.es", fecha, contra, telefono);
+		Usuario recuperado2 = servicioU.getUsuario(idHU2);
 		System.out.println("Antes = " + recuperado2.toString());
-		servicioU.modificarUsuario(idHU1, "Jesus", "De Nazaret", "contraActualizada", LocalDate.of(1, 1, 1), "111222333");
-		Usuario recuperado3 = servicioU.getUsuario(idHU1);
+		servicioU.modificarUsuario(idHU2, "Jesus", "De Nazaret", "contraActualizada", LocalDate.of(1, 1, 1),
+				"111222333");
+		Usuario recuperado3 = servicioU.getUsuario(idHU2);
 		System.out.println("Despues = " + recuperado3.toString());
 
 		// HU3
 		System.out.println("\n=================== HU3 ===================\n");
-		String idVendedor = idHU1;
+		String idVendedor = idHU2;
+		servicioU.login("alfonso@um.es", "contraActualizada");
+		servicioU.hacerAdmin(idVendedor);
 		servicioC.cargarCategoria("src/main/java/categorias/Bricolaje.xml");
 		LinkedList<Categoria> categorias = servicioC.recuperarCategoriaRaiz();
 		Categoria c1 = categorias.getFirst();
 		System.out.println("ID Categoria 1 = " + c1.getId());
-		String idP = servicioP.altaProducto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, c1.getId(), false,
-				idVendedor);
+		String idP = servicioP.altaProducto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, c1.getId(),
+				false, idVendedor);
 		System.out.println("ID Producto 1 = " + idP);
 		Producto recuperadoP = servicioP.getProducto(idP);
 		System.out.println("Producto dado de alta = " + recuperadoP.toString());
 
 		// HU4
 		System.out.println("\n=================== HU4 ===================\n");
-		String idH4 = servicioP.altaProducto("Destornillador", "En buenisimo estado", 20f, EnumEstado.PARAPIEZAS_O_REPARAR, c1.getId(), false,
-				idVendedor);
+		String idH4 = servicioP.altaProducto("Destornillador", "En buenisimo estado", 20f,
+				EnumEstado.PARAPIEZAS_O_REPARAR, c1.getId(), false, idVendedor);
 		Producto recuperadoH4 = servicioP.getProducto(idH4);
-		System.out.println("Producto original. Descripcion = \"" + recuperadoH4.getDescripcion() + "\" y precio = " + recuperadoH4.getPrecio());
+		System.out.println("Producto original. Descripcion = \"" + recuperadoH4.getDescripcion() + "\" y precio = "
+				+ recuperadoH4.getPrecio());
 		servicioP.modificarProducto(idH4, 2f, "Alomejor no esta tan bien");
 		Producto recuperadoH4_2 = servicioP.getProducto(idH4);
-		System.out.println("Producto modificado. Descripcion = \"" + recuperadoH4_2.getDescripcion() + "\" y precio nuevo = " + recuperadoH4_2.getPrecio());
+		System.out.println("Producto modificado. Descripcion = \"" + recuperadoH4_2.getDescripcion()
+				+ "\" y precio nuevo = " + recuperadoH4_2.getPrecio());
 
 		// HU5
 		System.out.println("\n=================== HU5 ===================\n");
@@ -87,64 +93,80 @@ public class Test {
 		servicioC.cargarCategoria("src/main/java/categorias/Electronica.xml");
 		LinkedList<Categoria> categorias2 = servicioC.recuperarCategoriaRaiz();
 		Categoria c2 = categorias2.getFirst();
-		String idPH71 = servicioP.altaProducto("Samsung Galaxy S28", "Sin abrir", 20f, EnumEstado.NUEVO, c2.getId(), false,
-				idVendedor);
-		String idPH72 = servicioP.altaProducto("Samsung Galaxy S29", "Roto", 20f, EnumEstado.PARAPIEZAS_O_REPARAR, c2.getId(), false,
-				idVendedor);
-		String idPH73 = servicioP.altaProducto("Samsung Galaxy S30", "Casi nuevo", 20f, EnumEstado.COMONUEVO, c2.getId(), false,
-				idVendedor);
-		String idPH74 = servicioP.altaProducto("Samsung Galaxy S31", "Medio medio", 20f, EnumEstado.ACEPTABLE, c2.getId(), false,
-				idVendedor);
+		String idPH71 = servicioP.altaProducto("Samsung Galaxy S28", "Sin abrir", 20f, EnumEstado.NUEVO, c2.getId(),
+				false, idVendedor);
+		String idPH72 = servicioP.altaProducto("Samsung Galaxy S29", "Roto", 20f, EnumEstado.PARAPIEZAS_O_REPARAR,
+				c2.getId(), false, idVendedor);
+		String idPH73 = servicioP.altaProducto("Samsung Galaxy S30", "Casi nuevo", 20f, EnumEstado.COMONUEVO,
+				c2.getId(), false, idVendedor);
+		String idPH74 = servicioP.altaProducto("Samsung Galaxy S31", "Medio medio", 20f, EnumEstado.ACEPTABLE,
+				c2.getId(), false, idVendedor);
+		String idPH75 = servicioP.altaProducto("Samsung Galaxy S32", "Casi nuevo", 10f, EnumEstado.COMONUEVO,
+				c2.getId(), false, idVendedor);
 		List<Producto> productos1 = servicioP.buscarProductos(null, null, null, null);
-		System.out.println("Resultados búsqueda 1:");
+		System.out.println("Resultados búsqueda 1 (sin filtro) = ");
 		for (Producto p : productos1) {
 			System.out.println("ID: " + p.getId() + ". Título: " + p.getTitulo());
 		}
 
 		List<Producto> productos2 = servicioP.buscarProductos(c2.getId(), null, null, null);
 		System.out.println();
-		System.out.println("Resultados búsqueda 2:");
+		System.out.println("Resultados búsqueda 2 (categoria=Electronica) = ");
+		// Toda la categoria 2
 		for (Producto p : productos2) {
 			System.out.println("ID: " + p.getId() + ". Título: " + p.getTitulo());
 		}
 
 		List<Producto> productos3 = servicioP.buscarProductos(c2.getId(), "Sin abrir", null, null);
 		System.out.println();
-		System.out.println("Resultados búsqueda 3:");
+		System.out.println("Resultados búsqueda 3 (categoria=Electronica|Texto=Sin Abrir) = ");
+		// S28
 		for (Producto p : productos3) {
 			System.out.println("ID: " + p.getId() + ". Título: " + p.getTitulo());
 		}
 
 		List<Producto> productos4 = servicioP.buscarProductos(c2.getId(), "Casi nuevo", EnumEstado.ACEPTABLE, null);
 		System.out.println();
-		System.out.println("Resultados búsqueda 4:");
+		System.out.println("Resultados búsqueda 4 (categoria=Electronica|Texto=Casi Nuevo|Estado=Aceptable) = ");
+		// S30 S32
 		for (Producto p : productos4) {
 			System.out.println("ID: " + p.getId() + ". Título: " + p.getTitulo());
 		}
 
 		List<Producto> productos5 = servicioP.buscarProductos(c2.getId(), "Casi nuevo", EnumEstado.ACEPTABLE, 10f);
 		System.out.println();
-		System.out.println("Resultados búsqueda 5:");
+		System.out.println("Resultados búsqueda 5 (categoria=Electronica|Texto=Sin Abrir|Estado=Aceptable|Precio=10) = ");
+		// S32
 		for (Producto p : productos5) {
 			System.out.println("ID: " + p.getId() + ". Título: " + p.getTitulo());
 		}
 
 		// HU8
 		System.out.println("\n=================== HU8 ===================\n");
+		servicioU.login(email, contra);
 		servicioC.cargarCategoria("src/main/java/categorias/Mobiliario.xml");
-		System.out.println("Nuevas categorías añadidas: " + servicioC.getCategoria("6369") + servicioC.recuperarDescCategoria("6369"));
+		servicioU.hacerAdmin(idU);
+		servicioC.cargarCategoria("src/main/java/categorias/Mobiliario.xml");
+		System.out.println("Nuevas categorías añadidas: " + servicioC.getCategoria("6369")
+				+ servicioC.recuperarDescCategoria("6369"));
 
 		// HU9
 		System.out.println("\n=================== HU9 ===================\n");
-		servicioC.modificarCategoria(c1.getId(), "Nueva descripción");
+		servicioC.modificarCategoria(c1.getId(), "Nueva descripción de la HU9");
 		System.out.println("Nueva descripción: " + servicioC.getCategoria(c1.getId()));
+		String idH9 = servicioU.registrarUsuario(nombre, apellidos, "emailDeUnNoAdmin@nodmin.es", fecha, "1234", telefono);
+		servicioU.login("emailDeUnNoAdmin@nodmin.es", "1234");
+		servicioC.modificarCategoria(c1.getId(), "Otra descripcion mas");
+		System.out.println("Descripcion = " + servicioC.getCategoria(c1.getId()));
+
+		
 
 		// Pruebas adicionales del paquete servicios no probados en las HU:
-		
+
 		// Cargar una categoría ya existente (no se debe dejar)
-		System.out.println("\n=================== Prueba extra 1 ===================\n");
+		System.out.println("\n=================== Prueba extra 1 - Cargar categoria ya cargada ===================\n");
+		servicioU.login(email, contra);
 		servicioC.cargarCategoria("src/main/java/categorias/Electronica.xml");
-		
 
 	}
 }

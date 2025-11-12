@@ -3,7 +3,9 @@ package servicios;
 import java.util.LinkedList;
 import java.util.List;
 
+import controlador.Controlador;
 import modelo.Categoria;
+import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
 import repositorios.RepositorioException;
@@ -17,7 +19,11 @@ public class ServicioCategorias implements IServicioCategorias {
 		// Control de integridad de los datos
 		if (ruta == null || ruta.isEmpty())
 			throw new IllegalArgumentException("ruta: no debe ser nulo ni vacio");
-		repositorio.cargarCategoria(ruta);
+		if (comprobarAdmin()) {
+			repositorio.cargarCategoria(ruta);
+		} else {
+			System.err.println("ERROR: No tienes los permisos para cargar una categoria.");
+		}
 	}
 
 	@Override
@@ -28,10 +34,12 @@ public class ServicioCategorias implements IServicioCategorias {
 		if (descripcion == null)
 			throw new IllegalArgumentException("descripcion: no debe ser nulo");
 		// Hacemos set con la nueva descripcion de existir la categoría en el repo
-		if (repositorio.getById(id) != null) {
+		if (comprobarAdmin()) {
 			Categoria categoria = repositorio.getById(id);
 			categoria.setDescripcion(descripcion);
 			repositorio.update(categoria);
+		} else {
+			System.err.println("ERROR: No tienes los permisos para modificar una categoria.");
 		}
 	}
 
@@ -45,7 +53,7 @@ public class ServicioCategorias implements IServicioCategorias {
 		// Recorremos cada una de ellas y extraemos su ruta
 		for (Categoria categoria : todas) {
 			String ruta = categoria.getRuta();
-			if(ruta == null) {
+			if (ruta == null) {
 				continue;
 			}
 			// Hacemos la resta de la longitud de esta cadena con y sin "|"
@@ -65,9 +73,16 @@ public class ServicioCategorias implements IServicioCategorias {
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
 		return repositorio.getBySubcategorias(id);
 	}
-	
+
 	@Override
 	public Categoria getCategoria(String id) throws RepositorioException, EntidadNoEncontrada {
 		return repositorio.getById(id);
+	}
+
+	public boolean comprobarAdmin() {
+		Usuario u = Controlador.getUnicaInstancia().getUsuarioActual();
+		if (u != null)
+			return u.isAdmin();
+		return false;
 	}
 }

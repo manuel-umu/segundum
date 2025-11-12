@@ -22,7 +22,7 @@ public class ServicioProductos implements IServicioProductos {
 	private RepositorioProductosAdHoc productoRepo = FactoriaRepositorios.getRepositorio(Producto.class);
 	private RepositorioCategoriasAdHoc categoriaRepo = FactoriaRepositorios.getRepositorio(Categoria.class);
 	private RepositorioUsuariosAdHoc usuarioRepo = FactoriaRepositorios.getRepositorio(Usuario.class);
-	private ServicioCategorias servicioC = new ServicioCategorias();
+	private IServicioCategorias servicioC = FactoriaServicios.getServicio(IServicioCategorias.class);
 
 	@Override
 	public String altaProducto(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria,

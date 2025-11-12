@@ -1,6 +1,9 @@
 package servicios;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import controlador.Controlador;
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
@@ -35,11 +38,9 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		if (!repositorio.isRegistrado(email)) { // Si ya esta registrado, devolver null
 			Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
 			return repositorio.add(usuario);
-		}else {
+		} else {
 			return null;
 		}
-		
-
 	}
 
 	/*
@@ -48,7 +49,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	@Override
 	public void modificarUsuario(String id, String nombre, String apellidos, String clave, LocalDate fecha,
 			String telefono) throws RepositorioException, EntidadNoEncontrada {
-		Usuario u = repositorio.getById(id);
+		Usuario u = getUsuario(id);
 		if (nombre != null && !nombre.isEmpty()) {
 			u.setNombre(nombre);
 		}
@@ -70,6 +71,31 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	@Override
 	public Usuario getUsuario(String id) throws RepositorioException, EntidadNoEncontrada {
 		return repositorio.getById(id);
+	}
+
+	public boolean login(String email, String passwd) throws RepositorioException, EntidadNoEncontrada {
+		List<Usuario> usuario = repositorio.getByEmail(email);
+		if (usuario.isEmpty()) {
+			return false;
+		}
+		if (usuario.get(0).getClave().equals(passwd)) {
+			Controlador.getUnicaInstancia().setUsuarioActual(usuario.get(0));
+			return true;
+		}
+		return false;
+	}
+
+	public void hacerAdmin(String id) throws RepositorioException, EntidadNoEncontrada {
+		Usuario u = getUsuario(id);
+		if (u == null) {
+			return;
+		}
+		u.setAdmin(true);
+		// Actualizar por si es el usuario logueado
+		if (Controlador.getUnicaInstancia().getUsuarioActual().getEmail().equals(u.getEmail())) {
+			Controlador.getUnicaInstancia().setUsuarioActual(u);
+		}
+		repositorio.update(u);
 	}
 
 }

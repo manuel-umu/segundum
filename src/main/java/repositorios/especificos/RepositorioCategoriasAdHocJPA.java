@@ -7,7 +7,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import modelo.Categoria;
+import modelo.Producto;
+import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
+import repositorios.FactoriaRepositorios;
 import repositorios.RepositorioException;
 
 public class RepositorioCategoriasAdHocJPA extends RepositorioCategoriasJPA implements RepositorioCategoriasAdHoc {
