@@ -1,4 +1,4 @@
-<ui:composition  template="/WEB-INF/template/template.xhtml"
+<ui:composition  template="/WEB-INF/template/templateLogin.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -13,11 +13,11 @@
     <ui:define name="content">
         <h:form id="loginForm">
             <p:messages id="msgs" showDetail="true" closable="true"/>
-            <p:panel header="Acceso" style="width:320px;margin:100px auto;">
+            <p:panel header="Acceso" style="width:320px;margin:0px auto;">
                 <p:panelGrid columns="2" columnClasses="etiqueta,valor" styleClass="ui-fluid" style="width:100%;">
                     <h:outputLabel for="email" value="Email:" />
                     <p:inputText id="email"
-                                 value="#{altaSegundumWeb.email}"
+                                 value="#{ControladorWeb.email}"
                                  required="true"
                                  requiredMessage="El email es obligatorio."
                                  invalidMessage="El email no tiene un formato válido."
@@ -27,20 +27,27 @@
 
                     <h:outputLabel for="password" value="Contraseña:" />
                     <p:password id="password"
-                                value="#{altaSegundumWeb.password}"
+                                value="#{ControladorWeb.password}"
                                 required="true"
                                 feedback="false"
                                 requiredMessage="La contraseña es obligatoria."
                                 label="Contraseña" />
-                </p:panelGrid>
-                <p:separator/>
-                <p:commandButton value="Entrar"
-                                 action="#{altaSegundumWeb.login}"
-                                 update=":loginForm:msgs"
-                                 icon="pi pi-sign-in"
-                                 styleClass="ui-button-success"
-                                 style="width:100%;"/>
-            </p:panel>
+		        </p:panelGrid>
+               	<p:separator/>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" style="width:100%;gap:10px;">
+			    <p:commandButton value="Entrar"
+			        action="#{ControladorWeb.login}"
+			        update=":loginForm:msgs"
+			        icon="pi pi-sign-in"
+			        styleClass="ui-button-success"
+			        style="width:100%;"/>
+			    <p:commandButton value="Registrarse"
+			        action="#{ControladorWeb.irARegistro}"
+			        icon="pi pi-user-plus"
+			        styleClass="ui-button-info"
+			        style="width:100%;"/>
+				</p:panelGrid>
+		    </p:panel>
         </h:form>
     </ui:define>
 

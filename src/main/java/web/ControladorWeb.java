@@ -1,7 +1,7 @@
 package web;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +16,13 @@ import servicios.IServicioUsuarios;
 @SuppressWarnings("serial")
 @Named
 @ViewScoped
-public class AltaSegundumWeb implements Serializable {
-	private String email, password;
+public class ControladorWeb implements Serializable {
+	private String email, password, nombre, apellidos,telefono;
+	private LocalDate fechaNac;
 
 	private IServicioUsuarios servicioUsuario;
 
-	public AltaSegundumWeb() {
+	public ControladorWeb() {
 		servicioUsuario = FactoriaServicios.getServicio(IServicioUsuarios.class);
 	}
 
@@ -35,7 +36,18 @@ public class AltaSegundumWeb implements Serializable {
 		} else {
 			return "index?faces-redirect=true";
 		}
+	}
+	
+	public String registro() {
+		return "index";
+	}
+	
+	public String getApellidos() {
+		return apellidos;
+	}
 
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
 
 	public String getEmail() {
@@ -45,6 +57,32 @@ public class AltaSegundumWeb implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public LocalDate getFechaNac() {
+		return fechaNac;
+	}
+
+	public void setFechaNac(LocalDate fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
 	public String getPassword() {
 		return password;
@@ -52,6 +90,15 @@ public class AltaSegundumWeb implements Serializable {
 
 	public void setPassword(String contraseña) {
 		this.password = contraseña;
+	}
+	
+	
+	public String irALogin() {
+		return "login";
+	}
+	
+	public String irARegistro() {
+		return "registro";
 	}
 
 }
