@@ -26,7 +26,7 @@ public class ServicioProductos implements IServicioProductos {
 
 	@Override
 	public String altaProducto(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria,
-			Boolean envioDispo, String idVendedor) throws RepositorioException, EntidadNoEncontrada {
+			Boolean envioDispo, String idVendedor, LugarRecogida lg) throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos
 		if (titulo == null || titulo.isEmpty())
 			throw new IllegalArgumentException("titulo: no debe ser nulo ni vacio");
@@ -47,7 +47,7 @@ public class ServicioProductos implements IServicioProductos {
 		// construir el producto
 		Categoria categoria = categoriaRepo.getById(idCategoria);
 		Usuario usuario = usuarioRepo.getById(idVendedor);
-		Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDispo, usuario);
+		Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDispo, usuario, lg);
 
 		// Add nos devuelve el id del producto una vez lo damos de "alta"
 		return productoRepo.add(producto);
@@ -127,8 +127,9 @@ public class ServicioProductos implements IServicioProductos {
 
 		// Ahora en otro stream a partir de .map pasamos los Productos a ProductosRes
 		// cogiendo con los getters los atributos a incluir en el resumen
-		List<ProductoRes> resultadosRes = resultados.stream().map(r -> new ProductoRes(r.getId(), r.getTitulo(), r.getPrecio(),
-				r.getFechaPubli(), r.getCategoria().getNombre(), r.getVisualizaciones())).collect(Collectors.toList());
+		List<ProductoRes> resultadosRes = resultados.stream().map(r -> new ProductoRes(r.getId(), r.getTitulo(),
+				r.getPrecio(), r.getFechaPubli(), r.getCategoria().getNombre(), r.getVisualizaciones()))
+				.collect(Collectors.toList());
 
 		return resultadosRes;
 	}
@@ -146,8 +147,8 @@ public class ServicioProductos implements IServicioProductos {
 		} else {
 			// En el caso de que se especifique hacemos uso de ServicioCategorias para poder
 			// llamar a la función recurrente que lista hijos de categorías
-			LinkedList<Categoria> categorias = servicioC.recuperarDescCategoria(idCategoria);
-			
+			List<Categoria> categorias = servicioC.recuperarDescCategoria(idCategoria);
+
 			productos = productoRepo.getByCategorias(idCategoria, categorias);
 		}
 
@@ -173,7 +174,7 @@ public class ServicioProductos implements IServicioProductos {
 
 		return productos;
 	}
-	
+
 	@Override
 	public Producto getProducto(String id) throws RepositorioException, EntidadNoEncontrada {
 		return productoRepo.getById(id);

@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -16,14 +17,16 @@ import javax.xml.bind.annotation.*;
 
 import repositorios.Identificable;
 
-@XmlRootElement(name="categoria")
+@XmlRootElement(name = "categoria")
 @Entity
 @Table(name = "categoria")
 public class Categoria implements Identificable {
 	@Id
 	private String id;
 	private String nombre;
+	@Lob
 	private String descripcion;
+	@Lob
 	private String ruta;
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "categoria_fk")
@@ -38,22 +41,22 @@ public class Categoria implements Identificable {
 		this.descripcion = descripcion;
 		this.ruta = ruta;
 	}
-	
+
 	@XmlAttribute
 	public String getId() {
 		return id;
 	}
-	
+
 	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	@XmlElement(name="nombre")
+	@XmlElement(name = "nombre")
 	public String getNombre() {
 		return nombre;
 	}
-	
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -62,21 +65,21 @@ public class Categoria implements Identificable {
 	public String getDescripcion() {
 		return descripcion;
 	}
-	
+
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
+
 	@XmlAttribute
 	public String getRuta() {
 		return ruta;
 	}
-	
+
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
 	}
-	
-	@XmlElement(name="categoria")
+
+	@XmlElement(name = "categoria")
 	public List<Categoria> getSubcategorias() {
 		return subcategorias;
 	}

@@ -1,10 +1,16 @@
 package repositorios;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
+
+import modelo.Categoria;
 import utils.EntityManagerHelper;
 
 public abstract class RepositorioJPA<T extends Identificable> implements RepositorioString<T> {
@@ -116,6 +122,23 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 			throw new RepositorioException("Error buscando todos los ids de " + getClase().getSimpleName(), e);
 		} finally {
 			EntityManagerHelper.closeEntityManager();
+		}
+	}
+
+	// Metodo para recuperar una lista de objetos de cualquier tipo con una consulta JPQL
+	public List<T> getByJPQL(String consulta, Map<String, Object> parametros, Class<T> clase)
+			throws RepositorioException {
+		try {
+			EntityManager em = EntityManagerHelper.getEntityManager();
+			TypedQuery<T> query = em.createQuery(consulta, clase);
+			if (parametros != null) {
+				for (Map.Entry<String, Object> param : parametros.entrySet()) {
+					query.setParameter(param.getKey(), param.getValue());
+				}
+			}
+			return query.getResultList();
+		} catch (RuntimeException e) {
+			throw new RepositorioException("Error en la consulta JPQL", e);
 		}
 	}
 }

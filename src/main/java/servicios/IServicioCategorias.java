@@ -1,6 +1,7 @@
 package servicios;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import modelo.Categoria;
 import repositorios.EntidadNoEncontrada;
@@ -14,7 +15,7 @@ public interface IServicioCategorias {
 
 	public LinkedList<Categoria> recuperarCategoriaRaiz() throws RepositorioException;
 	
-	public LinkedList<Categoria> recuperarDescCategoria(String id) throws RepositorioException, EntidadNoEncontrada;
+	public List<Categoria> recuperarDescCategoria(String id) throws RepositorioException, EntidadNoEncontrada;
 
 	public Categoria getCategoria(String id) throws RepositorioException, EntidadNoEncontrada;
 	

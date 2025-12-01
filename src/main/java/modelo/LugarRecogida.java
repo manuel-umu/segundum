@@ -2,10 +2,12 @@ package modelo;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 
 @Embeddable
 public class LugarRecogida {
 	@Column(name="descripcionLR")
+	@Lob
 	private String descripcion;
 	private Double longitud;
 	private Double latitud;

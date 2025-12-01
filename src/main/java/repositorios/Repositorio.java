@@ -1,6 +1,7 @@
 package repositorios;
 
 import java.util.List;
+import java.util.Map;
 
 /*
  *  Repositorio para entidades gestionadas con identificador.
@@ -8,7 +9,7 @@ import java.util.List;
  *  El parámetro K es el tipo del identificador.
  */
 
-public interface Repositorio <T, K> {    
+public interface Repositorio<T, K> {
 	K add(T entity) throws RepositorioException;
 
 	void update(T entity) throws RepositorioException, EntidadNoEncontrada;
@@ -20,5 +21,7 @@ public interface Repositorio <T, K> {
 	List<T> getAll() throws RepositorioException;
 
 	List<K> getIds() throws RepositorioException;
+
+	List<T> getByJPQL(String consulta, Map<String, Object> parametros, Class<T> clase) throws RepositorioException;
 
 }

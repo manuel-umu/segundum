@@ -1,7 +1,11 @@
 package servicios;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 
 import controlador.Controlador;
 import modelo.Categoria;
@@ -20,7 +24,29 @@ public class ServicioCategorias implements IServicioCategorias {
 		if (ruta == null || ruta.isEmpty())
 			throw new IllegalArgumentException("ruta: no debe ser nulo ni vacio");
 		if (comprobarAdmin()) {
-			repositorio.cargarCategoria(ruta);
+			try {
+				// Proceso de desempaquetado con Unmarshaller
+				JAXBContext contexto = JAXBContext.newInstance(Categoria.class);
+				Unmarshaller unmarshaller = contexto.createUnmarshaller();
+				Categoria categoria = (Categoria) unmarshaller.unmarshal(new File(ruta));
+				// Comprobamos que la categoria no es vacía
+				if (categoria != null) {
+					try {
+						// Ahora comprobamos que la categoría no existe! (ya que no se puede añadir si
+						// existe según el enunciado)
+						Categoria antigua = repositorio.getById(categoria.getId());
+						if (antigua != null) {
+							System.out.println("Categoría anteriormente añadida. No se realiza la operación.");
+							return;
+						}
+					} catch (Exception e) {
+						// De no ser así añadimos
+						repositorio.add(categoria);
+					}
+				}
+			} catch (Exception e) {
+				throw new RepositorioException("Problema en el desempaquetado", e);
+			}
 		} else {
 			System.err.println("ERROR: No tienes los permisos para cargar una categoria.");
 		}
@@ -67,7 +93,7 @@ public class ServicioCategorias implements IServicioCategorias {
 	}
 
 	@Override
-	public LinkedList<Categoria> recuperarDescCategoria(String id) throws RepositorioException, EntidadNoEncontrada {
+	public List<Categoria> recuperarDescCategoria(String id) throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos
 		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");

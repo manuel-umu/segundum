@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import modelo.Categoria;
+import modelo.LugarRecogida;
 import modelo.Producto;
 import modelo.ProductoRes;
 import modelo.Usuario;
@@ -26,6 +27,7 @@ public class Test {
 		LocalDate fecha = LocalDate.of(2000, 12, 1);
 		String contra = "hola1234";
 		String telefono = "666777888";
+		LugarRecogida lg = new LugarRecogida("Biblioteca regional", 10.0, 12.1);
 
 		// HU1
 		System.out.println("\n=================== HU1 ===================\n");
@@ -57,7 +59,7 @@ public class Test {
 		Categoria c1 = categorias.getFirst();
 		System.out.println("ID Categoria 1 = " + c1.getId());
 		String idP = servicioP.altaProducto("Taladro", "Taladro eléctrico", 20f, EnumEstado.COMONUEVO, c1.getId(),
-				false, idVendedor);
+				false, idVendedor, lg);
 		System.out.println("ID Producto 1 = " + idP);
 		Producto recuperadoP = servicioP.getProducto(idP);
 		System.out.println("Producto dado de alta = " + recuperadoP.toString());
@@ -65,7 +67,7 @@ public class Test {
 		// HU4
 		System.out.println("\n=================== HU4 ===================\n");
 		String idH4 = servicioP.altaProducto("Destornillador", "En buenisimo estado", 20f,
-				EnumEstado.PARAPIEZAS_O_REPARAR, c1.getId(), false, idVendedor);
+				EnumEstado.PARAPIEZAS_O_REPARAR, c1.getId(), false, idVendedor, lg);
 		Producto recuperadoH4 = servicioP.getProducto(idH4);
 		System.out.println("Producto original. Descripcion = \"" + recuperadoH4.getDescripcion() + "\" y precio = "
 				+ recuperadoH4.getPrecio());
@@ -94,15 +96,15 @@ public class Test {
 		LinkedList<Categoria> categorias2 = servicioC.recuperarCategoriaRaiz();
 		Categoria c2 = categorias2.getFirst();
 		String idPH71 = servicioP.altaProducto("Samsung Galaxy S28", "Sin abrir", 20f, EnumEstado.NUEVO, c2.getId(),
-				false, idVendedor);
+				false, idVendedor, lg);
 		String idPH72 = servicioP.altaProducto("Samsung Galaxy S29", "Roto", 20f, EnumEstado.PARAPIEZAS_O_REPARAR,
-				c2.getId(), false, idVendedor);
+				c2.getId(), false, idVendedor, lg);
 		String idPH73 = servicioP.altaProducto("Samsung Galaxy S30", "Casi nuevo", 20f, EnumEstado.COMONUEVO,
-				c2.getId(), false, idVendedor);
+				c2.getId(), false, idVendedor, lg);
 		String idPH74 = servicioP.altaProducto("Samsung Galaxy S31", "Medio medio", 20f, EnumEstado.ACEPTABLE,
-				c2.getId(), false, idVendedor);
+				c2.getId(), false, idVendedor, lg);
 		String idPH75 = servicioP.altaProducto("Samsung Galaxy S32", "Casi nuevo", 10f, EnumEstado.COMONUEVO,
-				c2.getId(), false, idVendedor);
+				c2.getId(), false, idVendedor, lg);
 		List<Producto> productos1 = servicioP.buscarProductos(null, null, null, null);
 		System.out.println("Resultados búsqueda 1 (sin filtro) = ");
 		for (Producto p : productos1) {
@@ -135,7 +137,8 @@ public class Test {
 
 		List<Producto> productos5 = servicioP.buscarProductos(c2.getId(), "Casi nuevo", EnumEstado.ACEPTABLE, 10f);
 		System.out.println();
-		System.out.println("Resultados búsqueda 5 (categoria=Electronica|Texto=Sin Abrir|Estado=Aceptable|Precio=10) = ");
+		System.out
+				.println("Resultados búsqueda 5 (categoria=Electronica|Texto=Sin Abrir|Estado=Aceptable|Precio=10) = ");
 		// S32
 		for (Producto p : productos5) {
 			System.out.println("ID: " + p.getId() + ". Título: " + p.getTitulo());
@@ -154,12 +157,11 @@ public class Test {
 		System.out.println("\n=================== HU9 ===================\n");
 		servicioC.modificarCategoria(c1.getId(), "Nueva descripción de la HU9");
 		System.out.println("Nueva descripción: " + servicioC.getCategoria(c1.getId()));
-		String idH9 = servicioU.registrarUsuario(nombre, apellidos, "emailDeUnNoAdmin@nodmin.es", fecha, "1234", telefono);
+		String idH9 = servicioU.registrarUsuario(nombre, apellidos, "emailDeUnNoAdmin@nodmin.es", fecha, "1234",
+				telefono);
 		servicioU.login("emailDeUnNoAdmin@nodmin.es", "1234");
 		servicioC.modificarCategoria(c1.getId(), "Otra descripcion mas");
 		System.out.println("Descripcion = " + servicioC.getCategoria(c1.getId()));
-
-		
 
 		// Pruebas adicionales del paquete servicios no probados en las HU:
 

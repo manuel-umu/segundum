@@ -3,12 +3,6 @@ package modelo;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import enumerados.EnumEstado;
@@ -17,14 +11,15 @@ import utils.LocalDateTimeAdapter;
 
 @Entity
 @Table(name = "producto")
-public class Producto implements Identificable{
+public class Producto implements Identificable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private String id;
 	private String titulo;
+	@Lob
 	private String descripcion;
 	private Float precio;
-	@Enumerated( EnumType.STRING )
+	@Enumerated(EnumType.STRING)
 	private EnumEstado estado;
 	private LocalDateTime fechaPubli;
 	@ManyToOne
@@ -37,11 +32,12 @@ public class Producto implements Identificable{
 	@ManyToOne
 	@JoinColumn(name = "vendedor_id")
 	private Usuario vendedor;
-	
+
 	public Producto() {
 	}
-	
-	public Producto(String titulo, String descripcion, Float precio, EnumEstado estado, Categoria categoria, Boolean envioDispo, Usuario vendedor) {
+
+	public Producto(String titulo, String descripcion, Float precio, EnumEstado estado, Categoria categoria,
+			Boolean envioDispo, Usuario vendedor, LugarRecogida lg) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -51,6 +47,7 @@ public class Producto implements Identificable{
 		this.visualizaciones = 0;
 		this.envioDispo = envioDispo;
 		this.vendedor = vendedor;
+		this.recogida = lg;
 	}
 
 	public String getId() {
@@ -92,7 +89,7 @@ public class Producto implements Identificable{
 	public void setEstado(EnumEstado estado) {
 		this.estado = estado;
 	}
-	
+
 	@XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
 	public LocalDateTime getFechaPubli() {
 		return fechaPubli;
@@ -149,6 +146,5 @@ public class Producto implements Identificable{
 				+ ", visualizaciones=" + visualizaciones + ", envioDispo=" + envioDispo + ", recogida=" + recogida
 				+ ", vendedor=" + vendedor + "]";
 	}
-	
-	
+
 }

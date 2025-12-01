@@ -3,6 +3,7 @@ package servicios;
 import java.util.List;
 
 import enumerados.EnumEstado;
+import modelo.LugarRecogida;
 import modelo.Producto;
 import modelo.ProductoRes;
 import repositorios.EntidadNoEncontrada;
@@ -10,7 +11,7 @@ import repositorios.RepositorioException;
 
 public interface IServicioProductos {
 	
-	public String altaProducto(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria, Boolean envioDispo, String idVendedor) throws RepositorioException, EntidadNoEncontrada;
+	public String altaProducto(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria, Boolean envioDispo, String idVendedor, LugarRecogida lg) throws RepositorioException, EntidadNoEncontrada;
 	
 	public void asignarRecogida(String id, Double longitud, Double latitud, String descLugar) throws RepositorioException, EntidadNoEncontrada;
 	
