@@ -10,38 +10,65 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import controlador.Controlador;
 import servicios.FactoriaServicios;
 import servicios.IServicioUsuarios;
 
 @SuppressWarnings("serial")
-@Named
+@Named("ControladorWeb")
 @ViewScoped
 public class ControladorWeb implements Serializable {
-	private String email, password, nombre, apellidos,telefono;
+	private final String REDIRECT = "?faces-redirect=true";
+	private String email, password, nombre, apellidos, telefono;
 	private LocalDate fechaNac;
-
-	private IServicioUsuarios servicioUsuario;
+	private Controlador controlador;
 
 	public ControladorWeb() {
-		servicioUsuario = FactoriaServicios.getServicio(IServicioUsuarios.class);
+		controlador = Controlador.getUnicaInstancia();
 	}
 
+	/*
+	 * Funcionalidad
+	 */
 	public String login() {
-		// comprobación de campos
-		if(email.equals("hola@a.a")) {		// Cambiar por el login del repo
-		//if (email.isEmpty() || password.isEmpty()) {
+		if (controlador.login(email, password)) {
+			return IrAPrincipal();
+		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Credenciales incorrectas."));
 			return null;
-		} else {
-			return "index?faces-redirect=true";
 		}
 	}
-	
+
 	public String registro() {
-		return "index";
+		if (controlador.registro(nombre, apellidos, email, fechaNac, password, telefono)) {
+			return irALogin();
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Se ha encontrado un problema en el registro."));
+			return null;
+		}
+
+	}
+
+	/*
+	 * Funciones para movimiento entre ventanas
+	 */
+	public String irALogin() {
+		return "login" + REDIRECT;
+	}
+
+	public String irARegistro() {
+		return "registro" + REDIRECT;
 	}
 	
+	public String IrAPrincipal() {
+		return "index" + REDIRECT;
+	}
+
+	/*
+	 * Getters & Setters
+	 */
 	public String getApellidos() {
 		return apellidos;
 	}
@@ -57,8 +84,6 @@ public class ControladorWeb implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
 
 	public String getTelefono() {
 		return telefono;
@@ -91,14 +116,4 @@ public class ControladorWeb implements Serializable {
 	public void setPassword(String contraseña) {
 		this.password = contraseña;
 	}
-	
-	
-	public String irALogin() {
-		return "login";
-	}
-	
-	public String irARegistro() {
-		return "registro";
-	}
-
 }

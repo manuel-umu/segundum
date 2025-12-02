@@ -1,4 +1,4 @@
-<ui:composition  template="/WEB-INF/template/template.xhtml"
+<ui:composition  template="/WEB-INF/template/templateLogin.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -13,23 +13,23 @@
     <ui:define name="content">
         <h:form id="registroForm">
             <p:messages id="msgs" showDetail="true" closable="true"/>
-            <p:panel header="Acceso" style="width:320px;margin:0px auto;">
+            <p:panel header="Acceso" style="width:500px;margin:0px auto;">
                 <p:panelGrid columns="2" columnClasses="etiqueta,valor" styleClass="ui-fluid" style="width:100%;">
-                    <h:outputLabel for="nombre" value="Nombre:" />
+                    <h:outputLabel for="nombre" value="Nombre:*" />
                     <p:inputText id="nombre"
                       value="#{ControladorWeb.nombre}"
                       required="true"
                       requiredMessage="El nombre es obligatorio."
                       label="Nombre">
                     </p:inputText>
-                    <h:outputLabel for="apellidos" value="Apellidos:" />
+                    <h:outputLabel for="apellidos" value="Apellidos:*" />
                     <p:inputText id="apellidos"
                       value="#{ControladorWeb.apellidos}"
                       required="true"
                       requiredMessage="Los apellidos son obligatorios."
                       label="Apellidos">
                     </p:inputText>
-					<h:outputLabel for="email" value="Email:" />
+					<h:outputLabel for="email" value="Email:*" />
                     <p:inputText id="email"
                       value="#{ControladorWeb.email}"
                       required="true"
@@ -38,20 +38,24 @@
                       label="Email">
                         <f:validateRegex pattern="[^\s@]+@[^\s@]+\.[^\s@]+" />     <!-- forma: hola@loquesea.loquesea -->
                     </p:inputText>
-                     <h:outputLabel for="telefono" value="Telefono:" />
+                     <h:outputLabel for="telefono" value="Telefono:*" />
                     <p:inputText id="telefono"
                       value="#{ControladorWeb.telefono}"
                       required="true"
                       requiredMessage="El telefono es obligatorio."
                       label="Telefono">
                     </p:inputText>
-                    <p:datePicker id="fecha" 
+                    <h:outputLabel for="fecha" value="Fecha de nacimiento:*" />
+                    <p:calendar id="fecha" 
 					  value="#{ControladorWeb.fechaNac}" 
 					  pattern="dd-MM-yyy" 
-					  showButtonPanel="true"
 					  required="true" 
-					  requiredMessage="La fecha de nacimiento es obligatoria" />     
-                    <h:outputLabel for="password" value="Contraseña:" />
+					  requiredMessage="La fecha de nacimiento es obligatoria" 
+					  yearRange="c-100:c"
+					  navigator="true"
+					  display="inline"
+					  maxdate="#{java.time.LocalDate.now()}" />     
+                    <h:outputLabel for="password" value="Contraseña:*" />
                     <p:password id="password"
                       value="#{ControladorWeb.password}"
                       required="true"
@@ -59,13 +63,20 @@
                       requiredMessage="La contraseña es obligatoria."
                       label="Contraseña" />
 		        </p:panelGrid>
+		        <h:outputLabel  value="Los campos marcados con * son obligatorios." style="color:red; font-weight:bold;" />
                	<p:separator/>
 				<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" style="width:100%;gap:10px;">
-	
-			    <p:commandButton value="Completado"
-			        action="#{ControladorWeb.irARegistro}"
-			        icon="pi pi-user-plus"
+  				<p:commandButton value="Volver"
+			        action="#{ControladorWeb.irALogin}"
+			        icon="pi pi-arrow-left"
 			        styleClass="ui-button-info"
+			        style="width:100%;"
+			        immediate="true" />
+			    <p:commandButton value="Registrarse"
+			        action="#{ControladorWeb.registro}"
+			        update=":registroForm msgs"
+			        icon="pi pi-check"
+			        styleClass="ui-button-success"
 			        style="width:100%;"/>
 				</p:panelGrid>
 		    </p:panel>

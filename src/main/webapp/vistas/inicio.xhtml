@@ -1,0 +1,24 @@
+<ui:composition template="/WEB-INF/template/templateLogin.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+    xmlns:h="http://xmlns.jcp.org/jsf/html"      
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        SEGUNDUM - Inicio
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="inicioForm">
+            <div style="display:flex; align-items:center; justify-content:center; min-height:60vh;">
+                <p:commandButton value="Iniciar sesión"
+                                 icon="pi pi-sign-in"
+                                 styleClass="ui-button-success"
+                                 style="font-size:1.3rem; padding:1rem 3rem;"
+                                 action="/vistas/login.xhtml?faces-redirect=true"/>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
