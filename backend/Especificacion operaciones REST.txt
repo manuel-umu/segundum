@@ -1,0 +1,70 @@
+ServicioCategorías: "categorias"
+
+- Recuperar categorías raíz
+
+GET "categorías"
+Respuesta: OK y listado
+
+- Recuperar descendientes de una categoría
+
+GET "categorías/{categoria}"
+Respuesta: OK y listado
+
+ServicioProductos: "productos"
+
++ Alta de un producto
+
+POST "productos"
+Datos: en el cuerpo de la petición (BODY) -> JSON
+Respuesta: CREATED y cabecera "Location" con ruta del nuevo recurso
+
++ Asignar lugar de recogida
+
+PATCH o PUT "productos/{id}/recogida"
+Datos: en el cuerpo de la petición (BODY) -> JSON
+Respuesta: NO_CONTENT
+
++ Recupera producto (NUEVA)
+
+GET "productos/{id}"
+Respuesta: OK y en body documento (JSON)
+
+- Modificar datos de un producto
+
+PATCH "productos/{id}"
+Datos: en el cuerpo de la petición (BODY) -> JSON
+Respuesta: NO_CONTENT
+
+- Añadir visualización
+
+PATCH "productos/{id}/visualizaciones"
+Respuesta: NO_CONTENT
+
+- Historial del mes
+
+GET "productos/historial?mes= &anyo= "
+GET "productos/historial/anyo/{anyo}/mes/{mes}" (mejor cuando los parámetros son obligatorios)
+Respuesta: OK y listado (JSON)
+
+- Buscar productos a la venta
+
+GET "productos?categoria= &estado= ..."
+Respuesta: OK y listado (JSON)
+
+ServicioUsuarios: "usuarios"
+
+-Alta de un usuario
+
+POST "usuarios"
+Datos: en el cuerpo de la petición (BODY) -> JSON
+Respuesta: CREATED y cabecera "Location" con ruta del nuevo recurso
+
+-Recuperación usuario (NUEVA)
+
+GET "usuarios/{id}"
+Respuesta: OK y en body documento (JSON)
+
+-Modificar un usuario
+
+PUT "usuarios/{id}"
+Respuesta: NO_CONTENT
