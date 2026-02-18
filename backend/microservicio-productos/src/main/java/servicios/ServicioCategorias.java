@@ -27,23 +27,6 @@ public class ServicioCategorias implements IServicioCategorias {
 	}
 
 	@Override
-	public void modificarCategoria(String id, String descripcion) throws RepositorioException, EntidadNoEncontrada {
-		// Control de integridad de los datos
-		if (id == null || id.isEmpty())
-			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
-		if (descripcion == null)
-			throw new IllegalArgumentException("descripcion: no debe ser nulo");
-		// Hacemos set con la nueva descripcion de existir la categoría en el repo
-		if (comprobarAdmin()) {
-			Categoria categoria = repositorio.getById(id);
-			categoria.setDescripcion(descripcion);
-			repositorio.update(categoria);
-		} else {
-			System.err.println("ERROR: No tienes los permisos para modificar una categoria.");
-		}
-	}
-
-	@Override
 	public LinkedList<Categoria> recuperarCategoriaRaiz() throws RepositorioException {
 		// Sabemos que la ruta de una categoría raíz solo tiene dos separadores "|", por
 		// tanto si buscamos en todas las categorias formamos una lista con ellas

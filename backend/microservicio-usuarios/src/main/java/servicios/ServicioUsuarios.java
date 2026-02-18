@@ -1,8 +1,10 @@
 package servicios;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
+import dto.UsuarioDTO;
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
@@ -13,8 +15,8 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	private RepositorioUsuariosAdHoc repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
-	public String registrarUsuario(String nombre, String apellidos, String email, LocalDate fecha, String clave,
-			String telefono) throws RepositorioException {
+	public String crear(String nombre, String apellidos, String email, LocalDate fecha, String clave, String telefono)
+			throws RepositorioException {
 		// Control de integridad de los datos
 		if (nombre == null || nombre.isEmpty())
 			throw new IllegalArgumentException("nombre: no debe ser nulo ni vacio");
@@ -34,20 +36,17 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		if (clave == null || clave.isEmpty())
 			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
 
-		if (!repositorio.isRegistrado(email)) { // Si ya esta registrado, devolver null
-			Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
-			return repositorio.add(usuario);
-		} else {
-			return null;
-		}
+		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
+		return repositorio.add(usuario);
 	}
 
 	/*
 	 * Los parametros no cambiados deben de ser los originales
 	 */
-	public void modificarUsuario(String id, String nombre, String apellidos, String clave, LocalDate fecha,
-			String telefono) throws RepositorioException, EntidadNoEncontrada {
-		Usuario u = getUsuario(id);
+	@Override
+	public void actualizar(String id, String nombre, String apellidos, String clave, LocalDate fecha, String telefono)
+			throws RepositorioException, EntidadNoEncontrada {
+		Usuario u = recuperar(id);
 		if (nombre != null && !nombre.isEmpty()) {
 			u.setNombre(nombre);
 		}
@@ -67,7 +66,28 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	}
 
 	@Override
-	public Usuario getUsuario(String id) throws RepositorioException, EntidadNoEncontrada {
+	public Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
 		return repositorio.getById(id);
+	}
+	
+	@Override
+	public List<UsuarioDTO> listar() throws RepositorioException{
+		List<UsuarioDTO> dtos = new LinkedList<UsuarioDTO>();
+		List<Usuario> usuarios = repositorio.getAll();
+		for(Usuario u : usuarios) {
+			dtos.add(toDto(u));
+		}
+		return dtos;
+	}
+
+	@Override
+	public void borrar(String id) throws RepositorioException, EntidadNoEncontrada {
+		Usuario u = repositorio.getById(id);
+		repositorio.delete(u);
+	}
+	
+	private UsuarioDTO toDto(Usuario usuario) {
+		return new UsuarioDTO(usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
+				usuario.getClave(), usuario.getTelefono());
 	}
 }
