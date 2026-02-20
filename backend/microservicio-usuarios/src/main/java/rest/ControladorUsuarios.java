@@ -36,7 +36,7 @@ public class ControladorUsuarios {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getUsuario(@PathParam("id") String id) throws Exception {
 		Usuario usuario = servicio.recuperar(id);
-		UsuarioDTO dto = servicio.toDto(usuario);
+		UsuarioDTO dto = toDto(usuario);
 		return Response.status(Response.Status.OK).entity(dto).build();
 	}
 	
@@ -50,7 +50,7 @@ public class ControladorUsuarios {
 			URI uri = uriInfo.getAbsolutePathBuilder().path(dto.getId()).build();
 			resDtos.add(toResDto(dto, uri));
 		}
-		return Response.status(Response.Status.OK).entity(dtos).build();
+		return Response.status(Response.Status.OK).entity(resDtos).build();
 	}
 	
 	// Modificar un usuario
@@ -79,6 +79,11 @@ public class ControladorUsuarios {
 				u.getTelefono());
 		URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
 		return Response.created(nuevaURL).build();
+	}
+
+	private UsuarioDTO toDto(Usuario usuario) {
+		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
+				usuario.getClave(), usuario.getTelefono());
 	}
 	
 	private UsuarioResDTO toResDto(UsuarioDTO usuario, URI uri) {
