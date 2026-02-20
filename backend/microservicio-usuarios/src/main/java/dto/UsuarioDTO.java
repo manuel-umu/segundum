@@ -3,6 +3,7 @@ package dto;
 import java.time.LocalDate;
 
 public class UsuarioDTO {
+	private String id;
 	private String email;
 	private String nombre;
 	private String apellidos;
@@ -14,7 +15,8 @@ public class UsuarioDTO {
 	public UsuarioDTO() {
 	}
 
-	public UsuarioDTO(String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono) {
+	public UsuarioDTO(String id, String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono) {
+		this.id = id;
 		this.email = email;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -23,7 +25,11 @@ public class UsuarioDTO {
 		this.telefono = telefono;
 		this.isAdmin = false;
 	}
-
+	
+	public String getId() {
+		return id;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -82,7 +88,7 @@ public class UsuarioDTO {
 
 	@Override
 	public String toString() {
-		return "UsuarioDTO [email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + ", clave="
+		return "UsuarioDTO [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + ", clave="
 				+ clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin + "]";
 	}
 }

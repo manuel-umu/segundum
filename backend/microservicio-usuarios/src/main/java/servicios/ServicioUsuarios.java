@@ -87,7 +87,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	}
 	
 	private UsuarioDTO toDto(Usuario usuario) {
-		return new UsuarioDTO(usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
+		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
 				usuario.getClave(), usuario.getTelefono());
 	}
 }

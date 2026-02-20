@@ -20,4 +20,5 @@ public interface IServicioUsuarios {
 	void borrar(String id) throws RepositorioException, EntidadNoEncontrada;
 
 	List<UsuarioDTO> listar() throws RepositorioException;
+	
 }
