@@ -3,7 +3,6 @@ package servicios;
 import java.util.LinkedList;
 import java.util.List;
 
-import controlador.Controlador;
 import modelo.Categoria;
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
@@ -60,12 +59,5 @@ public class ServicioCategorias implements IServicioCategorias {
 	@Override
 	public Categoria getCategoria(String id) throws RepositorioException, EntidadNoEncontrada {
 		return repositorio.getById(id);
-	}
-
-	public boolean comprobarAdmin() {
-		Usuario u = Controlador.getUnicaInstancia().getUsuarioActual();
-		if (u != null)
-			return u.isAdmin();
-		return false;
 	}
 }
