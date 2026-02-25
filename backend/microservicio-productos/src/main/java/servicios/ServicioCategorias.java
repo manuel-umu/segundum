@@ -15,14 +15,7 @@ public class ServicioCategorias implements IServicioCategorias {
 
 	@Override
 	public void cargarCategoria(String ruta) throws RepositorioException {
-		// Control de integridad de los datos
-		if (ruta == null || ruta.isEmpty())
-			throw new IllegalArgumentException("ruta: no debe ser nulo ni vacio");
-		if (comprobarAdmin()) {
-			repositorio.cargarCategoria(ruta);
-		} else {
-			System.err.println("ERROR: No tienes los permisos para cargar una categoria.");
-		}
+		repositorio.cargarCategoria(ruta);
 	}
 
 	@Override
