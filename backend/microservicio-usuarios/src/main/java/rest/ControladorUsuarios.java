@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.UriInfo;
 
 import dto.UsuarioDTO;
 import dto.UsuarioResDTO;
+import io.jsonwebtoken.Claims;
 import modelo.Usuario;
 import servicios.FactoriaServicios;
 import servicios.IServicioUsuarios;
@@ -29,7 +31,9 @@ public class ControladorUsuarios {
 	public IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
 	@Context
 	private UriInfo uriInfo;
-	
+	@Context
+	private HttpServletRequest servletRequest;
+
 	// Recuperar un usuario
 	@GET
 	@Path("/{id}")
@@ -39,7 +43,7 @@ public class ControladorUsuarios {
 		UsuarioDTO dto = toDto(usuario);
 		return Response.status(Response.Status.OK).entity(dto).build();
 	}
-	
+
 	// Listado de usuarios
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -52,17 +56,32 @@ public class ControladorUsuarios {
 		}
 		return Response.status(Response.Status.OK).entity(resDtos).build();
 	}
-	
+
 	// Modificar un usuario
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") String id, UsuarioDTO usuario) throws Exception {
+		if (this.servletRequest.getAttribute("claims") == null) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("No autenticado").build();
+		}
+		Claims claims = (Claims) this.servletRequest.getAttribute("claims");
+		String autenticado = claims.getSubject();
+
+		// TODO Dependiendo de como generemos el token, dejarlo comparando con id o con
+		// email
+		// TODO Hacer con filtro JwtTokenFilter
+		if (!autenticado.equals(id)) {
+			return Response.status(Response.Status.FORBIDDEN).entity("No tienes permiso para modificar este usuario")
+					.build();
+		}
+
 		servicio.actualizar(id, usuario.getNombre(), usuario.getApellidos(), usuario.getClave(), usuario.getFechaNac(),
 				usuario.getTelefono());
 		return Response.status(Response.Status.NO_CONTENT).build();
+
 	}
-	
+
 	// Borrar actividad
 	@DELETE
 	@Path("/{id}")
@@ -70,7 +89,7 @@ public class ControladorUsuarios {
 		servicio.borrar(id);
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
-	
+
 	// Dar de alta un usuario
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -82,12 +101,12 @@ public class ControladorUsuarios {
 	}
 
 	private UsuarioDTO toDto(Usuario usuario) {
-		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
-				usuario.getClave(), usuario.getTelefono());
+		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(),
+				usuario.getFechaNac(), usuario.getClave(), usuario.getTelefono());
 	}
-	
+
 	private UsuarioResDTO toResDto(UsuarioDTO usuario, URI uri) {
 		return new UsuarioResDTO(usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(), uri.toString());
 	}
-	
+
 }
