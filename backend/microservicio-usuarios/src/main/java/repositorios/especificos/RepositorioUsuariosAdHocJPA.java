@@ -16,10 +16,10 @@ import utils.EntityManagerHelper;
 public class RepositorioUsuariosAdHocJPA extends RepositorioUsuariosJPA implements RepositorioUsuariosAdHoc {
 
 	public boolean isRegistrado(String email) throws RepositorioException {
-		return !(getByEmail(email).isEmpty());
+		return !(getByEmail(email) == null);
 	}
 	
-	public List<Usuario> getByEmail(String email) throws RepositorioException{
+	public Usuario getByEmail(String email) throws RepositorioException{
 		try {
 			EntityManager em = EntityManagerHelper.getEntityManager();
 			String queryString = "SELECT e "
@@ -29,7 +29,7 @@ public class RepositorioUsuariosAdHocJPA extends RepositorioUsuariosJPA implemen
 			query.setParameter("email", email);
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 			List<Usuario> resultado = query.getResultList();
-			return resultado;
+			return (Usuario) resultado;
 		} catch (RuntimeException e) {
 			throw new RepositorioException("Error buscando todas las entidades por id", e);
 		} finally {

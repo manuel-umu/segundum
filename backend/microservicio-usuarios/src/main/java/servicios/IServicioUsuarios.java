@@ -21,4 +21,6 @@ public interface IServicioUsuarios {
 
 	List<UsuarioDTO> listar() throws RepositorioException;
 	
+	Usuario login(String email, String password) throws RepositorioException, EntidadNoEncontrada;
+	
 }
