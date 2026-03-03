@@ -8,6 +8,8 @@ import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -38,6 +40,7 @@ public class ControladorUsuarios {
 	@GET
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
+	@RolesAllowed("USUARIO")
 	public Response getUsuario(@PathParam("id") String id) throws Exception {
 		Usuario usuario = servicio.recuperar(id);
 		UsuarioDTO dto = toDto(usuario);
@@ -47,6 +50,7 @@ public class ControladorUsuarios {
 	// Listado de usuarios
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
+	@RolesAllowed("USUARIO")
 	public Response getUsuarios() throws Exception {
 		List<UsuarioDTO> dtos = servicio.listar();
 		List<UsuarioResDTO> resDtos = new LinkedList<UsuarioResDTO>();
@@ -61,16 +65,12 @@ public class ControladorUsuarios {
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed("USUARIO")
 	public Response update(@PathParam("id") String id, UsuarioDTO usuario) throws Exception {
-		if (this.servletRequest.getAttribute("claims") == null) {
-			return Response.status(Response.Status.UNAUTHORIZED).entity("No autenticado").build();
-		}
+
 		Claims claims = (Claims) this.servletRequest.getAttribute("claims");
 		String autenticado = claims.getSubject();
 
-		// TODO Dependiendo de como generemos el token, dejarlo comparando con id o con
-		// email
-		// TODO Hacer con filtro JwtTokenFilter
 		if (!autenticado.equals(id)) {
 			return Response.status(Response.Status.FORBIDDEN).entity("No tienes permiso para modificar este usuario")
 					.build();
@@ -85,6 +85,7 @@ public class ControladorUsuarios {
 	// Borrar actividad
 	@DELETE
 	@Path("/{id}")
+	@RolesAllowed("USUARIO")
 	public Response removeActividad(@PathParam("id") String id) throws Exception {
 		servicio.borrar(id);
 		return Response.status(Response.Status.NO_CONTENT).build();
@@ -93,6 +94,7 @@ public class ControladorUsuarios {
 	// Dar de alta un usuario
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@PermitAll
 	public Response createUsuario(UsuarioDTO u) throws Exception {
 		String id = servicio.crear(u.getNombre(), u.getApellidos(), u.getEmail(), u.getFechaNac(), u.getClave(),
 				u.getTelefono());

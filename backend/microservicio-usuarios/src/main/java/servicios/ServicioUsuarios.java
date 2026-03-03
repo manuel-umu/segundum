@@ -86,6 +86,18 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		repositorio.delete(u);
 	}
 	
+	@Override
+	public Usuario login(String email, String password) throws RepositorioException, EntidadNoEncontrada {
+		Usuario usuario = repositorio.getByEmail(email);
+		if (usuario == null) {
+			throw new IllegalArgumentException("nombre: no debe ser nulo ni vacio");
+		}
+		if (!usuario.getClave().equals(password)) {
+			throw new EntidadNoEncontrada("Contraseña incorrecta");
+		}
+		return usuario;
+	}
+	
 	private UsuarioDTO toDto(Usuario usuario) {
 		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
 				usuario.getClave(), usuario.getTelefono());
