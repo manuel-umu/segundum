@@ -19,16 +19,19 @@ import javax.ws.rs.core.UriInfo;
 import dto.LugarRecogidaDTO;
 import dto.ProductoDTO;
 import dto.UsuarioDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import modelo.LugarRecogida;
 import modelo.Producto;
 import modelo.Usuario;
-import servicios.FactoriaServicios;
 import servicios.IServicioProductos;
 
+@Component
 @Path("productos")
-
 public class ControladorProductos {
-	public IServicioProductos servicio = FactoriaServicios.getServicio(IServicioProductos.class);
+	@Autowired
+	public IServicioProductos servicio;
 	@Context
 	private UriInfo uriInfo;
 
@@ -68,7 +71,7 @@ public class ControladorProductos {
 		List<Producto> productos = servicio.listar();
 		List<ProductoDTO> dtos = new LinkedList<ProductoDTO>();
 		for (Producto p : productos) {
-			//URI uri = uriInfo.getAbsolutePathBuilder().path(p.getId()).build();
+			// URI uri = uriInfo.getAbsolutePathBuilder().path(p.getId()).build();
 			dtos.add(productoToProductoDto(p));
 		}
 		return Response.status(Response.Status.OK).entity(dtos).build();
@@ -80,7 +83,9 @@ public class ControladorProductos {
 
 	private ProductoDTO productoToProductoDto(Producto producto) {
 		UsuarioDTO usuario = toUsuarioDTO(producto.getVendedor());
-		return new ProductoDTO(producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(), producto.getEstado(), producto.getFechaPubli(), producto.getCategoria(), producto.getVisualizaciones(), producto.isEnvioDispo(), producto.getRecogida(), usuario);
+		return new ProductoDTO(producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(),
+				producto.getEstado(), producto.getFechaPubli(), producto.getCategoria(), producto.getVisualizaciones(),
+				producto.isEnvioDispo(), producto.getRecogida(), usuario);
 	}
 
 }

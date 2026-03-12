@@ -12,7 +12,6 @@ import repositorios.Identificable;
 @Table(name = "usuario")
 public class Usuario implements Identificable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
 	private String id;
 	private String email;
 	private String nombre;

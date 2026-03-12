@@ -5,24 +5,34 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import enumerados.EnumEstado;
 import modelo.Categoria;
 import modelo.LugarRecogida;
 import modelo.Producto;
-import modelo.ProductoRes;
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
-import repositorios.FactoriaRepositorios;
 import repositorios.RepositorioException;
-import repositorios.especificos.RepositorioCategoriasAdHoc;
-import repositorios.especificos.RepositorioProductosAdHoc;
-import repositorios.especificos.RepositorioUsuariosAdHoc;
+import repositorios.RepositorioCategorias;
+import repositorios.RepositorioProductos;
+import repositorios.RepositorioUsuarios;
 
+@Service
 public class ServicioProductos implements IServicioProductos {
-	private RepositorioProductosAdHoc productoRepo = FactoriaRepositorios.getRepositorio(Producto.class);
-	private RepositorioCategoriasAdHoc categoriaRepo = FactoriaRepositorios.getRepositorio(Categoria.class);
-	private RepositorioUsuariosAdHoc usuarioRepo = FactoriaRepositorios.getRepositorio(Usuario.class);
-	private IServicioCategorias servicioC = FactoriaServicios.getServicio(IServicioCategorias.class);
+
+	@Autowired
+	private RepositorioProductos productoRepo;
+
+	@Autowired
+	private RepositorioCategorias categoriaRepo;
+
+	@Autowired
+	private RepositorioUsuarios usuarioRepo;
+
+	@Autowired
+	private IServicioCategorias servicioC;
 
 	@Override
 	public String crear(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria,
@@ -45,12 +55,15 @@ public class ServicioProductos implements IServicioProductos {
 
 		// Necesitamos realizar 2 consultas en los repos a partir de los ids dados para
 		// construir el producto
-		Categoria categoria = categoriaRepo.getById(idCategoria);
-		Usuario usuario = usuarioRepo.getById(idVendedor);
+		Categoria categoria = categoriaRepo.findById(idCategoria)
+				.orElseThrow(() -> new EntidadNoEncontrada("Categoria no encontrada: " + idCategoria));
+		Usuario usuario = usuarioRepo.findById(idVendedor)
+				.orElseThrow(() -> new EntidadNoEncontrada("Usuario no encontrado: " + idVendedor));
 		Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDispo, usuario);
 
-		// Add nos devuelve el id del producto una vez lo damos de "alta"
-		return productoRepo.add(producto);
+		// Save nos devuelve la entidad persistida
+		Producto p = productoRepo.save(producto);
+		return p.getId();
 	}
 
 	@Override
@@ -69,9 +82,10 @@ public class ServicioProductos implements IServicioProductos {
 		// Construimos el LugarRecogida
 		LugarRecogida lugar = new LugarRecogida(descLugar, longitud, latitud);
 		// Recuperamos por la id el producto, añadimos el lugar y updateamos en el repo
-		Producto producto = productoRepo.getById(id);
+		Producto producto = productoRepo.findById(id)
+				.orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
 		producto.setRecogida(lugar);
-		productoRepo.update(producto);
+		productoRepo.save(producto);
 	}
 
 	@Override
@@ -85,30 +99,31 @@ public class ServicioProductos implements IServicioProductos {
 
 		// Recuperamos por la id el producto, comprobamos los campos de descripcion y
 		// precio y updateamos
-		Producto producto = productoRepo.getById(id);
+		Producto producto = productoRepo.findById(id)
+				.orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
 		if (precio != null && precio >= 0) {
 			producto.setPrecio(precio);
 		}
 		if (descripcion != null) {
 			producto.setDescripcion(descripcion);
 		}
-		productoRepo.update(producto);
+		productoRepo.save(producto);
 	}
 
 	@Override
 	public Producto recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
-		return productoRepo.getById(id);
+		return productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
 	}
 
 	@Override
 	public void borrar(String id) throws RepositorioException, EntidadNoEncontrada {
-		Producto u = productoRepo.getById(id);
+		Producto u = recuperar(id);
 		productoRepo.delete(u);
 	}
 
 	@Override
 	public List<Producto> listar() throws RepositorioException {
-		return productoRepo.getAll();
+		return productoRepo.findAll();
 	}
 
 }
