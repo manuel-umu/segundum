@@ -1,11 +1,13 @@
 package segundum.dto;
 
-
 public class UsuarioDTO {
 	private String id;
 	private String email;
 	private String nombre;
 	private String apellidos;
+
+	public UsuarioDTO() {
+	}
 
 	public UsuarioDTO(String id, String email, String nombre, String apellidos) {
 		this.id = id;

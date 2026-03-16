@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import segundum.modelo.Categoria;
 import segundum.modelo.Producto;
 
+// JpaRepository hereda a parte de crudrepo, de PagingAndSortingRepository
 @Repository
 public interface RepositorioProductos extends JpaRepository<Producto, String> {
 

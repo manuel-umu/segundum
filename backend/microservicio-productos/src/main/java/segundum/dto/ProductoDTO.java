@@ -19,6 +19,10 @@ public class ProductoDTO {
 	private LugarRecogida recogida;
 	private UsuarioDTO vendedor;
 
+	public ProductoDTO() {
+
+	}
+
 	public ProductoDTO(String titulo, String descripcion, Float precio, EnumEstado estado, LocalDateTime fechaPubli,
 			Categoria categoria, Integer visualizaciones, Boolean envioDispo, LugarRecogida recogida,
 			UsuarioDTO vendedor) {
