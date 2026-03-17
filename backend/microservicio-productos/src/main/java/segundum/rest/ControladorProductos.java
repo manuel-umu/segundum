@@ -1,6 +1,8 @@
 package segundum.rest;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,9 +22,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import segundum.modelo.Producto;
 import segundum.modelo.Usuario;
@@ -36,9 +40,9 @@ public class ControladorProductos /* implements ProductosApi */ {
 	@Autowired
 	public IServicioProductos servicio;
 
-	/*
-	 * @Autowired private PagedResourcesAssembler<Producto> pagedResourcesAssembler;
-	 */
+	@Autowired
+	private PagedResourcesAssembler<ProductoDTO> pagedResourcesAssembler;
+
 	@Autowired
 	public ControladorProductos(IServicioProductos servicio) {
 		this.servicio = servicio;
@@ -57,7 +61,7 @@ public class ControladorProductos /* implements ProductosApi */ {
 	@GetMapping("/{id}")
 	public EntityModel<ProductoDTO> getProducto(@PathVariable String id) throws Exception {
 		Producto producto = servicio.recuperar(id);
-		ProductoDTO dto = productoToProductoDto(producto);
+		ProductoDTO dto = ProductoDTO.toDto(producto);
 		EntityModel<ProductoDTO> model = EntityModel.of(dto);
 		// Para que tenga referencia a si mismo
 		model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControladorProductos.class).getProducto(id))
@@ -65,38 +69,21 @@ public class ControladorProductos /* implements ProductosApi */ {
 		return model;
 	}
 
-	// Listado de productos
+	// Listado (paginado) de productos
 	@GetMapping
-	public Page<ProductoDTO> getProductos(Pageable paginacion) throws Exception {
+	public PagedModel<EntityModel<ProductoDTO>> getProductos(@RequestParam int page, @RequestParam int size)
+			throws Exception {
+		Pageable paginacion = PageRequest.of(page, size, Sort.by("titulo").ascending());
 		Page<ProductoDTO> resultado = servicio.getListadoPaginado(paginacion);
-		return resultado;
+		return this.pagedResourcesAssembler.toModel(resultado);
 	}
-	/*
-	 * @GetMapping public PagedModel<EntityModel<ProductoDTO>> getProductos(Pageable
-	 * paginacion) throws Exception { Page<ProductoDTO> resultado =
-	 * servicio.getListadoPaginado(paginacion); //TODO: ¿Habria que utilizar
-	 * productoRes? return this.pagedResourcesAssembler.toModel(resultado,
-	 * encuestaResumenAssembler); }
-	 */
 
 	// Asignar lugar de recogida a un producto
-	/*
-	 * @PutMapping("/{id}/recogida") public ResponseEntity<Void>
-	 * asignRecogida(@PathVariable String id, @RequestBody LugarRecogidaDTO
-	 * recogida) throws Exception { servicio.asignarRecogida(id,
-	 * recogida.getLongitud(), recogida.getLatitud(), recogida.getDescripcion());
-	 * return Response.status(Response.Status.NO_CONTENT).build(); }
-	 */
-
-	private UsuarioDTO toUsuarioDTO(Usuario usuario) {
-		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail());
-	}
-
-	private ProductoDTO productoToProductoDto(Producto producto) {
-		UsuarioDTO usuario = toUsuarioDTO(producto.getVendedor());
-		return new ProductoDTO(producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(),
-				producto.getEstado(), producto.getFechaPubli(), producto.getCategoria(), producto.getVisualizaciones(),
-				producto.isEnvioDispo(), producto.getRecogida(), usuario);
+	@PutMapping("/{id}/recogida")
+	public ResponseEntity<Void> asignRecogida(@PathVariable String id, @RequestBody LugarRecogidaDTO recogida)
+			throws Exception {
+		servicio.asignarRecogida(id, recogida.getLongitud(), recogida.getLatitud(), recogida.getDescripcion());
+		return ResponseEntity.noContent().build();
 	}
 
 }

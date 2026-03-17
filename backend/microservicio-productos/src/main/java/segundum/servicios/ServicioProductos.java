@@ -137,24 +137,7 @@ public class ServicioProductos implements IServicioProductos {
 
 	public Page<ProductoDTO> getListadoPaginado(Pageable pageable) {
 		return this.productoRepo.findAll(pageable).map(producto -> {
-			ProductoDTO dto = new ProductoDTO();
-			dto.setTitulo(producto.getTitulo());
-			dto.setDescripcion(producto.getDescripcion());
-			dto.setPrecio(producto.getPrecio());
-			dto.setEstado(producto.getEstado());
-			dto.setFechaPubli(producto.getFechaPubli());
-			dto.setCategoria(producto.getCategoria());
-			dto.setVisualizaciones(producto.getVisualizaciones());
-			dto.setEnvioDispo(producto.isEnvioDispo());
-			dto.setRecogida(producto.getRecogida());
-			if (producto.getVendedor() != null) {
-				UsuarioDTO vendedorDto = new UsuarioDTO();
-				vendedorDto.setNombre(producto.getVendedor().getNombre());
-				vendedorDto.setEmail(producto.getVendedor().getEmail());
-
-				dto.setVendedor(vendedorDto);
-			}
-			return dto;
+			return ProductoDTO.toDto(producto);
 		});
 	}
 }

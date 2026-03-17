@@ -4,7 +4,6 @@ public class RespuestaError {
 	private String estado, mensaje;
 
 	public RespuestaError(String estado, String mensaje) {
-		super();
 		this.estado = estado;
 		this.mensaje = mensaje;
 	}
@@ -24,5 +23,9 @@ public class RespuestaError {
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "RespuestaError [estado=" + estado + ", mensaje=" + mensaje + "]";
+	}	
 }
