@@ -128,6 +128,9 @@ public class ProductoDTO {
 	}
 
 	public static ProductoDTO toDto(Producto producto) {
+		if (producto == null) {
+			return null;
+		}
 		UsuarioDTO usuario = UsuarioDTO.toDto(producto.getVendedor());
 		return new ProductoDTO(producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(),
 				producto.getEstado(), producto.getFechaPubli(), producto.getCategoria(), producto.getVisualizaciones(),
