@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import segundum.dto.ProductoDTO;
+import segundum.dto.UsuarioDTO;
 import segundum.enumerados.EnumEstado;
 import segundum.modelo.Categoria;
 import segundum.modelo.LugarRecogida;
@@ -32,7 +36,12 @@ public class ServicioProductos implements IServicioProductos {
 	private RepositorioUsuarios usuarioRepo;
 
 	@Autowired
-	private IServicioCategorias servicioC;
+	public ServicioProductos(RepositorioProductos productoRepo, RepositorioCategorias categoriaRepo,
+			RepositorioUsuarios usuarioRepo, IServicioCategorias servicioC) {
+		this.productoRepo = productoRepo;
+		this.categoriaRepo = categoriaRepo;
+		this.usuarioRepo = usuarioRepo;
+	}
 
 	@Override
 	public String crear(String titulo, String descripcion, Float precio, EnumEstado estado, String idCategoria,
@@ -126,4 +135,9 @@ public class ServicioProductos implements IServicioProductos {
 		return productoRepo.findAll();
 	}
 
+	public Page<ProductoDTO> getListadoPaginado(Pageable pageable) {
+		return this.productoRepo.findAll(pageable).map(producto -> {
+			return ProductoDTO.toDto(producto);
+		});
+	}
 }

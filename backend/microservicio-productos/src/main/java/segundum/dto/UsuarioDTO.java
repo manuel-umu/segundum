@@ -1,11 +1,15 @@
 package segundum.dto;
 
+import segundum.modelo.Usuario;
 
 public class UsuarioDTO {
 	private String id;
 	private String email;
 	private String nombre;
 	private String apellidos;
+
+	public UsuarioDTO() {
+	}
 
 	public UsuarioDTO(String id, String email, String nombre, String apellidos) {
 		this.id = id;
@@ -46,6 +50,10 @@ public class UsuarioDTO {
 	@Override
 	public String toString() {
 		return "UsuarioDTO [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + "]";
+	}
+
+	public static UsuarioDTO toDto(Usuario usuario) {
+		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail());
 	}
 
 }

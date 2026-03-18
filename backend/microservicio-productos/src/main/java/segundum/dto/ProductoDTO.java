@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import segundum.enumerados.EnumEstado;
 import segundum.modelo.Categoria;
 import segundum.modelo.LugarRecogida;
+import segundum.modelo.Producto;
 import segundum.modelo.Usuario;
 
 public class ProductoDTO {
@@ -18,6 +19,10 @@ public class ProductoDTO {
 	private Boolean envioDispo;
 	private LugarRecogida recogida;
 	private UsuarioDTO vendedor;
+
+	public ProductoDTO() {
+
+	}
 
 	public ProductoDTO(String titulo, String descripcion, Float precio, EnumEstado estado, LocalDateTime fechaPubli,
 			Categoria categoria, Integer visualizaciones, Boolean envioDispo, LugarRecogida recogida,
@@ -120,5 +125,12 @@ public class ProductoDTO {
 				+ estado + ", fechaPubli=" + fechaPubli + ", categoria=" + categoria + ", visualizaciones="
 				+ visualizaciones + ", envioDispo=" + envioDispo + ", recogida=" + recogida + ", vendedor=" + vendedor
 				+ "]";
+	}
+
+	public static ProductoDTO toDto(Producto producto) {
+		UsuarioDTO usuario = UsuarioDTO.toDto(producto.getVendedor());
+		return new ProductoDTO(producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(),
+				producto.getEstado(), producto.getFechaPubli(), producto.getCategoria(), producto.getVisualizaciones(),
+				producto.isEnvioDispo(), producto.getRecogida(), usuario);
 	}
 }
