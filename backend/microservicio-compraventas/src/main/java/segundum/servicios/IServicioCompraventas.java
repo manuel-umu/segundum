@@ -6,7 +6,7 @@ import segundum.modelo.Compraventa;
 
 public interface IServicioCompraventas {
 
-	public String registrarCompraventa(String idProducto, String idComprador);
+	public String registrarCompraventa(String idProducto, String idComprador, String idVendedor);
 	
 	public List<Compraventa> recuperarCompras(String idUsuario);
 	
