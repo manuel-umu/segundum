@@ -35,6 +35,7 @@ public class ServicioCompraventas implements IServicioCompraventas {
 		Compraventa compraventa = new Compraventa();
 		compraventa.setIdProducto(idProducto);
 		compraventa.setIdComprador(idComprador);
+		compraventa.setIdVendedor(idVendedor);
 		compraventa.setFecha(LocalDateTime.now());
 
 		repo.save(compraventa);
