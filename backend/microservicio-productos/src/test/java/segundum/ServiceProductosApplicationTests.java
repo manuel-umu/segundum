@@ -10,15 +10,12 @@ import segundum.enumerados.EnumEstado;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import segundum.modelo.Categoria;
 import segundum.modelo.Producto;
-import segundum.modelo.Usuario;
 import segundum.repositorios.RepositorioException;
 import segundum.servicios.IServicioCategorias;
 import segundum.servicios.IServicioProductos;

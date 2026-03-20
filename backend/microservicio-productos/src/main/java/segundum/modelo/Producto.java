@@ -37,6 +37,7 @@ public class Producto implements Identificable{
 	@ManyToOne
 	@JoinColumn(name = "vendedor_id")
 	private Usuario vendedor;
+	private Boolean vendido;
 	
 	public Producto() {
 	}
@@ -51,6 +52,7 @@ public class Producto implements Identificable{
 		this.visualizaciones = 0;
 		this.envioDispo = envioDispo;
 		this.vendedor = vendedor;
+		this.vendido = false;
 	}
 
 	public String getId() {
@@ -142,12 +144,20 @@ public class Producto implements Identificable{
 		this.vendedor = vendedor;
 	}
 
+	public Boolean getVendido() {
+		return vendido;
+	}
+
+	public void setVendido(Boolean vendido) {
+		this.vendido = vendido;
+	}
+
 	@Override
 	public String toString() {
 		return "Producto [id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion + ", precio=" + precio
 				+ ", estado=" + estado + ", fechaPubli=" + fechaPubli + ", categoria=" + categoria
 				+ ", visualizaciones=" + visualizaciones + ", envioDispo=" + envioDispo + ", recogida=" + recogida
-				+ ", vendedor=" + vendedor + "]";
+				+ ", vendedor=" + vendedor + ", vendido=" + vendido + "]";
 	}
 	
 	
