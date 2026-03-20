@@ -6,10 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import segundum.dto.ProductoDTO;
-import segundum.dto.UsuarioDTO;
 import segundum.enumerados.EnumEstado;
 import segundum.modelo.Producto;
-import segundum.modelo.ProductoRes;
 import segundum.repositorios.EntidadNoEncontrada;
 import segundum.repositorios.RepositorioException;
 
@@ -28,5 +26,7 @@ public interface IServicioProductos {
 	List<Producto> listar() throws RepositorioException;
 	//TODO: Luego cambiar a listar
 	Page<ProductoDTO> getListadoPaginado(Pageable pageable);
+	
+	void ponerVendido(String id) throws RepositorioException, EntidadNoEncontrada;
 	
 }

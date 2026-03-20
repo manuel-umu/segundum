@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import segundum.repositorios.EntidadNoEncontrada;
-import segundum.repositorios.RepositorioException;
 
 @ControllerAdvice
 public class TratamientoNotFoundException {

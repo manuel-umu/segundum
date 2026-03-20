@@ -6,7 +6,6 @@ import segundum.enumerados.EnumEstado;
 import segundum.modelo.Categoria;
 import segundum.modelo.LugarRecogida;
 import segundum.modelo.Producto;
-import segundum.modelo.Usuario;
 
 public class ProductoDTO {
 	private String titulo;

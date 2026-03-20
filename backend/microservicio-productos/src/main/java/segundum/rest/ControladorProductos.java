@@ -4,12 +4,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.net.URI;
-import java.util.LinkedList;
-import java.util.List;
 
 import segundum.dto.LugarRecogidaDTO;
 import segundum.dto.ProductoDTO;
-import segundum.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -29,7 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import segundum.modelo.Producto;
-import segundum.modelo.Usuario;
 import segundum.servicios.IServicioProductos;
 import jakarta.validation.Valid;
 

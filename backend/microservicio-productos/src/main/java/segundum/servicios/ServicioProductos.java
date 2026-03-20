@@ -1,9 +1,6 @@
 package segundum.servicios;
 
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import segundum.dto.ProductoDTO;
-import segundum.dto.UsuarioDTO;
 import segundum.enumerados.EnumEstado;
 import segundum.modelo.Categoria;
 import segundum.modelo.LugarRecogida;
@@ -139,5 +135,12 @@ public class ServicioProductos implements IServicioProductos {
 		return this.productoRepo.findAll(pageable).map(producto -> {
 			return ProductoDTO.toDto(producto);
 		});
+	}
+
+	@Override
+	public void ponerVendido(String id) throws RepositorioException, EntidadNoEncontrada {
+		Producto p = productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
+		p.setVendido(true);
+		productoRepo.save(p);
 	}
 }
