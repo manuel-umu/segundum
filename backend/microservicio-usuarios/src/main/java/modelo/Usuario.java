@@ -22,6 +22,8 @@ public class Usuario implements Identificable {
 	private LocalDate fechaNac;
 	private String telefono;
 	private boolean isAdmin;
+	private Integer contCompras;
+	private Integer contVentas;
 
 	public Usuario() {
 	}
@@ -34,6 +36,8 @@ public class Usuario implements Identificable {
 		this.fechaNac = fechaNac;
 		this.telefono = telefono;
 		this.isAdmin = false;
+		this.contCompras = 0;
+		this.contVentas = 0;
 	}
 
 	@Override
@@ -102,9 +106,26 @@ public class Usuario implements Identificable {
 		this.isAdmin = isAdmin;
 	}
 
+	public Integer getContCompras() {
+		return contCompras;
+	}
+
+	public void setContCompras(Integer contCompras) {
+		this.contCompras = contCompras;
+	}
+
+	public Integer getContVentas() {
+		return contVentas;
+	}
+
+	public void setContVentas(Integer contVentas) {
+		this.contVentas = contVentas;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + ", clave="
-				+ clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin + "]";
+				+ clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin
+				+ ", contCompras=" + contCompras + ", contVentas=" + contVentas + "]";
 	}
 }

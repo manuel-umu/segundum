@@ -102,4 +102,19 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
 				usuario.getClave(), usuario.getTelefono());
 	}
+
+	@Override
+	public void sumarVentas(String idVendedor) throws RepositorioException, EntidadNoEncontrada {
+		Usuario usuario = repositorio.getById(idVendedor);
+		usuario.setContVentas(usuario.getContVentas() + 1);
+		repositorio.update(usuario);
+	}
+
+	@Override
+	public void sumarCompras(String idComprador) throws RepositorioException, EntidadNoEncontrada {
+		Usuario usuario = repositorio.getById(idComprador);
+		usuario.setContCompras(usuario.getContCompras() + 1);
+		repositorio.update(usuario);
+		
+	}
 }
