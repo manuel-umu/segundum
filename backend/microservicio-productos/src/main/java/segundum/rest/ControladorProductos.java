@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.net.URI;
+import java.util.List;
 
 import segundum.dto.LugarRecogidaDTO;
 import segundum.dto.ProductoDTO;
@@ -12,8 +13,11 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,7 +30,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import segundum.modelo.Producto;
+import segundum.modelo.ProductoRes;
 import segundum.servicios.IServicioProductos;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -46,14 +53,21 @@ public class ControladorProductos /* implements ProductosApi */ {
 
 	// Dar de alta un producto
 	@PostMapping
-	public ResponseEntity<Void> createProducto(@Valid @RequestBody ProductoDTO p) throws Exception {
+	@PreAuthorize("hasAuthority('USUARIO')")
+	public ResponseEntity<Void> createProducto(@Valid @RequestBody ProductoDTO p, HttpServletRequest request) 
+			throws Exception {
+		Claims claims = (Claims) request.getAttribute("claims");
+		if (!claims.getSubject().equals(p.getVendedor().getId())) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		
 		String id = servicio.crear(p.getTitulo(), p.getDescripcion(), p.getPrecio(), p.getEstado(),
 				p.getCategoria().getId(), p.getEnvioDispo(), p.getVendedor().getId());
 		URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 		return ResponseEntity.created(nuevaURL).build();
 	}
 
-	// Recuperar un usuario
+	// Recuperar un producto
 	@GetMapping("/{id}")
 	public EntityModel<ProductoDTO> getProducto(@PathVariable String id) throws Exception {
 		Producto producto = servicio.recuperar(id);
@@ -76,10 +90,45 @@ public class ControladorProductos /* implements ProductosApi */ {
 
 	// Asignar lugar de recogida a un producto
 	@PutMapping("/{id}/recogida")
-	public ResponseEntity<Void> asignRecogida(@PathVariable String id, @RequestBody LugarRecogidaDTO recogida)
+	@PreAuthorize("hasAuthority('USUARIO')")
+	public ResponseEntity<Void> asignRecogida(@PathVariable String id, @RequestBody LugarRecogidaDTO recogida, HttpServletRequest request)
 			throws Exception {
+		Producto p = servicio.recuperar(id);
+		Claims claims = (Claims) request.getAttribute("claims");
+		if (!claims.getSubject().equals(p.getVendedor().getId())) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		
 		servicio.asignarRecogida(id, recogida.getLongitud(), recogida.getLatitud(), recogida.getDescripcion());
 		return ResponseEntity.noContent().build();
 	}
-
+	
+	// Añadir visualización a un producto
+	@PatchMapping("/{id}/visualizaciones")
+	public ResponseEntity<Void> addVisualizacion(@PathVariable String id)
+			throws Exception {
+		servicio.añadirVisualizacion(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	// Recuperar productos de un mes determinado
+	@GetMapping("/historial/year/{year}/mes/{mes}")
+	public ResponseEntity<List<ProductoRes>> getHistorial(@PathVariable Integer year, @PathVariable Integer mes)
+			throws Exception {
+		return ResponseEntity.ok(servicio.historialMes(mes, year));
+	}
+	
+	// Modifica ciertas propiedades de un producto
+	@PatchMapping("/{id}")
+	@PreAuthorize("hasAuthority('USUARIO')")
+	public ResponseEntity<Void> modificarProducto(@PathVariable String id, @RequestBody ProductoDTO p, HttpServletRequest request) 
+			throws Exception {
+		Producto producto = servicio.recuperar(id);
+		Claims claims = (Claims) request.getAttribute("claims");
+		if (!claims.getSubject().equals(producto.getVendedor().getId())) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		servicio.actualizar(id, p.getPrecio(), p.getDescripcion());
+		return ResponseEntity.noContent().build();
+	}
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import segundum.dto.ProductoDTO;
 import segundum.enumerados.EnumEstado;
 import segundum.modelo.Producto;
+import segundum.modelo.ProductoRes;
 import segundum.repositorios.EntidadNoEncontrada;
 import segundum.repositorios.RepositorioException;
 
@@ -28,5 +29,11 @@ public interface IServicioProductos {
 	Page<ProductoDTO> getListadoPaginado(Pageable pageable);
 	
 	void ponerVendido(String id) throws RepositorioException, EntidadNoEncontrada;
+
+	void añadirVisualizacion(String id) throws RepositorioException, EntidadNoEncontrada;
+
+	List<ProductoRes> historialMes(Integer mes, Integer year) throws RepositorioException;
+
+	void modificarProducto(String id, Float precio, String descripcion) throws RepositorioException, EntidadNoEncontrada;
 	
 }
