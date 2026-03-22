@@ -15,6 +15,8 @@ import segundum.repositorios.RepositorioCompraventas;
 public class ServicioCompraventas implements IServicioCompraventas {
 	
 	private RepositorioCompraventas repo;
+	
+	@Autowired
 	private PublicadorEventos publicador;
 	
 	@Autowired
@@ -24,13 +26,13 @@ public class ServicioCompraventas implements IServicioCompraventas {
 
 	public String registrarCompraventa(String idProducto, String idComprador, String idVendedor) {
 		if (idProducto == null || idProducto.isEmpty())
-			throw new IllegalArgumentException("titulo: no debe ser nulo ni vacio");
+			throw new IllegalArgumentException("idProducto: no debe ser nulo ni vacio");
 		
 		if (idComprador == null || idComprador.isEmpty())
-			throw new IllegalArgumentException("email: no debe ser nulo ni vacio");
+			throw new IllegalArgumentException("idComprador: no debe ser nulo ni vacio");
 		
 		if (idVendedor == null || idVendedor.isEmpty())
-			throw new IllegalArgumentException("email: no debe ser nulo ni vacio");
+			throw new IllegalArgumentException("idVendedor: no debe ser nulo ni vacio");
 		
 		Compraventa compraventa = new Compraventa();
 		compraventa.setIdProducto(idProducto);
@@ -50,15 +52,23 @@ public class ServicioCompraventas implements IServicioCompraventas {
 	}
 
 	public List<Compraventa> recuperarCompras(String idUsuario) {
-		return null;
+		if (idUsuario == null || idUsuario.isEmpty())
+			throw new IllegalArgumentException("idUsuario: no debe ser nulo ni vacio");
+		return repo.findByIdComprador(idUsuario);
 	}
 
 	public List<Compraventa> recuperarVentas(String idUsuario) {
-		return null;
+		if (idUsuario == null || idUsuario.isEmpty())
+			throw new IllegalArgumentException("idUsuario: no debe ser nulo ni vacio");
+		return repo.findByIdVendedor(idUsuario);
 	}
 
 	public List<Compraventa> recuperarCompraventas(String idComprador, String idVendedor) {
-		return null;
+		if (idComprador == null || idComprador.isEmpty())
+			throw new IllegalArgumentException("idComprador: no debe ser nulo ni vacio");
+		if (idVendedor == null || idVendedor.isEmpty())
+			throw new IllegalArgumentException("idUsuario: no debe ser nulo ni vacio");
+		return repo.findByIdAmbos(idComprador, idVendedor);
 	}
 
 }
