@@ -1,6 +1,8 @@
 package segundum.servicios;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,7 @@ import segundum.enumerados.EnumEstado;
 import segundum.modelo.Categoria;
 import segundum.modelo.LugarRecogida;
 import segundum.modelo.Producto;
+import segundum.modelo.ProductoRes;
 import segundum.modelo.Usuario;
 import segundum.repositorios.EntidadNoEncontrada;
 import segundum.repositorios.RepositorioException;
@@ -141,6 +144,63 @@ public class ServicioProductos implements IServicioProductos {
 	public void ponerVendido(String id) throws RepositorioException, EntidadNoEncontrada {
 		Producto p = productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
 		p.setVendido(true);
+		productoRepo.save(p);
+	}
+	
+	@Override
+	public void añadirVisualizacion(String id) throws RepositorioException, EntidadNoEncontrada {
+		// Control de integridad de los datos
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+
+		// Recuperamos el producto y sumamos uno a sus visualizaciones, updateamos
+		// después
+		Producto p = productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
+		p.setVisualizaciones(p.getVisualizaciones() + 1);
+		productoRepo.save(p);
+	}
+	
+	@Override
+	public List<ProductoRes> historialMes(Integer mes, Integer year) throws RepositorioException {
+		// Control de integridad de los datos
+		if (mes == null || (mes < 1 || mes > 12))
+			throw new IllegalArgumentException("mes: no debe ser nulo ni menor a 1 o mayor a 12");
+		if (year == null)
+			throw new IllegalArgumentException("año: no debe ser nulo");
+		// Para este método tenemos que crear una clase Producto Resumen que nos ofrezca
+		// unicamente los atributos que se nos pide
+		// Primero recuperamos los productos con la fecha especificada
+		List<Producto> resultados = productoRepo.getByFecha(mes, year);
+		// Podriamos hacer lambdas para la ordenacion pero no podemos comparar int con
+		// Integer
+		// Así que utilizamos Comparator con el método getVisualizaciones() y ordenamos
+		// de manera desendente con reversed()
+		resultados.sort(Comparator.comparing(Producto::getVisualizaciones).reversed());
+
+		// Ahora en otro stream a partir de .map pasamos los Productos a ProductosRes
+		// cogiendo con los getters los atributos a incluir en el resumen
+		List<ProductoRes> resultadosRes = resultados.stream().map(r -> new ProductoRes(r.getId(), r.getTitulo(),
+				r.getPrecio(), r.getFechaPubli(), r.getCategoria().getNombre(), r.getVisualizaciones()))
+				.collect(Collectors.toList());
+
+		return resultadosRes;
+	}
+	
+	@Override
+	public void modificarProducto(String id, Float precio, String descripcion)
+			throws RepositorioException, EntidadNoEncontrada {
+		// Control de integridad de los datos
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+		// Recuperamos por la id el producto, comprobamos los campos de descripcion y
+		// precio y updateamos
+		Producto p = productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
+		if (precio != null && precio >= 0) {
+			p.setPrecio(precio);
+		}
+		if (descripcion != null && !descripcion.isEmpty()) {
+			p.setDescripcion(descripcion);
+		}
 		productoRepo.save(p);
 	}
 }
