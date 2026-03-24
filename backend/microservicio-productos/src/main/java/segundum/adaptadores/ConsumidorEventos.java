@@ -11,7 +11,7 @@ import segundum.rabbitmq.RabbitMQConfig;
 import segundum.repositorios.EntidadNoEncontrada;
 import segundum.repositorios.RepositorioException;
 
-//@Component
+@Component
 public class ConsumidorEventos {
 	
 	@Autowired
