@@ -1,5 +1,8 @@
 package segundum.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "DTO de la entidad LugarRecogida")
 public class LugarRecogidaDTO {
 	private String descripcion;
 	private Double longitud;

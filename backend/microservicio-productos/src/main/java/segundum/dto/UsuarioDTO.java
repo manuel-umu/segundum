@@ -1,8 +1,11 @@
 package segundum.dto;
 
 import segundum.modelo.Usuario;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "DTO de la entidad Usuario")
 public class UsuarioDTO {
+	@Schema(description = "Identificador del usuario")
 	private String id;
 	private String email;
 	private String nombre;

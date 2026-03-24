@@ -2,10 +2,8 @@ package segundum.rest;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 import java.net.URI;
 import java.util.List;
-
 import segundum.dto.LugarRecogidaDTO;
 import segundum.dto.ProductoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
 import segundum.modelo.Producto;
 import segundum.modelo.ProductoRes;
 import segundum.servicios.IServicioProductos;
@@ -38,7 +35,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/productos")
-public class ControladorProductos /* implements ProductosApi */ {
+public class ControladorProductos implements ProductosApi {
 
 	@Autowired
 	public IServicioProductos servicio;
@@ -54,13 +51,14 @@ public class ControladorProductos /* implements ProductosApi */ {
 	// Dar de alta un producto
 	@PostMapping
 	@PreAuthorize("hasAuthority('USUARIO')")
-	public ResponseEntity<Void> createProducto(@Valid @RequestBody ProductoDTO p, HttpServletRequest request) 
+	@Override
+	public ResponseEntity<Void> createProducto(@Valid @RequestBody ProductoDTO p, HttpServletRequest request)
 			throws Exception {
 		Claims claims = (Claims) request.getAttribute("claims");
 		if (!claims.getSubject().equals(p.getVendedor().getId())) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-		
+
 		String id = servicio.crear(p.getTitulo(), p.getDescripcion(), p.getPrecio(), p.getEstado(),
 				p.getCategoria().getId(), p.getEnvioDispo(), p.getVendedor().getId());
 		URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
@@ -69,6 +67,7 @@ public class ControladorProductos /* implements ProductosApi */ {
 
 	// Recuperar un producto
 	@GetMapping("/{id}")
+	@Override
 	public EntityModel<ProductoDTO> getProducto(@PathVariable String id) throws Exception {
 		Producto producto = servicio.recuperar(id);
 		ProductoDTO dto = ProductoDTO.toDto(producto);
@@ -81,6 +80,7 @@ public class ControladorProductos /* implements ProductosApi */ {
 
 	// Listado (paginado) de productos
 	@GetMapping
+	@Override
 	public PagedModel<EntityModel<ProductoDTO>> getProductos(@RequestParam int page, @RequestParam int size)
 			throws Exception {
 		Pageable paginacion = PageRequest.of(page, size, Sort.by("titulo").ascending());
@@ -91,38 +91,41 @@ public class ControladorProductos /* implements ProductosApi */ {
 	// Asignar lugar de recogida a un producto
 	@PutMapping("/{id}/recogida")
 	@PreAuthorize("hasAuthority('USUARIO')")
-	public ResponseEntity<Void> asignRecogida(@PathVariable String id, @RequestBody LugarRecogidaDTO recogida, HttpServletRequest request)
-			throws Exception {
+	@Override
+	public ResponseEntity<Void> asignRecogida(@PathVariable String id, @RequestBody LugarRecogidaDTO recogida,
+			HttpServletRequest request) throws Exception {
 		Producto p = servicio.recuperar(id);
 		Claims claims = (Claims) request.getAttribute("claims");
 		if (!claims.getSubject().equals(p.getVendedor().getId())) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-		
+
 		servicio.asignarRecogida(id, recogida.getLongitud(), recogida.getLatitud(), recogida.getDescripcion());
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	// Añadir visualización a un producto
 	@PatchMapping("/{id}/visualizaciones")
-	public ResponseEntity<Void> addVisualizacion(@PathVariable String id)
-			throws Exception {
+	@Override
+	public ResponseEntity<Void> addVisualizacion(@PathVariable String id) throws Exception {
 		servicio.añadirVisualizacion(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	// Recuperar productos de un mes determinado
 	@GetMapping("/historial/year/{year}/mes/{mes}")
+	@Override
 	public ResponseEntity<List<ProductoRes>> getHistorial(@PathVariable Integer year, @PathVariable Integer mes)
 			throws Exception {
 		return ResponseEntity.ok(servicio.historialMes(mes, year));
 	}
-	
+
 	// Modifica ciertas propiedades de un producto
 	@PatchMapping("/{id}")
 	@PreAuthorize("hasAuthority('USUARIO')")
-	public ResponseEntity<Void> modificarProducto(@PathVariable String id, @RequestBody ProductoDTO p, HttpServletRequest request) 
-			throws Exception {
+	@Override
+	public ResponseEntity<Void> modificarProducto(@PathVariable String id, @RequestBody ProductoDTO p,
+			HttpServletRequest request) throws Exception {
 		Producto producto = servicio.recuperar(id);
 		Claims claims = (Claims) request.getAttribute("claims");
 		if (!claims.getSubject().equals(producto.getVendedor().getId())) {

@@ -2,19 +2,32 @@ package segundum.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import segundum.enumerados.EnumEstado;
 import segundum.modelo.Categoria;
 import segundum.modelo.LugarRecogida;
 import segundum.modelo.Producto;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
+@Schema(description = "DTO de la entidad Producto")
 public class ProductoDTO {
+	@NotNull
 	private String titulo;
+	@NotNull
 	private String descripcion;
+	@NotNull
 	private Float precio;
+	@NotNull
 	private EnumEstado estado;
+	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime fechaPubli;
+	@NotNull
 	private Categoria categoria;
 	private Integer visualizaciones;
+	@NotNull
 	private Boolean envioDispo;
 	private LugarRecogida recogida;
 	private UsuarioDTO vendedor;

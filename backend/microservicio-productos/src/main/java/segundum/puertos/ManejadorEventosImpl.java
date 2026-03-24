@@ -1,11 +1,13 @@
 package segundum.puertos;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import segundum.repositorios.EntidadNoEncontrada;
 import segundum.repositorios.RepositorioException;
 import segundum.servicios.IServicioProductos;
 
+@Service
 public class ManejadorEventosImpl implements ManejadorEventos {
 
 	@Autowired
