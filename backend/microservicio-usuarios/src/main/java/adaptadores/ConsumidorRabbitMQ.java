@@ -90,7 +90,8 @@ public class ConsumidorRabbitMQ implements ServletContextListener{
 			System.out.println("Usuarios esperando...");
 		}
 		catch(Exception e) {
-			throw new RuntimeException(e);
+			System.err.println("[ConsumidorRabbitMQ] No se pudo conectar a RabbitMQ: " + e.getMessage());
+			System.err.println("[ConsumidorRabbitMQ] El servidor arranca sin consumidor de mensajes.");
 		}
 		
 	}

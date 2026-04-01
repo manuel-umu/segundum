@@ -10,6 +10,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import dto.LoginDTO;
 import modelo.Usuario;
 import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
@@ -25,9 +27,9 @@ public class ControladorAuth {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/login")
 	@PermitAll
-	public Response login(@FormParam("username") String username, @FormParam("password") String password) throws RepositorioException, EntidadNoEncontrada {
+	public Response login(LoginDTO credenciales) throws RepositorioException, EntidadNoEncontrada {
 		
-		Map<String, Object> claims = verificarCredenciales(username, password);
+		Map<String, Object> claims = verificarCredenciales(credenciales.getUsername(), credenciales.getPassword());
 		if (claims != null) {
 			String token = JwtUtils.generateToken(claims);
 			return Response.ok(token).build();
