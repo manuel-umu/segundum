@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import segundum.modelo.Categoria;
 import segundum.repositorios.EntidadNoEncontrada;
 import segundum.repositorios.RepositorioException;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import segundum.repositorios.RepositorioCategorias;
 
 @Service

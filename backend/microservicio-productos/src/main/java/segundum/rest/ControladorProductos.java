@@ -30,8 +30,8 @@ import segundum.modelo.Producto;
 import segundum.modelo.ProductoRes;
 import segundum.servicios.IServicioProductos;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/productos")

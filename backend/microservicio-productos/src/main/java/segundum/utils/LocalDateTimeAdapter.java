@@ -2,7 +2,7 @@ package segundum.utils;
 
 import java.time.LocalDateTime;
 
-import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 	

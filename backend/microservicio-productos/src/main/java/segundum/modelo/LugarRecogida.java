@@ -1,7 +1,7 @@
 package segundum.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 @Embeddable
 public class LugarRecogida {

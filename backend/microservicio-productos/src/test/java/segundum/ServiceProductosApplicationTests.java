@@ -5,15 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import segundum.enumerados.EnumEstado;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.LinkedList;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import segundum.modelo.Categoria;
 import segundum.modelo.Producto;
 import segundum.repositorios.RepositorioException;

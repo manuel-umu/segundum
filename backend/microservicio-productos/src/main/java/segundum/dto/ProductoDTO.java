@@ -9,7 +9,7 @@ import segundum.modelo.Categoria;
 import segundum.modelo.LugarRecogida;
 import segundum.modelo.Producto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 @Schema(description = "DTO de la entidad Producto")
 public class ProductoDTO {
