@@ -1,0 +1,83 @@
+services:
+
+  usuarios:
+    build: ./microservicio-usuarios
+    ports:
+      - "8080:8080"
+    environment:
+      - javax.persistence.jdbc.user=root
+      - javax.persistence.jdbc.password=***REMOVED***
+      - javax.persistence.jdbc.url=jdbc:mysql://mysql:3306/db_user?serverTimezone=CET
+
+    depends_on:
+      - mysql
+      - rabbitmq
+
+  productos:
+    build: ./microservicio-productos
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/db_productos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=***REMOVED***
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - mysql
+      - rabbitmq
+    
+  compraventas:
+    build: ./microservicio-compraventas
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://root:***REMOVED***@mongo:27017/db_compraventas?authSource=admin
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  pasarela:
+    build: ./pasarela
+    ports:
+      - "8090:8090"
+    environment:
+      - ZUUL_ROUTES_USUARIOS_URL=http://usuarios:8080/api/usuarios
+      - ZUUL_ROUTES_PRODUCTOS_URL=http://productos:8081/api/productos
+      - ZUUL_ROUTES_COMPRAVENTAS_URL=http://compraventas:8082/api/compraventas
+    depends_on:
+      - usuarios
+      - productos
+      - compraventas
+
+  mysql:
+    image: mysql:8
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ***REMOVED***
+      MYSQL_DATABASE: db_user
+
+  mongo: 
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ***REMOVED***
+      MONGO_INITDB_DATABASE: db_compraventas
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+     - "15672:15672"
+     - "5672:5672"
+
+volumes:
+  mongo_data:
+  mysql_data:
