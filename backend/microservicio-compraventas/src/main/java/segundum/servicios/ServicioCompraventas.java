@@ -68,7 +68,7 @@ public class ServicioCompraventas implements IServicioCompraventas {
 			throw new IllegalArgumentException("idComprador: no debe ser nulo ni vacio");
 		if (idVendedor == null || idVendedor.isEmpty())
 			throw new IllegalArgumentException("idUsuario: no debe ser nulo ni vacio");
-		return repo.findByIdAmbos(idComprador, idVendedor);
+		return repo.findByIdCompradorAndIdVendedor(idComprador, idVendedor);
 	}
 
 }

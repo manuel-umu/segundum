@@ -19,7 +19,7 @@ import segundum.utils.LocalDateTimeAdapter;
 @Table(name = "producto")
 public class Producto implements Identificable{
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	private String titulo;
 	private String descripcion;

@@ -1,7 +1,8 @@
 package segundum.modelo;
 
 import java.time.LocalDateTime;
-import jakarta.persistence.Id;
+
+import org.springframework.data.annotation.Id;
 
 public class Compraventa {
 	@Id

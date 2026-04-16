@@ -17,7 +17,7 @@ import segundum.modelo.Compraventa;
 import segundum.servicios.IServicioCompraventas;
 import segundum.servicios.ServicioCompraventas;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/compraventas")

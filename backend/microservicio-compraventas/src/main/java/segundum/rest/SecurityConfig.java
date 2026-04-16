@@ -15,20 +15,12 @@ public class SecurityConfig {
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
- 
-        httpSecurity
-            .csrf(csrf -> csrf.disable())
-            .httpBasic(basic -> basic.disable())
-            // Ya hacemos el control en el controlador con @PreAuthorize
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
-            )
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .addFilterBefore(authenticationRequestFilter,
-                UsernamePasswordAuthenticationFilter.class);
- 
-        return httpSecurity.build();
+		httpSecurity.csrf(csrf -> csrf.disable()).httpBasic(basic -> basic.disable())
+			// Ya hacemos el control en el controlador con @PreAuthorize
+			.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return httpSecurity.build();
     }
 }
