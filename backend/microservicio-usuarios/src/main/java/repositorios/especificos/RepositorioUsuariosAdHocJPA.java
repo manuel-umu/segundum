@@ -29,7 +29,7 @@ public class RepositorioUsuariosAdHocJPA extends RepositorioUsuariosJPA implemen
 			query.setParameter("email", email);
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 			List<Usuario> resultado = query.getResultList();
-			return (Usuario) resultado;
+			return resultado.get(0);
 		} catch (RuntimeException e) {
 			throw new RepositorioException("Error buscando todas las entidades por id", e);
 		} finally {

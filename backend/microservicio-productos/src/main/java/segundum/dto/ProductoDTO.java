@@ -31,6 +31,7 @@ public class ProductoDTO {
 	private Boolean envioDispo;
 	private LugarRecogida recogida;
 	private UsuarioDTO vendedor;
+	private Boolean vendido;
 
 	public ProductoDTO() {
 
@@ -38,7 +39,7 @@ public class ProductoDTO {
 
 	public ProductoDTO(String titulo, String descripcion, Float precio, EnumEstado estado, LocalDateTime fechaPubli,
 			Categoria categoria, Integer visualizaciones, Boolean envioDispo, LugarRecogida recogida,
-			UsuarioDTO vendedor) {
+			UsuarioDTO vendedor, Boolean vendido) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -49,6 +50,7 @@ public class ProductoDTO {
 		this.envioDispo = envioDispo;
 		this.recogida = recogida;
 		this.vendedor = vendedor;
+		this.vendido = vendido;
 	}
 
 	public String getTitulo() {
@@ -130,6 +132,14 @@ public class ProductoDTO {
 	public void setVendedor(UsuarioDTO vendedor) {
 		this.vendedor = vendedor;
 	}
+	
+	public boolean isVendido() {
+		return vendido;
+	}
+
+	public void setVendido(boolean vendido) {
+		this.vendido = vendido;
+	}
 
 	@Override
 	public String toString() {
@@ -146,6 +156,8 @@ public class ProductoDTO {
 		UsuarioDTO usuario = UsuarioDTO.toDto(producto.getVendedor());
 		return new ProductoDTO(producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(),
 				producto.getEstado(), producto.getFechaPubli(), producto.getCategoria(), producto.getVisualizaciones(),
-				producto.isEnvioDispo(), producto.getRecogida(), usuario);
+				producto.isEnvioDispo(), producto.getRecogida(), usuario, producto.getVendido());
 	}
+
+
 }

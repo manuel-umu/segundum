@@ -1,6 +1,6 @@
 package segundum.servicios;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +30,10 @@ public class ServicioCategorias implements IServicioCategorias {
 			// Proceso de desempaquetado con Unmarshaller
 			JAXBContext contexto = JAXBContext.newInstance(Categoria.class);
 			Unmarshaller unmarshaller = contexto.createUnmarshaller();
-			Categoria categoria = (Categoria) unmarshaller.unmarshal(new File(ruta));
+			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(ruta);
+			if(inputStream == null)
+				throw new RepositorioException("No se encontró el fichero: " + ruta, null);
+			Categoria categoria = (Categoria) unmarshaller.unmarshal(inputStream);
 			// Comprobamos que la categoria no es vacía
 			if (categoria != null) {
 				if (repositorio.existsById(categoria.getId())) {

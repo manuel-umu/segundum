@@ -1,5 +1,6 @@
 package segundum.rest;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,13 @@ public class ControladorCompraventas {
 	// Comprar un producto
 	@PostMapping
 	@PreAuthorize("hasAuthority('USUARIO')")
-	public ResponseEntity<String> comprarProducto(@RequestParam String idProducto, @RequestParam String idComprador, @RequestParam String idVendedor, HttpServletRequest request) {
+	public ResponseEntity<String> comprarProducto(@RequestParam String idProducto, @RequestParam String idComprador, HttpServletRequest request) throws IOException {
 		Claims claims = (Claims) request.getAttribute("claims");
 		if (!claims.getSubject().equals(idComprador)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 		
-		return ResponseEntity.ok(servicio.registrarCompraventa(idProducto, idComprador, idVendedor));
+		return ResponseEntity.ok(servicio.registrarCompraventa(idProducto, idComprador));
 	}
 
 	// Recuperar lista de compraventas donde el comprador es el usuario id

@@ -5,8 +5,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -109,6 +111,19 @@ public class ControladorUsuarios {
 
 	private UsuarioResDTO toResDto(UsuarioDTO usuario, URI uri) {
 		return new UsuarioResDTO(usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(), uri.toString());
+	}
+	
+	// Operación pública para recuperar un usuario (Tarea 6)
+	@GET
+	@Path("/{id}/nombre")
+	@Produces(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public Response getNombreUsuario(@PathParam("id") String id) throws Exception {
+		Usuario usuario = servicio.recuperar(id);
+		Map<String, String> resultado = new HashMap<>();
+		resultado.put("id", usuario.getId());
+		resultado.put("nombre", usuario.getNombre() + " " + usuario.getApellidos());
+		return Response.ok(resultado).build();
 	}
 
 }
