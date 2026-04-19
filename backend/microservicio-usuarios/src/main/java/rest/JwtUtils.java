@@ -7,7 +7,7 @@ import java.util.Map;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
+/*
 public class JwtUtils {
 
 	private static final String SECRETO = "***REMOVED***";
@@ -33,4 +33,4 @@ public class JwtUtils {
 		return claims;
 	}
 	
-}
+}*/

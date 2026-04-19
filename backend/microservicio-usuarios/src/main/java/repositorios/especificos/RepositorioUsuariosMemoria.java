@@ -71,4 +71,10 @@ public class RepositorioUsuariosMemoria implements RepositorioUsuariosAdHoc {
 		System.out.println("Se ha encontrado por email esto: " + usuario);
 		return usuario;
 	}
+
+	@Override
+	public Usuario getByGithubId(String githubId) throws RepositorioException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -11,6 +11,7 @@ public class UsuarioDTO {
 	private LocalDate fechaNac;
 	private String telefono;
 	private boolean isAdmin;
+	private String githubId;
 
 	public UsuarioDTO() {
 	}
@@ -85,10 +86,19 @@ public class UsuarioDTO {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+	
+	public String getGithubId() {
+		return githubId;
+	}
+
+	public void setGithubId(String githubId) {
+		this.githubId = githubId;
+	}
 
 	@Override
 	public String toString() {
-		return "UsuarioDTO [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + ", clave="
-				+ clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin + "]";
+		return "UsuarioDTO [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos
+				+ ", clave=" + clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin
+				+ ", githubId=" + githubId + "]";
 	}
 }

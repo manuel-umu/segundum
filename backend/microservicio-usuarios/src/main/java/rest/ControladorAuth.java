@@ -16,7 +16,7 @@ import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
 import servicios.FactoriaServicios;
 import servicios.IServicioUsuarios;
-
+/*
 @Path("auth")
 public class ControladorAuth {
 	
@@ -49,4 +49,4 @@ public class ControladorAuth {
 		return claims;
 	}
 	
-}
+}*/

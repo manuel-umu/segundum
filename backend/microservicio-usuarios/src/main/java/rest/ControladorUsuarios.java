@@ -23,10 +23,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import dto.LoginDTO;
+import dto.UsuarioAuthDTO;
 import dto.UsuarioDTO;
 import dto.UsuarioResDTO;
 import io.jsonwebtoken.Claims;
 import modelo.Usuario;
+import repositorios.RepositorioException;
 import servicios.FactoriaServicios;
 import servicios.IServicioUsuarios;
 
@@ -37,6 +40,41 @@ public class ControladorUsuarios {
 	private UriInfo uriInfo;
 	@Context
 	private HttpServletRequest servletRequest;
+
+	@POST
+	@Path("/verify-credentials")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public Response verifyCredentials(LoginDTO credenciales) {
+		try {
+			Usuario usuario = servicio.login(credenciales.getUsername(), credenciales.getPassword());
+			UsuarioAuthDTO dto = new UsuarioAuthDTO(usuario.getId(), usuario.getEmail(), usuario.getNombre(),
+					usuario.getApellidos(), usuario.getGithubId(), usuario.isAdmin());
+			return Response.ok(dto).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+	}
+
+	
+	@GET
+	@Path("/github/{githubId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public Response getByGithub(@PathParam("githubId") String githubId) {
+		try {
+			Usuario usuario = servicio.findByGithubId(githubId);
+			if (usuario == null) {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
+			UsuarioAuthDTO dto = new UsuarioAuthDTO(usuario.getId(), usuario.getEmail(), usuario.getNombre(),
+					usuario.getApellidos(), usuario.getGithubId(), usuario.isAdmin());
+			return Response.ok(dto).build();
+		} catch (RepositorioException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 
 	// Recuperar un usuario
 	@GET
@@ -112,7 +150,7 @@ public class ControladorUsuarios {
 	private UsuarioResDTO toResDto(UsuarioDTO usuario, URI uri) {
 		return new UsuarioResDTO(usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(), uri.toString());
 	}
-	
+
 	// Operación pública para recuperar un usuario (Tarea 6)
 	@GET
 	@Path("/{id}/nombre")

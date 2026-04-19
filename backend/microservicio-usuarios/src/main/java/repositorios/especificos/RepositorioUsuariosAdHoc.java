@@ -10,5 +10,6 @@ public interface RepositorioUsuariosAdHoc extends RepositorioString<Usuario> {
 	public boolean isRegistrado(String email) throws RepositorioException;
 
 	public Usuario getByEmail(String email) throws RepositorioException;
-	
+
+	public Usuario getByGithubId(String githubId) throws RepositorioException;
 }

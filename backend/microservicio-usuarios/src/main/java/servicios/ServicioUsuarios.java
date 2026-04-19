@@ -69,12 +69,12 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	public Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
 		return repositorio.getById(id);
 	}
-	
+
 	@Override
-	public List<UsuarioDTO> listar() throws RepositorioException{
+	public List<UsuarioDTO> listar() throws RepositorioException {
 		List<UsuarioDTO> dtos = new LinkedList<UsuarioDTO>();
 		List<Usuario> usuarios = repositorio.getAll();
-		for(Usuario u : usuarios) {
+		for (Usuario u : usuarios) {
 			dtos.add(toDto(u));
 		}
 		return dtos;
@@ -85,7 +85,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		Usuario u = repositorio.getById(id);
 		repositorio.delete(u);
 	}
-	
+
 	@Override
 	public Usuario login(String email, String password) throws RepositorioException, EntidadNoEncontrada {
 		Usuario usuario = repositorio.getByEmail(email);
@@ -97,10 +97,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		}
 		return usuario;
 	}
-	
+
 	private UsuarioDTO toDto(Usuario usuario) {
-		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(), usuario.getFechaNac(),
-				usuario.getClave(), usuario.getTelefono());
+		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(),
+				usuario.getFechaNac(), usuario.getClave(), usuario.getTelefono());
 	}
 
 	@Override
@@ -115,6 +115,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		Usuario usuario = repositorio.getById(idComprador);
 		usuario.setContCompras(usuario.getContCompras() + 1);
 		repositorio.update(usuario);
-		
+	}
+
+	@Override
+	public Usuario findByGithubId(String githubId) throws RepositorioException {
+		return repositorio.getByGithubId(githubId);
 	}
 }

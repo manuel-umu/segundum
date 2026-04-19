@@ -20,11 +20,12 @@ public interface IServicioUsuarios {
 	void borrar(String id) throws RepositorioException, EntidadNoEncontrada;
 
 	List<UsuarioDTO> listar() throws RepositorioException;
-	
+
 	Usuario login(String email, String password) throws RepositorioException, EntidadNoEncontrada;
 
 	void sumarVentas(String idVendedor) throws RepositorioException, EntidadNoEncontrada;
 
 	void sumarCompras(String idComprador) throws RepositorioException, EntidadNoEncontrada;
-	
+
+	Usuario findByGithubId(String githubId) throws RepositorioException;
 }
