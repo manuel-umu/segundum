@@ -9,7 +9,7 @@ public class CompraventaDTO {
 	private String idProducto;
 	private String titulo;
 	private Float precio;
-	private String recogida;
+	private Object recogida;
 	private String idVendedor;
 	private String nombreVendedor;
 	private String idComprador;
@@ -19,7 +19,7 @@ public class CompraventaDTO {
 	public CompraventaDTO() {
 	}
 
-	public CompraventaDTO(String idProducto, String titulo, Float precio, String recogida, String idVendedor,
+	public CompraventaDTO(String idProducto, String titulo, Float precio, Object recogida, String idVendedor,
 			String nombreVendedor, String idComprador, String nombreComprador, LocalDateTime fecha) {
 		this.idProducto = idProducto;
 		this.titulo = titulo;
@@ -56,7 +56,7 @@ public class CompraventaDTO {
 		this.precio = precio;
 	}
 
-	public String getRecogida() {
+	public Object getRecogida() {
 		return recogida;
 	}
 

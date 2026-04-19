@@ -10,7 +10,7 @@ public class Compraventa {
 	private String idProducto;
 	private String titulo;
 	private Float precio;
-	private String recogida;
+	private Object recogida;
 	private String idVendedor;
 	private String nombreVendedor;
 	private String idComprador;
@@ -65,12 +65,12 @@ public class Compraventa {
 		this.precio = precio;
 	}
 
-	public String getRecogida() {
+	public Object getRecogida() {
 		return recogida;
 	}
 
-	public void setRecogida(String recogida) {
-		this.recogida = recogida;
+	public void setRecogida(Object object) {
+		this.recogida = object;
 	}
 
 	public String getIdVendedor() {

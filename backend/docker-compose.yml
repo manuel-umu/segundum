@@ -43,7 +43,8 @@ services:
       - "8090:8090"
     environment:
       - ZUUL_ROUTES_USUARIOS_URL=http://usuarios:8080/api/usuarios
-      - ZUUL_ROUTES_PRODUCTOS_URL=http://productos:8081/api/productos
+      - ZUUL_ROUTES_PRODUCTOS_URL=http://productos:8081/productos
+      - ZUUL_ROUTES_CATEGORIAS_URL=http://productos:8081/categorias
       - ZUUL_ROUTES_COMPRAVENTAS_URL=http://compraventas:8082/api/compraventas
     depends_on:
       - usuarios

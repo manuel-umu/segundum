@@ -11,7 +11,7 @@ import umu.segundum.pasarela.rest.UsuariosRestClient;
 @Configuration
 public class RetrofitConfig {
 
-    private String usuariosBaseUrl = "http://localhost:8080/api/usuarios/";
+    private String usuariosBaseUrl = "http://usuarios:8080/api/";
 
     @Bean
     public UsuariosRestClient usuariosRestClient() {

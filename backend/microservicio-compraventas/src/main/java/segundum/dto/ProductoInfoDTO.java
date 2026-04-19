@@ -5,7 +5,7 @@ public class ProductoInfoDTO {
 	private String id;
 	private String titulo;
 	private Float precio;
-	private String recogida;
+	private Object recogida;
 	private VendedorInfoDTO vendedor;
 	private boolean vendido;
 	
@@ -36,11 +36,11 @@ public class ProductoInfoDTO {
 		this.precio = precio;
 	}
 
-	public String getRecogida() {
+	public Object getRecogida() {
 		return recogida;
 	}
 
-	public void setRecogida(String recogida) {
+	public void setRecogida(Object recogida) {
 		this.recogida = recogida;
 	}
 
