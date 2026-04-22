@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import '../styles/Navbar.css';
 
 // En Fase 2 estos valores vendrán de useAuth()
-const isAuthenticated = true;
+const isAuthenticated = false;
 const isAdmin = true;
 
 function navLinkClass({ isActive }) {

@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
+import RequireAuth from './components/RequireAuth';
+import RequireRole from './components/RequireRole';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -20,19 +22,38 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
+          {/* Rutas públicas */}
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/productos" element={<ProductList />} />
-          {/* /nuevo debe ir antes que /:id para no ser capturado como id */}
-          <Route path="/productos/nuevo" element={<ProductNew />} />
           <Route path="/productos/:id" element={<ProductDetail />} />
-          <Route path="/productos/:id/editar" element={<ProductEdit />} />
-          <Route path="/mis-ventas" element={<MySales />} />
-          <Route path="/mis-compras" element={<MyPurchases />} />
-          <Route path="/perfil" element={<Profile />} />
-          <Route path="/admin/usuarios" element={<AdminUsers />} />
-          <Route path="/admin/ventas" element={<AdminSales />} />
+
+          {/* Rutas privadas — cualquier usuario autenticado */}
+          <Route path="/productos/nuevo" element={
+            <RequireAuth><ProductNew /></RequireAuth>
+          } />
+          <Route path="/productos/:id/editar" element={
+            <RequireAuth><ProductEdit /></RequireAuth>
+          } />
+          <Route path="/mis-ventas" element={
+            <RequireAuth><MySales /></RequireAuth>
+          } />
+          <Route path="/mis-compras" element={
+            <RequireAuth><MyPurchases /></RequireAuth>
+          } />
+          <Route path="/perfil" element={
+            <RequireAuth><Profile /></RequireAuth>
+          } />
+
+          {/* Rutas privadas — solo admin */}
+          <Route path="/admin/usuarios" element={
+            <RequireAuth><RequireRole role="admin"><AdminUsers /></RequireRole></RequireAuth>
+          } />
+          <Route path="/admin/ventas" element={
+            <RequireAuth><RequireRole role="admin"><AdminSales /></RequireRole></RequireAuth>
+          } />
+
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
