@@ -24,6 +24,11 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const register = useCallback(async (data) => {
+    const { user: created } = await authService.register(data);
+    setUser(created);
+  }, []);
+
   const value = {
     user,
     loading,
@@ -31,6 +36,7 @@ export function AuthProvider({ children }) {
     isAdmin: user?.rol === 'admin',
     login,
     logout,
+    register,
   };
 
   return (

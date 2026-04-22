@@ -66,3 +66,22 @@ export async function me() {
   const user = MOCK_USERS.find(u => u.id === Number(id)) ?? null;
   return sanitize(user);
 }
+
+export async function register({ nombre, apellidos, email, password }) {
+  await delay();
+  if (MOCK_USERS.some(u => u.email === email)) {
+    throw new Error('Ya existe una cuenta con ese email.');
+  }
+  const newUser = {
+    id: MOCK_USERS.length + 1,
+    nombre,
+    apellidos,
+    email,
+    password,
+    rol: 'user',
+    fechaRegistro: new Date().toISOString().slice(0, 10),
+  };
+  MOCK_USERS.push(newUser);
+  localStorage.setItem(SESSION_KEY, String(newUser.id));
+  return { user: sanitize(newUser) };
+}
