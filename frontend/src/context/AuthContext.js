@@ -29,6 +29,12 @@ export function AuthProvider({ children }) {
     setUser(created);
   }, []);
 
+  // Recarga el usuario desde el servicio tras modificar el perfil
+  const refreshUser = useCallback(async () => {
+    const updated = await authService.me();
+    setUser(updated);
+  }, []);
+
   const value = {
     user,
     loading,
@@ -37,6 +43,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     register,
+    refreshUser,
   };
 
   return (

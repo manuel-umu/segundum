@@ -67,6 +67,15 @@ export async function me() {
   return sanitize(user);
 }
 
+// Verifica la contrasena actual y la actualiza si es correcta
+export async function changePassword(userId, currentPassword, newPassword) {
+  await delay();
+  const user = MOCK_USERS.find(u => u.id === userId);
+  if (!user) throw new Error('Usuario no encontrado.');
+  if (user.password !== currentPassword) throw new Error('La contrasena actual es incorrecta.');
+  user.password = newPassword;
+}
+
 export async function register({ nombre, apellidos, email, password }) {
   await delay();
   if (MOCK_USERS.some(u => u.email === email)) {
