@@ -1,0 +1,26 @@
+.my-purchases__thumb {
+  width: 48px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.my-purchases__product-link {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.my-purchases__product-link:hover {
+  text-decoration: underline;
+}
+
+/* En movil oculta la columna de vendedor para que la tabla quepa */
+@media (max-width: 576px) {
+  .my-purchases__hide-mobile {
+    display: none;
+  }
+}

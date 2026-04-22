@@ -1,0 +1,11 @@
+.admin-users__table th,
+.admin-users__table td {
+  white-space: nowrap;
+}
+
+/* En movil la columna de fecha de registro se oculta */
+@media (max-width: 576px) {
+  .admin-users__table .col-fecha {
+    display: none;
+  }
+}
