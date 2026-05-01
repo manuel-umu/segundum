@@ -7,7 +7,7 @@ export default function ProductNew() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // Crea el producto y redirige al detalle del nuevo producto
+  // Función que crea el producto y redirige al detalle del nuevo producto
   async function handleSubmit(values) {
     const nuevo = await createProduct({ ...values, vendedor_id: user.id });
     navigate(`/productos/${nuevo.id}`);

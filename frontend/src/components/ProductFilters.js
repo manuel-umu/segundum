@@ -52,7 +52,7 @@ export default function ProductFilters({ filters, onChange }) {
     <form onSubmit={handleApply}>
       <div className='row g-2'>
 
-        {/* Busqueda por texto */}
+        {/* Búsqueda por texto */}
         <div className='col-12 col-md-6 col-lg-3'>
           <label htmlFor='filtro-descripcion' className='form-label'>Descripción</label>
           <input
@@ -66,7 +66,7 @@ export default function ProductFilters({ filters, onChange }) {
           />
         </div>
 
-        {/* Filtro por categoria */}
+        {/* Filtro por categoría */}
         <div className='col-12 col-md-6 col-lg-3'>
           <label htmlFor='filtro-categoria' className='form-label'>Categoría</label>
           <select
@@ -100,7 +100,7 @@ export default function ProductFilters({ filters, onChange }) {
           </select>
         </div>
 
-        {/* Filtro por precio maximo */}
+        {/* Filtro por precio máximo */}
         <div className='col-12 col-md-6 col-lg-3'>
           <label htmlFor='filtro-precio' className='form-label'>Precio máximo (€)</label>
           <input
@@ -115,7 +115,7 @@ export default function ProductFilters({ filters, onChange }) {
           />
         </div>
 
-        {/* Ordenacion */}
+        {/* Ordenación */}
         <div className='col-12 col-md-6 col-lg-3'>
           <label htmlFor='filtro-sort' className='form-label'>Ordenar por</label>
           <select
@@ -131,7 +131,7 @@ export default function ProductFilters({ filters, onChange }) {
           </select>
         </div>
 
-        {/* Botones de accion */}
+        {/* Botones de acción */}
         <div className='col-12 d-flex gap-2 align-items-end'>
           <button type='submit' className='btn btn-primary btn-sm'>Aplicar</button>
           <button type='button' className='btn btn-outline-secondary btn-sm' onClick={handleClear}>
@@ -145,7 +145,7 @@ export default function ProductFilters({ filters, onChange }) {
 
   return (
     <div className='product-filters mb-4'>
-      {/* En movil se colapsa dentro de un <details> */}
+      {/* En móvil se colapsa dentro de un <details> */}
       <details className='product-filters__collapse d-md-none'>
         <summary className='product-filters__summary'>Filtros y ordenación</summary>
         <div className='pt-3'>{formContent}</div>

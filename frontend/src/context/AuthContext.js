@@ -7,13 +7,14 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Al montar, comprueba si hay sesión activa
+  // Al montar, comprueba si hay sesión activa, utilizamos promesas y ponemos loading a false
   useEffect(() => {
     authService.me()
       .then(setUser)
       .finally(() => setLoading(false));
   }, []);
 
+  // Ponemos la propiedad user a logged in
   const login = useCallback(async (email, password) => {
     const { user: loggedIn } = await authService.login(email, password);
     setUser(loggedIn);
@@ -46,6 +47,7 @@ export function AuthProvider({ children }) {
     refreshUser,
   };
 
+  // Le pasamos el contenido de value a la App
   return (
     <AuthContext.Provider value={value}>
       {children}

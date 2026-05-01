@@ -8,7 +8,9 @@ import { AuthProvider } from './context/AuthContext';
 import reportWebVitals from './reportWebVitals';
 
 
-
+// Renderiza la aplicación dentro del index.html (punto de entrada) en su <div id="root">,
+// envuelto en AuthProvider para que el sistema de autenticación esté disponible
+// en todas partes.
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

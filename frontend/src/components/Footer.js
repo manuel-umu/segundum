@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="footer py-4 mt-auto">
       <div className="container">
         <div className="row gy-3 align-items-start">
-          {/* Columna 1 — marca */}
+          {/* Columna 1: Nombre de la app */}
           <div className="col-12 col-md-4">
             <h6 className="text-white fw-bold mb-1">SegundUM</h6>
             <p className="mb-0">
@@ -15,7 +15,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Columna 2 — asignatura */}
+          {/* Columna 2: Info de la asigantura */}
           <div className="col-12 col-md-4">
             <h6 className="text-white fw-bold mb-1">Asignatura</h6>
             <p className="mb-0">Segundum</p>
@@ -23,7 +23,7 @@ export default function Footer() {
             <p className="mb-0">Universidad de Murcia</p>
           </div>
 
-          {/* Columna 3 — grupo */}
+          {/* Columna 3: Participantes */}
           <div className="col-12 col-md-4">
             <h6 className="text-white fw-bold mb-1">Grupo</h6>
             <p className="mb-0">Manuel Chica Piñera</p>
@@ -32,9 +32,9 @@ export default function Footer() {
         </div>
 
         <hr className="footer-divider my-3" />
-
+        {/* Copyright e info */}
         <p className="text-center mb-0">
-          &copy; {AÑO} SegundUM &mdash; Segundum 25/26 · Universidad de Murcia
+          &copy; {AÑO} SegundUM · Universidad de Murcia
         </p>
       </div>
     </footer>

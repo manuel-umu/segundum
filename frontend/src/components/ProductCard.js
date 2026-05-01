@@ -33,33 +33,40 @@ export default function ProductCard({ producto }) {
 
   return (
     <article className='card product-card h-100 shadow-sm' onClick={handleClick}>
+      
+      {/* Parte de la imagen de la tarjeta */}
       <div className='product-card__img-wrapper'>
         <img
           src={producto.imagen}
           alt={producto.titulo}
           className='card-img-top product-card__img'
         />
+        {/* Etiqueta de estado */}
         <span className={`badge bg-${badgeColor} product-card__badge`}>
           {estadoLabel}
         </span>
       </div>
 
+      {/* Parte del texto de la tarjeta */}
       <div className='card-body d-flex flex-column'>
         <h2 className='card-title product-card__title'>{producto.titulo}</h2>
 
+        {/* Etiqueta de categoría */}
         {categoria && (
           <p className='product-card__categoria text-muted small mb-1'>
             {categoria.nombre}
           </p>
         )}
 
+        {/* Etiqueta de precio */}
         <p className='product-card__precio mt-auto'>
           {producto.precio.toLocaleString('es-ES', {
             style: 'currency',
             currency: 'EUR',
           })}
         </p>
-
+        
+        {/* Etiqueta envío disponible */}
         {producto.envio_disponible && (
           <span className='product-card__envio text-success small'>
             &#10003; Envío disponible

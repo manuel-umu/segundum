@@ -2,14 +2,19 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import '../styles/Navbar.css';
 
+// Función para marcar el link como activo
 function navLinkClass({ isActive }) {
   return 'nav-link' + (isActive ? ' active' : '');
 }
 
 export default function Navbar() {
+  // Leemos el contexto ya que dependiendo de ello la Navbar mostrará unas
+  // cosas u otras.
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  // Para redirigir a otras páginas
   const navigate = useNavigate();
 
+  // Función para hacer logout y redirigir al inicio
   async function handleLogout() {
     await logout();
     navigate('/');
@@ -35,7 +40,7 @@ export default function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarMain">
-          {/* Enlaces principales — izquierda */}
+          {/* Parte princiapal de la Navbar */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink className={navLinkClass} to="/" end>Inicio</NavLink>
@@ -44,6 +49,7 @@ export default function Navbar() {
               <NavLink className={navLinkClass} to="/productos">Productos</NavLink>
             </li>
 
+            {/* Solo si estamos logueados mostramos las pestañas de "Mis Ventas" y "Mis Compras"*/}
             {isAuthenticated && (
               <>
                 <li className="nav-item">
@@ -55,6 +61,7 @@ export default function Navbar() {
               </>
             )}
 
+            {/* Solo si somos admin podemos mostrar las pestañas de administracion*/}
             {isAdmin && (
               <>
                 <li className="nav-item">
@@ -67,7 +74,7 @@ export default function Navbar() {
             )}
           </ul>
 
-          {/* Sesión — derecha */}
+          {/* Parte de perfil y logout de la Navbar */}
           <ul className="navbar-nav ms-auto align-items-lg-center">
             {isAuthenticated ? (
               <>

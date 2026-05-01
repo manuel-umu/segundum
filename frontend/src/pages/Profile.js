@@ -6,7 +6,7 @@ import '../styles/Profile.css';
 
 // Regex para validar el formato de email
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Regex para validar contrasena: minimo 6 caracteres con letras y numeros
+// Regex para validar contraseña: minimo 6 caracteres con letras y numeros
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
 export default function Profile() {
@@ -22,7 +22,7 @@ export default function Profile() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
 
-  // --- Estado del sub-formulario de contrasena ---
+  // --- Estado del sub-formulario de contraseña ---
   const [pwdValues, setPwdValues] = useState({
     currentPassword: '',
     newPassword: '',
@@ -67,7 +67,7 @@ export default function Profile() {
     }
   }
 
-  // --- Handlers del sub-formulario de contrasena ---
+  // --- Handlers del sub-formulario de contraseña ---
 
   function handlePwdChange(e) {
     const { name, value } = e.target;
@@ -79,12 +79,12 @@ export default function Profile() {
 
   function validatePwd(values) {
     const errors = {};
-    if (!values.currentPassword) errors.currentPassword = 'Introduce tu contrasena actual.';
+    if (!values.currentPassword) errors.currentPassword = 'Introduce tu contraseña actual.';
     if (!PASSWORD_REGEX.test(values.newPassword)) {
       errors.newPassword = 'Minimo 6 caracteres con letras y numeros.';
     }
     if (values.newPassword !== values.confirmPassword) {
-      errors.confirmPassword = 'Las contrasenas no coinciden.';
+      errors.confirmPassword = 'Las contraseñas no coinciden.';
     }
     return errors;
   }
@@ -126,8 +126,10 @@ export default function Profile() {
                 <div className='alert alert-success'>Perfil actualizado correctamente.</div>
               )}
 
+              {/* Formulario cambio de datos del usuario */}
               <form onSubmit={handleProfileSubmit} noValidate>
 
+                {/* Campo nombre */}
                 <div className='mb-3'>
                   <label htmlFor='nombre' className='form-label'>Nombre <span className='text-danger'>*</span></label>
                   <input
@@ -143,7 +145,8 @@ export default function Profile() {
                     <span className='invalid-feedback'>{profileErrors.nombre}</span>
                   )}
                 </div>
-
+                
+                {/* Campo apellidos */}
                 <div className='mb-3'>
                   <label htmlFor='apellidos' className='form-label'>Apellidos <span className='text-danger'>*</span></label>
                   <input
@@ -159,7 +162,8 @@ export default function Profile() {
                     <span className='invalid-feedback'>{profileErrors.apellidos}</span>
                   )}
                 </div>
-
+                
+                {/* Campo email */}
                 <div className='mb-3'>
                   <label htmlFor='email' className='form-label'>Email <span className='text-danger'>*</span></label>
                   <input
@@ -175,7 +179,8 @@ export default function Profile() {
                     <span className='invalid-feedback'>{profileErrors.email}</span>
                   )}
                 </div>
-
+                
+                {/* Enseñamos en modo read-only el rol del usuario */}
                 <div className='mb-3'>
                   <label className='form-label'>Rol</label>
                   <input
@@ -187,6 +192,7 @@ export default function Profile() {
                   />
                 </div>
 
+                {/* Enseñamos la fecha de registro del usuario */}
                 <div className='mb-3'>
                   <label className='form-label'>Miembro desde</label>
                   <input
@@ -199,7 +205,8 @@ export default function Profile() {
                     disabled
                   />
                 </div>
-
+                
+                {/* Botón de guardar cambios */}
                 <button type='submit' className='btn btn-primary' disabled={profileSaving}>
                   {profileSaving ? 'Guardando...' : 'Guardar cambios'}
                 </button>
@@ -209,7 +216,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Columna derecha: cambio de contrasena */}
+        {/* Columna derecha: cambio de contraseña */}
         <div className='col-12 col-lg-6'>
           <div className='card shadow-sm h-100'>
             <div className='card-header fw-semibold'>Cambiar contraseña</div>
@@ -219,11 +226,13 @@ export default function Profile() {
                 <div className='alert alert-danger'>{pwdServerError}</div>
               )}
               {pwdSuccess && (
-                <div className='alert alert-success'>Contrasena actualizada correctamente.</div>
+                <div className='alert alert-success'>Contraseña actualizada correctamente.</div>
               )}
 
+              {/* Formulario cambio de contraseña */}
               <form onSubmit={handlePwdSubmit} noValidate>
 
+                {/* Contraseña actual */}
                 <div className='mb-3'>
                   <label htmlFor='currentPassword' className='form-label'>
                     Contraseña actual <span className='text-danger'>*</span>
@@ -242,6 +251,7 @@ export default function Profile() {
                   )}
                 </div>
 
+                {/* Contraseña nueva */}
                 <div className='mb-3'>
                   <label htmlFor='newPassword' className='form-label'>
                     Nueva contraseña <span className='text-danger'>*</span>
@@ -261,6 +271,7 @@ export default function Profile() {
                   <small className='text-muted'>Minimo 6 caracteres con letras y numeros.</small>
                 </div>
 
+                {/* Confirmación de contraseña */}
                 <div className='mb-3'>
                   <label htmlFor='confirmPassword' className='form-label'>
                     Confirmar contraseña <span className='text-danger'>*</span>
@@ -279,6 +290,7 @@ export default function Profile() {
                   )}
                 </div>
 
+                {/* Botón de cambiar contraseña */}
                 <button type='submit' className='btn btn-warning' disabled={pwdSaving}>
                   {pwdSaving ? 'Guardando...' : 'Cambiar contraseña'}
                 </button>

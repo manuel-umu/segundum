@@ -6,6 +6,7 @@ import '../styles/Login.css';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
+// Función auxiliar para control de errores
 function validate({ nombre, apellidos, email, password, confirmar }) {
   const errors = {};
   if (!nombre.trim()) errors.nombre = 'El nombre es obligatorio.';
@@ -34,6 +35,7 @@ export default function Register() {
     setFieldErrors(prev => ({ ...prev, [name]: '' }));
   }
 
+  // Función de registro
   async function handleSubmit(e) {
     e.preventDefault();
     setApiError('');
@@ -60,6 +62,7 @@ export default function Register() {
     }
   }
 
+  // Función auxiliar para los 5 campos del formulario de registro
   function field(name, label, type = 'text', extra = {}) {
     return (
       <div className="mb-3">
@@ -93,6 +96,7 @@ export default function Register() {
                 <div className="alert alert-danger" role="alert">{apiError}</div>
               )}
 
+              {/* Comprobación de errores y tratamiento de datos al registrarse*/}
               <form onSubmit={handleSubmit} noValidate>
                 {field('nombre', 'Nombre', 'text', { autoFocus: true, required: true })}
                 {field('apellidos', 'Apellidos', 'text', { required: true })}
@@ -114,6 +118,8 @@ export default function Register() {
                 </button>
               </form>
             </div>
+
+            {/* Footer para iniciar sesión */}
             <div className="card-footer text-center py-3">
               <small>
                 ¿Ya tienes cuenta?{' '}

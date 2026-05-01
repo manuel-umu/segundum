@@ -32,14 +32,15 @@ export default function ProductList() {
     [searchParams.toString()]
   );
 
-  // Actualiza la URL con los nuevos filtros y resetea la pagina a 1
+  // Actualiza la URL con los nuevos filtros y resetea la página a 1
   function handleFiltersChange(newFilters) {
     const next = { ...newFilters, page: '1' };
-    // Elimina los parametros vacios para mantener la URL limpia
+    // Elimina los parámetros vacios para mantener la URL limpia
     Object.keys(next).forEach(k => { if (!next[k]) delete next[k]; });
     setSearchParams(next);
   }
 
+  // Función auxiliar para cambiar de página de la lista
   function handlePageChange(newPage) {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev);
@@ -80,7 +81,7 @@ export default function ProductList() {
         </div>
       )}
 
-      {/* Lista de productos o mensaje de vacio */}
+      {/* Lista de productos o mensaje de vacío */}
       {!loading && !error && (
         items.length === 0 ? (
           <p className='text-muted'>No se encontraron productos con los filtros aplicados.</p>

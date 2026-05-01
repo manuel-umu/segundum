@@ -72,10 +72,10 @@ export default function MyPurchases() {
                 {items.map(venta => {
                   const producto = PRODUCTOS.find(p => p.id === venta.producto_id);
                   const vendedor = AUTH_USERS.find(u => u.id === venta.vendedor_id);
-                  const badge = ESTADO_BADGE[venta.estado] ?? { label: venta.estado, color: 'secondary' };
                   const fecha = new Date(venta.fecha_solicitud).toLocaleDateString('es-ES', {
                     day: '2-digit', month: 'short', year: 'numeric',
                   });
+                  const badge = ESTADO_BADGE[venta.estado] ?? { label: venta.estado, color: 'secondary' };
 
                   return (
                     <tr key={venta.id}>

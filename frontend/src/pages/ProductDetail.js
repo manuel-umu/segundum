@@ -26,7 +26,7 @@ export default function ProductDetail() {
   const [purchaseError, setPurchaseError] = useState(null);
   const [purchasing, setPurchasing] = useState(false);
 
-  // Estado del modal de confirmacion de borrado
+  // Estado del modal de confirmación de borrado
   const [showModal, setShowModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -37,6 +37,7 @@ export default function ProductDetail() {
 
   // --- Acciones ---
 
+  // Función que realiza la compra
   async function handlePurchase() {
     setPurchaseMsg(null);
     setPurchaseError(null);
@@ -51,6 +52,7 @@ export default function ProductDetail() {
     }
   }
 
+  // Función que borra un producto
   async function handleDelete() {
     setDeleting(true);
     try {
@@ -62,8 +64,7 @@ export default function ProductDetail() {
     }
   }
 
-  // --- Estados de carga y error ---
-
+  // Spinner al cargar
   if (loading) {
     return (
       <div className='product-detail__feedback d-flex justify-content-center align-items-center'>
@@ -74,6 +75,7 @@ export default function ProductDetail() {
     );
   }
 
+  // Página de producto no encontrado
   if (error || !producto) {
     return (
       <div className='container py-4'>
@@ -87,7 +89,7 @@ export default function ProductDetail() {
     );
   }
 
-  // Datos derivados
+  // Datos para la compra
   const categoria = CATEGORIAS.find(c => c.id === producto.categoria_id);
   const esVendedor = user && user.id === producto.vendedor_id;
   const puedeComprar = isAuthenticated && !esVendedor && !isAdmin;
@@ -99,10 +101,10 @@ export default function ProductDetail() {
   return (
     <div className='container py-4'>
 
-      {/* Layout con CSS Grid — criterio de evaluacion */}
+      {/* Layout con CSS Grid */}
       <article className='product-detail__grid'>
 
-        {/* Columna izquierda: imagen */}
+        {/* Columna izquierda: Imagen */}
         <section className='product-detail__image-col'>
           <img
             src={producto.imagen}
@@ -111,7 +113,7 @@ export default function ProductDetail() {
           />
         </section>
 
-        {/* Columna derecha: informacion principal */}
+        {/* Columna derecha: Información principal */}
         <section className='product-detail__info-col'>
           <h1 className='product-detail__title'>{producto.titulo}</h1>
 

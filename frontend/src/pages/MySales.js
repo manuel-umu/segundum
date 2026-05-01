@@ -23,7 +23,7 @@ export default function MySales() {
     [tab, page]
   );
 
-  // Cambiar de pestana resetea la pagina
+  // Cambiar de pestaña resetea la pagina
   function handleTabChange(key) {
     setTab(key);
     setPage(1);
@@ -35,7 +35,7 @@ export default function MySales() {
     <section className='container py-4'>
       <h1 className='mb-4'>Mis productos</h1>
 
-      {/* Pestanas Bootstrap */}
+      {/* Pestañas Bootstrap */}
       <ul className='nav nav-tabs mb-4' role='tablist'>
         {TABS.map(t => (
           <li className='nav-item' key={t.key} role='presentation'>

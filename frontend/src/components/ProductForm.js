@@ -142,6 +142,7 @@ export default function ProductForm({ initialValues = {}, onSubmit, onCancel, su
       </div>
 
       {/* Precio y estado en la misma fila en pantallas medianas */}
+      {/* Precio */}
       <div className='row'>
         <div className='col-12 col-md-6 mb-3'>
           <label htmlFor='precio' className='form-label'>Precio (€) <span className='text-danger'>*</span></label>
@@ -159,6 +160,7 @@ export default function ProductForm({ initialValues = {}, onSubmit, onCancel, su
           {errors.precio && <span className='invalid-feedback'>{errors.precio}</span>}
         </div>
 
+        {/* Estado */}
         <div className='col-12 col-md-6 mb-3'>
           <label htmlFor='estado' className='form-label'>Estado <span className='text-danger'>*</span></label>
           <select
@@ -178,7 +180,7 @@ export default function ProductForm({ initialValues = {}, onSubmit, onCancel, su
         </div>
       </div>
 
-      {/* Categoria */}
+      {/* Categoría */}
       <div className='mb-3'>
         <label htmlFor='categoria_id' className='form-label'>Categoría <span className='text-danger'>*</span></label>
         <select
@@ -198,6 +200,7 @@ export default function ProductForm({ initialValues = {}, onSubmit, onCancel, su
       </div>
 
       {/* Lugar de recogida y envio en la misma fila */}
+      {/* Lugar de recogida */}
       <div className='row'>
         <div className='col-12 col-md-8 mb-3'>
           <label htmlFor='lugar_recogida' className='form-label'>Lugar de recogida <span className='text-danger'>*</span></label>
@@ -213,6 +216,7 @@ export default function ProductForm({ initialValues = {}, onSubmit, onCancel, su
           {errors.lugar_recogida && <span className='invalid-feedback'>{errors.lugar_recogida}</span>}
         </div>
 
+        {/* Envío */}
         <div className='col-12 col-md-4 mb-3 d-flex align-items-end'>
           <div className='form-check'>
             <input
@@ -231,6 +235,7 @@ export default function ProductForm({ initialValues = {}, onSubmit, onCancel, su
       </div>
 
       <div className='d-flex gap-2'>
+        {/* Botón publicar */}
         <button
           type='submit'
           className='btn btn-primary'
@@ -238,7 +243,8 @@ export default function ProductForm({ initialValues = {}, onSubmit, onCancel, su
         >
           {submitting ? 'Guardando...' : submitLabel}
         </button>
-
+        
+        {/* Botón cancelar */}
         {onCancel && (
           <button
             type='button'

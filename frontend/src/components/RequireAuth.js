@@ -5,6 +5,7 @@ export default function RequireAuth({ children }) {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
+  // Simbolito de cargar
   if (loading) {
     return (
       <div className="d-flex justify-content-center py-5">
@@ -15,6 +16,7 @@ export default function RequireAuth({ children }) {
     );
   }
 
+  // Manda a la vista de login recordando la vista a la que querías ir
   if (!isAuthenticated) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }

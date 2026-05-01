@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+// Página no encontrada
 export default function NotFound() {
   return (
     <section className="text-center py-5">

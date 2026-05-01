@@ -5,6 +5,7 @@ import '../styles/Login.css';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Función auxiliar para control de errores
 function validate(email, password) {
   const errors = {};
   if (!emailRegex.test(email)) errors.email = 'Introduce un email válido.';
@@ -24,6 +25,7 @@ export default function Login() {
   const [apiError, setApiError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Comprobación de errores antes de enviar
   async function handleSubmit(e) {
     e.preventDefault();
     setApiError('');
@@ -61,7 +63,9 @@ export default function Login() {
                 </div>
               )}
 
+              {/* Formulario de login */}
               <form onSubmit={handleSubmit} noValidate>
+                
                 {/* Email */}
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -104,7 +108,8 @@ export default function Login() {
                     <span className="invalid-feedback">{fieldErrors.password}</span>
                   )}
                 </div>
-
+                
+                {/* Botón */}
                 <button
                   type="submit"
                   className="btn btn-dark w-100"
@@ -119,6 +124,8 @@ export default function Login() {
                 </button>
               </form>
             </div>
+
+            {/* Footer del container */}
             <div className="card-footer text-center py-3">
               <small>
                 ¿No tienes cuenta?{' '}
