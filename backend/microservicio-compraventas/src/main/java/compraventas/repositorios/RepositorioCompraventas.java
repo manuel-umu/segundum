@@ -1,0 +1,12 @@
+package compraventas.repositorios;
+
+import java.util.List;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import compraventas.modelo.Compraventa;
+
+public interface RepositorioCompraventas extends MongoRepository<Compraventa, String> {
+	List<Compraventa> findByIdComprador(String idComprador);
+	List<Compraventa> findByIdVendedor(String idVendedor);
+	List<Compraventa> findByIdCompradorAndIdVendedor(String idComprador, String idVendedor);
+}
