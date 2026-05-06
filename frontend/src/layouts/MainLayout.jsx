@@ -6,7 +6,9 @@ import Footer from '../components/Footer';
 export default function MainLayout() {
   return (
     <>
-      <Navbar />
+      <header>
+        <Navbar />
+      </header>
       <main className="container-fluid py-4 flex-grow-1">
         <Outlet />
       </main>

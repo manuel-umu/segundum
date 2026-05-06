@@ -1,12 +1,10 @@
 import { VENTAS, PRODUCTOS } from './mockData';
 
-const API = process.env.REACT_APP_API_URL || 'http://localhost:4000';
-
-// In-memory store so mutations persist during the session
+// Array en memoria para que las mutaciones persistan durante la sesion
 let ventas = [...VENTAS];
 let nextId = ventas.length + 1;
 
-// Helper: paginate an array and return the standard response shape
+// Pagina un array y devuelve la forma estandar de respuesta
 function paginate(array, page = 1, pageSize = 10) {
   const total = array.length;
   const start = (page - 1) * pageSize;
@@ -14,17 +12,12 @@ function paginate(array, page = 1, pageSize = 10) {
   return { items, page, pageSize, total };
 }
 
-// Creates a purchase request for a product; throws if already requested
+// Crea una solicitud de compra para un producto
 export async function requestPurchase(productId, buyerId) {
   await new Promise(r => setTimeout(r, 200));
 
   const product = PRODUCTOS.find(p => p.id === productId);
   if (!product) throw new Error('Producto no encontrado');
-
-  const alreadyRequested = ventas.find(
-    v => v.producto_id === productId && v.comprador_id === buyerId && v.estado === 'solicitada'
-  );
-  if (alreadyRequested) throw new Error('Ya has solicitado este producto');
 
   const nueva = {
     id: nextId++,
@@ -39,35 +32,22 @@ export async function requestPurchase(productId, buyerId) {
   return { ...nueva };
 }
 
-// Sales where the user is the seller
+// Ventas donde el usuario es el vendedor
 export async function listMySales(userId, { page = 1, pageSize = 10 } = {}) {
   await new Promise(r => setTimeout(r, 200));
-
-  const mySales = ventas
-    .filter(v => v.vendedor_id === userId)
-    .sort((a, b) => b.fecha_solicitud.localeCompare(a.fecha_solicitud));
-
+  const mySales = ventas.filter(v => v.vendedor_id === userId);
   return paginate(mySales, page, pageSize);
 }
 
-// Purchases where the user is the buyer
+// Compras donde el usuario es el comprador
 export async function listMyPurchases(userId, { page = 1, pageSize = 10 } = {}) {
   await new Promise(r => setTimeout(r, 200));
-
-  const myPurchases = ventas
-    .filter(v => v.comprador_id === userId)
-    .sort((a, b) => b.fecha_solicitud.localeCompare(a.fecha_solicitud));
-
+  const myPurchases = ventas.filter(v => v.comprador_id === userId);
   return paginate(myPurchases, page, pageSize);
 }
 
-// All sales — admin only
+// Todas las ventas — solo admin
 export async function listAllSales({ page = 1, pageSize = 10 } = {}) {
   await new Promise(r => setTimeout(r, 200));
-
-  const sorted = [...ventas].sort((a, b) =>
-    b.fecha_solicitud.localeCompare(a.fecha_solicitud)
-  );
-
-  return paginate(sorted, page, pageSize);
+  return paginate(ventas, page, pageSize);
 }
