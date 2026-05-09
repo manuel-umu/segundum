@@ -4,11 +4,6 @@ services:
     build: ./microservicio-usuarios
     ports:
       - "8080:8080"
-    environment:
-      - javax.persistence.jdbc.user=root
-      - javax.persistence.jdbc.password=***REMOVED***
-      - javax.persistence.jdbc.url=jdbc:mysql://mysql:3306/db_user?serverTimezone=CET
-
     depends_on:
       - mysql
       - rabbitmq
