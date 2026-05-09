@@ -131,7 +131,7 @@ public class ControladorUsuarios {
 	@PermitAll
 	public Response createUsuario(UsuarioDTO u) throws Exception {
 		String id = servicio.crear(u.getNombre(), u.getApellidos(), u.getEmail(), u.getFechaNac(), u.getClave(),
-				u.getTelefono());
+				u.getTelefono(), u.isAdmin());
 		URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
 		return Response.created(nuevaURL).build();
 	}

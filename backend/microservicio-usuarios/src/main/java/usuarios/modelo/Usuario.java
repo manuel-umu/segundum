@@ -29,14 +29,14 @@ public class Usuario implements Identificable {
 	public Usuario() {
 	}
 
-	public Usuario(String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono) {
+	public Usuario(String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono, boolean isAdmin) {
 		this.email = email;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.clave = clave;
 		this.fechaNac = fechaNac;
 		this.telefono = telefono;
-		this.isAdmin = false;
+		this.isAdmin = isAdmin;
 		this.contCompras = 0;
 		this.contVentas = 0;
 	}

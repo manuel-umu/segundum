@@ -18,7 +18,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	private RepositorioUsuariosAdHoc repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
-	public String crear(String nombre, String apellidos, String email, LocalDate fecha, String clave, String telefono)
+	public String crear(String nombre, String apellidos, String email, LocalDate fecha, String clave, String telefono, boolean isAdmin)
 			throws RepositorioException {
 		// Control de integridad de los datos
 		if (nombre == null || nombre.isEmpty())
@@ -39,7 +39,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		if (clave == null || clave.isEmpty())
 			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
 
-		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
+		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono, isAdmin);
 		String id = repositorio.add(usuario);
 		
 		try {

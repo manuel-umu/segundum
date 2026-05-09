@@ -9,7 +9,7 @@ import usuarios.repositorios.EntidadNoEncontrada;
 import usuarios.repositorios.RepositorioException;
 
 public interface IServicioUsuarios {
-	String crear(String nombre, String apellidos, String email, LocalDate fecha, String clave, String telefono)
+	String crear(String nombre, String apellidos, String email, LocalDate fecha, String clave, String telefono, boolean isAdmin)
 			throws RepositorioException;
 
 	void actualizar(String id, String nombre, String apellidos, String clave, LocalDate fecha, String telefono)
