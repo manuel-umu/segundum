@@ -36,5 +36,9 @@ public interface IServicioProductos {
 
 	void modificarProducto(String id, Float precio, String descripcion)
 			throws RepositorioException, EntidadNoEncontrada;
+	
+	void crearUsuario(String id, String nombre, String apellidos, String email) throws RepositorioException;
+	
+	void modificarUsuario(String id, String nombre, String apellidos) throws RepositorioException, EntidadNoEncontrada;
 
 }

@@ -19,5 +19,17 @@ public class ManejadorEventosImpl implements ManejadorEventos {
 		System.out.println("Producto puesto como vendido: " + idProducto);
 	}
 
+	@Override
+	public void usuarioCreado(String id, String nombre, String apellidos, String email) throws RepositorioException {
+		servicio.crearUsuario(id, nombre, apellidos, email);
+	}
+
+	@Override
+	public void usuarioModificado(String id, String nombre, String apellidos)
+			throws RepositorioException, EntidadNoEncontrada {
+		servicio.modificarUsuario(id, nombre, apellidos);
+		
+	}
+
 	
 }

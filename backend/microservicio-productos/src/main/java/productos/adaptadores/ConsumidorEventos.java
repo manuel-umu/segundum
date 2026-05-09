@@ -24,6 +24,10 @@ public class ConsumidorEventos {
         
         if (mensaje.get("tipo").equals("compraventa-creada")) {
         	this.manejadorEventos.compraventaCreada(mensaje.get("idProducto"));
+        } else if (mensaje.get("tipo").equals("usuario-creado")) {
+        	this.manejadorEventos.usuarioCreado(mensaje.get("id"), mensaje.get("nombre"), mensaje.get("apellidos"), mensaje.get("email"));
+        } else if (mensaje.get("tipo").equals("usuario-modificado")) {
+        	this.manejadorEventos.usuarioModificado(mensaje.get("id"), mensaje.get("nombre"), mensaje.get("apellidos"));
         }
         
     }

@@ -202,4 +202,32 @@ public class ServicioProductos implements IServicioProductos {
 		}
 		productoRepo.save(p);
 	}
+	
+	public void crearUsuario(String id, String nombre, String apellidos, String email) throws RepositorioException{
+		// Control de integridad de los datos
+		if (nombre == null || nombre.isEmpty())
+			throw new IllegalArgumentException("nombre: no debe ser nulo ni vacio");
+		if (apellidos == null || apellidos.isEmpty())
+			throw new IllegalArgumentException("apellidos: no debe ser nulo ni vacio");
+		if (email == null || email.isEmpty())
+			throw new IllegalArgumentException("email: no debe ser nulo ni vacio");
+		Usuario usuario = new Usuario(nombre, apellidos, email);
+		usuario.setId(id);
+		usuarioRepo.save(usuario);
+	}
+	
+	public void modificarUsuario(String id, String nombre, String apellidos) throws RepositorioException, EntidadNoEncontrada{
+		// Control de integridad de los datos
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+		Usuario usuario = usuarioRepo.findById(id)
+				.orElseThrow(() -> new EntidadNoEncontrada("Usuario no encontrado: " + id));
+		if (nombre != null && !nombre.isEmpty()) {
+			usuario.setNombre(nombre);
+		}
+		if (apellidos != null && !apellidos.isEmpty()) {
+			usuario.setApellidos(apellidos);
+		}
+		usuarioRepo.save(usuario);
+	}
 }

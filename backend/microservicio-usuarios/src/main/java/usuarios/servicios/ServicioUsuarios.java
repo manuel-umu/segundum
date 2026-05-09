@@ -6,6 +6,9 @@ import java.util.List;
 
 import usuarios.dto.UsuarioDTO;
 import usuarios.modelo.Usuario;
+import usuarios.eventos.*;
+import usuarios.adaptadores.*;
+import usuarios.puertos.*;
 import usuarios.repositorios.EntidadNoEncontrada;
 import usuarios.repositorios.FactoriaRepositorios;
 import usuarios.repositorios.RepositorioException;
@@ -37,7 +40,16 @@ public class ServicioUsuarios implements IServicioUsuarios {
 			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
 
 		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono);
-		return repositorio.add(usuario);
+		String id = repositorio.add(usuario);
+		
+		try {
+			EventoUsuarioCreado evento = new EventoUsuarioCreado(id, nombre, apellidos, email);
+			IPublicadorEventos publicador = new PublicadorEventosRabbitMQ();
+			publicador.publicarEvento(evento);
+		} catch (Exception e) {
+			System.err.println("Error publicando evento usuario-creado: " + e.getMessage());
+		}
+		return id;
 	}
 
 	/*
@@ -63,6 +75,13 @@ public class ServicioUsuarios implements IServicioUsuarios {
 			u.setTelefono(telefono);
 		}
 		repositorio.update(u);
+		try {
+			EventoUsuarioModificado evento = new EventoUsuarioModificado(id, nombre, apellidos);
+			IPublicadorEventos publicador = new PublicadorEventosRabbitMQ();
+			publicador.publicarEvento(evento);
+		} catch (Exception e) {
+			System.err.println("Error publicando evento usuario-modificado: " + e.getMessage());
+		}
 	}
 
 	@Override
