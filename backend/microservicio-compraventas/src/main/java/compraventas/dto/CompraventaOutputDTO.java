@@ -6,7 +6,7 @@ import compraventas.modelo.Compraventa;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "DTO con los datos de una compraventa")
-public class CompraventaDTO {
+public class CompraventaOutputDTO {
 
 	@Schema(description = "Identificador del producto comprado")
 	private String idProducto;
@@ -27,10 +27,10 @@ public class CompraventaDTO {
 	@Schema(description = "Fecha y hora en que se realizó la compraventa")
 	private LocalDateTime fecha;
 
-	public CompraventaDTO() {
+	public CompraventaOutputDTO() {
 	}
 
-	public CompraventaDTO(String idProducto, String titulo, Float precio, Object recogida, String idVendedor,
+	public CompraventaOutputDTO(String idProducto, String titulo, Float precio, Object recogida, String idVendedor,
 			String nombreVendedor, String idComprador, String nombreComprador, LocalDateTime fecha) {
 		this.idProducto = idProducto;
 		this.titulo = titulo;
@@ -115,12 +115,12 @@ public class CompraventaDTO {
 		this.fecha = fecha;
 	}
 
-	public static CompraventaDTO toDto(Compraventa compraventa) {
+	public static CompraventaOutputDTO toDto(Compraventa compraventa) {
 		if (compraventa == null) {
 			return null;
 		}
 
-		return new CompraventaDTO(compraventa.getIdProducto(), compraventa.getTitulo(), compraventa.getPrecio(),
+		return new CompraventaOutputDTO(compraventa.getIdProducto(), compraventa.getTitulo(), compraventa.getPrecio(),
 				compraventa.getRecogida(), compraventa.getIdVendedor(), compraventa.getNombreVendedor(),
 				compraventa.getIdComprador(), compraventa.getNombreComprador(), compraventa.getFecha());
 	}

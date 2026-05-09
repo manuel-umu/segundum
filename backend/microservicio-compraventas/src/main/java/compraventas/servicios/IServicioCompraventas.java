@@ -1,17 +1,18 @@
 package compraventas.servicios;
 
 import java.io.IOException;
-import java.util.List;
 
-import compraventas.modelo.Compraventa;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import compraventas.dto.CompraventaOutputDTO;
 
 public interface IServicioCompraventas {
 
 	public String registrarCompraventa(String idProducto, String idComprador) throws IOException;
-	
-	public List<Compraventa> recuperarCompras(String idUsuario);
-	
-	public List<Compraventa> recuperarVentas(String idUsuario);
-	
-	public List<Compraventa> recuperarCompraventas(String idComprador, String idVendedor);
+
+	public Page<CompraventaOutputDTO> recuperarCompras(String idUsuario, Pageable pageable);
+
+	public Page<CompraventaOutputDTO> recuperarVentas(String idUsuario, Pageable pageable);
+
+	public Page<CompraventaOutputDTO> recuperarCompraventas(String idComprador, String idVendedor, Pageable pageable);
 }

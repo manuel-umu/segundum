@@ -1,20 +1,29 @@
 package compraventas.rest;
 
 import java.io.IOException;
-import java.util.List;
+import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import compraventas.modelo.Compraventa;
+import compraventas.dto.CompraventaInputDTO;
+import compraventas.dto.CompraventaOutputDTO;
 import compraventas.servicios.IServicioCompraventas;
 import compraventas.servicios.ServicioCompraventas;
 import io.jsonwebtoken.Claims;
@@ -31,25 +40,28 @@ public class ControladorCompraventas {
 	@Autowired
 	private IServicioCompraventas servicio;
 
+	@Autowired
+	private PagedResourcesAssembler<CompraventaOutputDTO> pagedResourcesAssembler;
+
 	public ControladorCompraventas(ServicioCompraventas servicio) {
 		this.servicio = servicio;
 	}
 
 	@Operation(summary = "Registrar una compraventa", description = "El comprador adquiere un producto")
-	@ApiResponse(responseCode = "200", description = "Compraventa registrada. Devuelve el id de la compraventa.")
+	@ApiResponse(responseCode = "201", description = "Compraventa registrada. Devuelve la URL del nuevo recurso.")
 	@ApiResponse(responseCode = "403", description = "El usuario autenticado no coincide con el comprador.")
 	@PostMapping
 	@PreAuthorize("hasAuthority('USUARIO')")
-	public ResponseEntity<String> comprarProducto(
-			@Parameter(description = "Identificador del producto a comprar", required = true) @RequestParam String idProducto,
-			@Parameter(description = "Identificador del comprador", required = true) @RequestParam String idComprador,
+	public ResponseEntity<Void> comprarProducto(
+			@Parameter(description = "Datos de la compraventa", required = true) @RequestBody CompraventaInputDTO input,
 			HttpServletRequest request) throws IOException {
 		Claims claims = (Claims) request.getAttribute("claims");
-		if (!claims.getSubject().equals(idComprador)) {
+		if (!claims.getSubject().equals(input.getIdComprador())) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-
-		return ResponseEntity.ok(servicio.registrarCompraventa(idProducto, idComprador));
+		String id = servicio.registrarCompraventa(input.getIdProducto(), input.getIdComprador());
+		URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+		return ResponseEntity.created(nuevaURL).build();
 	}
 
 	@Operation(summary = "Listar compras de un usuario", description = "Devuelve las compraventas en las que el usuario es comprador")
@@ -57,15 +69,18 @@ public class ControladorCompraventas {
 	@ApiResponse(responseCode = "403", description = "El usuario autenticado no coincide con el solicitado.")
 	@GetMapping("/compras/{idUsuario}")
 	@PreAuthorize("hasAuthority('USUARIO')")
-	public ResponseEntity<List<Compraventa>> obtenerCompras(
+	public ResponseEntity<PagedModel<EntityModel<CompraventaOutputDTO>>> obtenerCompras(
 			@Parameter(description = "Identificador del usuario comprador", required = true) @PathVariable String idUsuario,
+			@Parameter(description = "Número de página", required = true) @RequestParam int page,
+			@Parameter(description = "Tamaño de página", required = true) @RequestParam int size,
 			HttpServletRequest request) {
 		Claims claims = (Claims) request.getAttribute("claims");
 		if (!claims.getSubject().equals(idUsuario)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-
-		return ResponseEntity.ok(servicio.recuperarCompras(idUsuario));
+		Pageable pageable = PageRequest.of(page, size);
+		Page<CompraventaOutputDTO> resultado = servicio.recuperarCompras(idUsuario, pageable);
+		return ResponseEntity.ok(pagedResourcesAssembler.toModel(resultado));
 	}
 
 	@Operation(summary = "Listar ventas de un usuario", description = "Devuelve las compraventas en las que el usuario es vendedor")
@@ -73,25 +88,32 @@ public class ControladorCompraventas {
 	@ApiResponse(responseCode = "403", description = "El usuario autenticado no coincide con el solicitado.")
 	@GetMapping("/ventas/{idUsuario}")
 	@PreAuthorize("hasAuthority('USUARIO')")
-	public ResponseEntity<List<Compraventa>> obtenerVentas(
+	public ResponseEntity<PagedModel<EntityModel<CompraventaOutputDTO>>> obtenerVentas(
 			@Parameter(description = "Identificador del usuario vendedor", required = true) @PathVariable String idUsuario,
+			@Parameter(description = "Número de página", required = true) @RequestParam int page,
+			@Parameter(description = "Tamaño de página", required = true) @RequestParam int size,
 			HttpServletRequest request) {
 		Claims claims = (Claims) request.getAttribute("claims");
 		if (!claims.getSubject().equals(idUsuario)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-
-		return ResponseEntity.ok(servicio.recuperarVentas(idUsuario));
+		Pageable pageable = PageRequest.of(page, size);
+		Page<CompraventaOutputDTO> resultado = servicio.recuperarVentas(idUsuario, pageable);
+		return ResponseEntity.ok(pagedResourcesAssembler.toModel(resultado));
 	}
 
 	@Operation(summary = "Listar compraventas entre dos usuarios", description = "Solo accesible por administradores. Devuelve las compraventas entre un comprador y un vendedor concretos.")
 	@ApiResponse(responseCode = "200", description = "Listado devuelto correctamente.")
 	@GetMapping
 	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
-	public ResponseEntity<List<Compraventa>> obtenerCompraventas(
+	public PagedModel<EntityModel<CompraventaOutputDTO>> obtenerCompraventas(
 			@Parameter(description = "Identificador del comprador", required = true) @RequestParam String idComprador,
-			@Parameter(description = "Identificador del vendedor", required = true) @RequestParam String idVendedor) {
-		return ResponseEntity.ok(servicio.recuperarCompraventas(idComprador, idVendedor));
+			@Parameter(description = "Identificador del vendedor", required = true) @RequestParam String idVendedor,
+			@Parameter(description = "Número de página", required = true) @RequestParam int page,
+			@Parameter(description = "Tamaño de página", required = true) @RequestParam int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<CompraventaOutputDTO> resultado = servicio.recuperarCompraventas(idComprador, idVendedor, pageable);
+		return pagedResourcesAssembler.toModel(resultado);
 	}
 
 }

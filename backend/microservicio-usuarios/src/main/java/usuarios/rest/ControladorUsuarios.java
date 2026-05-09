@@ -57,7 +57,6 @@ public class ControladorUsuarios {
 		}
 	}
 
-	
 	@GET
 	@Path("/github/{githubId}")
 	@Produces(MediaType.APPLICATION_JSON)
