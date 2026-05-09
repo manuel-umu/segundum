@@ -5,36 +5,28 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Component
 public class JwtUtils {
-	
-	@Value("${jwt.secret}")
-	private static String SECRETO;
-	@Value("${jwt.expiration-seconds}")
-	private static final long TIEMPO = 3600;
-	
-	public static String generateToken(Map<String, Object> claims) {
-		
-		Date caducidad = Date.from(Instant.now().plusSeconds(TIEMPO));
 
-		String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, SECRETO)
+	@Value("${jwt.secret}")
+	private String secret;
+
+	@Value("${jwt.expiration-seconds}")
+	private long expirationSeconds;
+
+	public String generateToken(Map<String, Object> claims) {
+		Date caducidad = Date.from(Instant.now().plusSeconds(expirationSeconds));
+		return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, secret)
 				.setExpiration(caducidad).compact();
-		
-		return token;		
 	}
-	
-	public static Claims validateToken(String token) {
-		
-		Claims claims = Jwts.parser()
-                .setSigningKey(SECRETO)
-                .parseClaimsJws(token)
-                .getBody();
-		
-		return claims;
+
+	public Claims validateToken(String token) {
+		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 	}
-	
 }
