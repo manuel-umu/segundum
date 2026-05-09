@@ -11,9 +11,9 @@ import compraventas.dto.ProductoInfoDTO;
 import compraventas.dto.UsuariosInfoDTO;
 import compraventas.eventos.EventoCompraventaCreada;
 import compraventas.modelo.Compraventa;
-import compraventas.puertos.ProductosRestClient;
+import compraventas.puertos.IClienteProductos;
+import compraventas.puertos.IClienteUsuarios;
 import compraventas.puertos.PublicadorEventos;
-import compraventas.puertos.UsuariosRestClient;
 import compraventas.repositorios.RepositorioCompraventas;
 
 @Service
@@ -25,10 +25,10 @@ public class ServicioCompraventas implements IServicioCompraventas {
 	private PublicadorEventos publicador;
 	
 	@Autowired
-	private UsuariosRestClient clienteUsuarios;
+	private IClienteUsuarios clienteUsuarios;
 		
 	@Autowired
-	private ProductosRestClient clienteProductos;
+	private IClienteProductos clienteProductos;
 	
 	@Autowired
 	public ServicioCompraventas(RepositorioCompraventas repo) {
@@ -42,7 +42,7 @@ public class ServicioCompraventas implements IServicioCompraventas {
 		if (idComprador == null || idComprador.isEmpty())
 			throw new IllegalArgumentException("idComprador: no debe ser nulo ni vacio");
 		
-		ProductoInfoDTO producto = clienteProductos.getProducto(idProducto).execute().body();
+		ProductoInfoDTO producto = clienteProductos.getProducto(idProducto);
 		
 		if (producto == null)
 			throw new IllegalArgumentException("producto: no debe ser nulo");
@@ -50,8 +50,8 @@ public class ServicioCompraventas implements IServicioCompraventas {
 		if (producto.isVendido())
 			throw new IllegalArgumentException("El producto ya ha sido vendido");
 		
-		UsuariosInfoDTO comprador = clienteUsuarios.getNombreUsuario(idComprador).execute().body();
-		UsuariosInfoDTO vendedor = clienteUsuarios.getNombreUsuario(producto.getIdVendedor()).execute().body();
+		UsuariosInfoDTO comprador = clienteUsuarios.getNombreUsuario(idComprador);
+		UsuariosInfoDTO vendedor = clienteUsuarios.getNombreUsuario(producto.getIdVendedor());
 		
 		
 		Compraventa compraventa = new Compraventa();
