@@ -1,6 +1,5 @@
 package umu.segundum.pasarela.config;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,14 +10,13 @@ import umu.segundum.pasarela.rest.UsuariosRestClient;
 @Configuration
 public class RetrofitConfig {
 
-    private String usuariosBaseUrl = "http://usuarios:8080/api/";
+	@Value("${retrofit.usuarios.baseUrl}")
+	private String usuariosBaseUrl;
 
-    @Bean
-    public UsuariosRestClient usuariosRestClient() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(usuariosBaseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        return retrofit.create(UsuariosRestClient.class);
-    }
+	@Bean
+	public UsuariosRestClient usuariosRestClient() {
+		Retrofit retrofit = new Retrofit.Builder().baseUrl(usuariosBaseUrl)
+				.addConverterFactory(GsonConverterFactory.create()).build();
+		return retrofit.create(UsuariosRestClient.class);
+	}
 }
