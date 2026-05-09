@@ -4,13 +4,17 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtUtils {
-
-	private static final String SECRETO = "***REMOVED***";
+	
+	@Value("${jwt.secret}")
+	private static String SECRETO;
+	@Value("${jwt.expiration-seconds}")
 	private static final long TIEMPO = 3600;
 	
 	public static String generateToken(Map<String, Object> claims) {

@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,8 +20,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
-	private static final String COOKIE_NAME = "jwt";
+	@Value("${jwt.cookie-name}")
+	private static String COOKIE_NAME;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,

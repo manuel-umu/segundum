@@ -3,6 +3,7 @@ package compraventas.rest;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-	private static final String COOKIE_NAME = "jwt";
+	@Value("${jwt.cookie-name}")
+	private static String COOKIE_NAME;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,

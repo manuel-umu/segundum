@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import io.jsonwebtoken.Claims;
-/*
+
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenFilter implements ContainerRequestFilter {
@@ -81,4 +81,4 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 		}
 		return null;
 	}
-}*/
+}
