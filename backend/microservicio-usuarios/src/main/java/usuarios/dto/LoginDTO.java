@@ -1,7 +1,8 @@
 package usuarios.dto;
 
 public class LoginDTO {
-	private String username, password;
+	private String username;
+	private String password;
 
 	public LoginDTO() {
 	}

@@ -5,10 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "DTO de la entidad Usuario")
 public class UsuarioDTO {
-	@Schema(description = "Identificador del usuario")
+	@Schema(description = "Identificador único del usuario")
 	private String id;
+	@Schema(description = "Correo electrónico del usuario", example = "usuario@ejemplo.com")
 	private String email;
+	@Schema(description = "Nombre del usuario", example = "Juan")
 	private String nombre;
+	@Schema(description = "Apellidos del usuario", example = "Garcia López")
 	private String apellidos;
 
 	public UsuarioDTO() {

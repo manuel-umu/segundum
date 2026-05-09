@@ -3,17 +3,28 @@ package compraventas.dto;
 import java.time.LocalDateTime;
 
 import compraventas.modelo.Compraventa;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "DTO con los datos de una compraventa")
 public class CompraventaDTO {
 
+	@Schema(description = "Identificador del producto comprado")
 	private String idProducto;
+	@Schema(description = "Título del producto", example = "Bicicleta de montaña")
 	private String titulo;
+	@Schema(description = "Precio de venta en euros", example = "150.0")
 	private Float precio;
+	@Schema(description = "Lugar de recogida del producto")
 	private Object recogida;
+	@Schema(description = "Identificador del vendedor")
 	private String idVendedor;
+	@Schema(description = "Nombre completo del vendedor", example = "Ana García")
 	private String nombreVendedor;
+	@Schema(description = "Identificador del comprador")
 	private String idComprador;
+	@Schema(description = "Nombre completo del comprador", example = "Juan López")
 	private String nombreComprador;
+	@Schema(description = "Fecha y hora en que se realizó la compraventa")
 	private LocalDateTime fecha;
 
 	public CompraventaDTO() {

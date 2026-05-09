@@ -12,7 +12,6 @@ import retrofit2.Response;
 import umu.segundum.pasarela.dto.AuthResponseDTO;
 import umu.segundum.pasarela.dto.UsuarioDTO;
 import umu.segundum.pasarela.utils.JwtUtils;
-import umu.segundum.pasarela.rest.UsuariosRestClient;
 import umu.segundum.pasarela.utils.CookieHelper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

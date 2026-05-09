@@ -11,26 +11,37 @@ import productos.modelo.Producto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
 
-@Schema(description = "DTO de la entidad Producto")
+@Schema(description = "DTO de entrada para crear o modificar un producto")
 public class ProductoDTO {
+	@Schema(description = "Título del producto", example = "Bicicleta de montaña")
 	@NotNull
 	private String titulo;
+	@Schema(description = "Descripción detallada del producto", example = "Bicicleta en buen estado, talla M")
 	@NotNull
 	private String descripcion;
+	@Schema(description = "Precio del producto en euros", example = "150.0")
 	@NotNull
 	private Float precio;
+	@Schema(description = "Estado del producto", example = "NUEVO")
 	@NotNull
 	private EnumEstado estado;
+	@Schema(description = "Fecha de publicación del producto")
 	@NotNull
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime fechaPubli;
+	@Schema(description = "Categoría a la que pertenece el producto")
 	@NotNull
 	private Categoria categoria;
+	@Schema(description = "Número de visualizaciones del producto", example = "0")
 	private Integer visualizaciones;
+	@Schema(description = "Indica si el envío está disponible", example = "true")
 	@NotNull
 	private Boolean envioDispo;
+	@Schema(description = "Lugar de recogida del producto")
 	private LugarRecogida recogida;
+	@Schema(description = "Vendedor del producto")
 	private UsuarioDTO vendedor;
+	@Schema(description = "Indica si el producto ha sido vendido", example = "false")
 	private Boolean vendido;
 
 	public ProductoDTO() {

@@ -2,25 +2,38 @@ package productos.dto;
 
 import java.time.LocalDateTime;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import productos.enumerados.EnumEstado;
 import productos.modelo.Categoria;
 import productos.modelo.LugarRecogida;
 import productos.modelo.Producto;
 
-//DTO de salida
+@Schema(description = "DTO de salida con los datos de un producto")
 public class ProductoResDTO {
 
+	@Schema(description = "Identificador único del producto")
 	private String id;
+	@Schema(description = "Título del producto", example = "Bicicleta de montaña")
 	private String titulo;
+	@Schema(description = "Descripción detallada del producto", example = "Bicicleta en buen estado, talla M")
 	private String descripcion;
+	@Schema(description = "Precio del producto en euros", example = "150.0")
 	private Float precio;
+	@Schema(description = "Estado del producto", example = "NUEVO")
 	private EnumEstado estado;
+	@Schema(description = "Fecha de publicación del producto")
 	private LocalDateTime fechaPubli;
+	@Schema(description = "Categoría a la que pertenece el producto")
 	private Categoria categoria;
+	@Schema(description = "Número de visualizaciones del producto", example = "42")
 	private Integer visualizaciones;
+	@Schema(description = "Indica si el envío está disponible", example = "true")
 	private Boolean envioDispo;
+	@Schema(description = "Lugar de recogida del producto")
 	private LugarRecogida recogida;
+	@Schema(description = "Vendedor del producto")
 	private UsuarioDTO vendedor;
+	@Schema(description = "Indica si el producto ha sido vendido", example = "false")
 	private Boolean vendido;
 
 	public ProductoResDTO() {
@@ -138,7 +151,7 @@ public class ProductoResDTO {
 	public void setVendido(Boolean vendido) {
 		this.vendido = vendido;
 	}
-	
+
 	public static ProductoResDTO toDto(Producto producto) {
 		if (producto == null)
 			return null;

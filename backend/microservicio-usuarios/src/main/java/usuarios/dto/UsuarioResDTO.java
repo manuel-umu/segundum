@@ -1,7 +1,7 @@
 package usuarios.dto;
 
 public class UsuarioResDTO {
-	
+
 	private String email;
 	private String nombre;
 	private String apellidos;

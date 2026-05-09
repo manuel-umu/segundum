@@ -76,7 +76,6 @@ public class ControladorUsuarios {
 		}
 	}
 
-	// Recuperar un usuario
 	@GET
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -87,7 +86,6 @@ public class ControladorUsuarios {
 		return Response.status(Response.Status.OK).entity(dto).build();
 	}
 
-	// Listado de usuarios
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@RolesAllowed("USUARIO")
@@ -101,7 +99,6 @@ public class ControladorUsuarios {
 		return Response.status(Response.Status.OK).entity(resDtos).build();
 	}
 
-	// Modificar un usuario
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -122,7 +119,6 @@ public class ControladorUsuarios {
 
 	}
 
-	// Borrar actividad
 	@DELETE
 	@Path("/{id}")
 	@RolesAllowed("USUARIO")
@@ -131,7 +127,6 @@ public class ControladorUsuarios {
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
 
-	// Dar de alta un usuario
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@PermitAll
@@ -151,7 +146,6 @@ public class ControladorUsuarios {
 		return new UsuarioResDTO(usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(), uri.toString());
 	}
 
-	// Operación pública para recuperar un usuario (Tarea 6)
 	@GET
 	@Path("/{id}/nombre")
 	@Produces(MediaType.APPLICATION_JSON)
