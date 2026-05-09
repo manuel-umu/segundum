@@ -1,11 +1,14 @@
 package productos.repositorios;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import productos.modelo.Categoria;
 
-@Repository
-public interface RepositorioCategorias extends JpaRepository<Categoria, String> {
+@NoRepositoryBean
+public interface RepositorioCategorias extends CrudRepository<Categoria, String> {
 
+	List<Categoria> findAll();
 }

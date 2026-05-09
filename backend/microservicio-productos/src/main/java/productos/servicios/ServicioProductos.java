@@ -3,13 +3,11 @@ package productos.servicios;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import productos.dto.ProductoDTO;
+import productos.dto.ProductoResDTO;
 import productos.enumerados.EnumEstado;
 import productos.modelo.Categoria;
 import productos.modelo.LugarRecogida;
@@ -134,19 +132,18 @@ public class ServicioProductos implements IServicioProductos {
 		return productoRepo.findAll();
 	}
 
-	public Page<ProductoDTO> getListadoPaginado(Pageable pageable) {
-		return this.productoRepo.findAll(pageable).map(producto -> {
-			return ProductoDTO.toDto(producto);
-		});
+	public Page<ProductoResDTO> getListadoPaginado(Pageable pageable) {
+		return this.productoRepo.findAll(pageable).map(ProductoResDTO::toDto);
 	}
 
 	@Override
 	public void ponerVendido(String id) throws RepositorioException, EntidadNoEncontrada {
-		Producto p = productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
+		Producto p = productoRepo.findById(id)
+				.orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
 		p.setVendido(true);
 		productoRepo.save(p);
 	}
-	
+
 	@Override
 	public void añadirVisualizacion(String id) throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos
@@ -155,11 +152,12 @@ public class ServicioProductos implements IServicioProductos {
 
 		// Recuperamos el producto y sumamos uno a sus visualizaciones, updateamos
 		// después
-		Producto p = productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
+		Producto p = productoRepo.findById(id)
+				.orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
 		p.setVisualizaciones(p.getVisualizaciones() + 1);
 		productoRepo.save(p);
 	}
-	
+
 	@Override
 	public List<ProductoRes> historialMes(Integer mes, Integer year) throws RepositorioException {
 		// Control de integridad de los datos
@@ -185,7 +183,7 @@ public class ServicioProductos implements IServicioProductos {
 
 		return resultadosRes;
 	}
-	
+
 	@Override
 	public void modificarProducto(String id, Float precio, String descripcion)
 			throws RepositorioException, EntidadNoEncontrada {
@@ -194,7 +192,8 @@ public class ServicioProductos implements IServicioProductos {
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
 		// Recuperamos por la id el producto, comprobamos los campos de descripcion y
 		// precio y updateamos
-		Producto p = productoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
+		Producto p = productoRepo.findById(id)
+				.orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
 		if (precio != null && precio >= 0) {
 			p.setPrecio(precio);
 		}

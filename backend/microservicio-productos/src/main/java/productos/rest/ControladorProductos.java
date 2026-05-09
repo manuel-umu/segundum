@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.List;
 import productos.dto.LugarRecogidaDTO;
 import productos.dto.ProductoDTO;
+import productos.dto.ProductoResDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -41,7 +42,7 @@ public class ControladorProductos implements ProductosApi {
 	public IServicioProductos servicio;
 
 	@Autowired
-	private PagedResourcesAssembler<ProductoDTO> pagedResourcesAssembler;
+	private PagedResourcesAssembler<ProductoResDTO> pagedResourcesAssembler;
 
 	@Autowired
 	public ControladorProductos(IServicioProductos servicio) {
@@ -68,11 +69,10 @@ public class ControladorProductos implements ProductosApi {
 	// Recuperar un producto
 	@GetMapping("/{id}")
 	@Override
-	public EntityModel<ProductoDTO> getProducto(@PathVariable String id) throws Exception {
+	public EntityModel<ProductoResDTO> getProducto(@PathVariable String id) throws Exception {
 		Producto producto = servicio.recuperar(id);
-		ProductoDTO dto = ProductoDTO.toDto(producto);
-		EntityModel<ProductoDTO> model = EntityModel.of(dto);
-		// Para que tenga referencia a si mismo
+		ProductoResDTO dto = ProductoResDTO.toDto(producto);
+		EntityModel<ProductoResDTO> model = EntityModel.of(dto);
 		model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControladorProductos.class).getProducto(id))
 				.withSelfRel());
 		return model;
@@ -81,10 +81,10 @@ public class ControladorProductos implements ProductosApi {
 	// Listado (paginado) de productos
 	@GetMapping
 	@Override
-	public PagedModel<EntityModel<ProductoDTO>> getProductos(@RequestParam int page, @RequestParam int size)
+	public PagedModel<EntityModel<ProductoResDTO>> getProductos(@RequestParam int page, @RequestParam int size)
 			throws Exception {
 		Pageable paginacion = PageRequest.of(page, size, Sort.by("titulo").ascending());
-		Page<ProductoDTO> resultado = servicio.getListadoPaginado(paginacion);
+		Page<ProductoResDTO> resultado = servicio.getListadoPaginado(paginacion);
 		return this.pagedResourcesAssembler.toModel(resultado);
 	}
 

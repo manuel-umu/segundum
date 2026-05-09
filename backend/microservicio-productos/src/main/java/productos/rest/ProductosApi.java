@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import productos.dto.LugarRecogidaDTO;
 import productos.dto.ProductoDTO;
+import productos.dto.ProductoResDTO;
 import productos.modelo.ProductoRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,13 +31,13 @@ public interface ProductosApi {
 
 	@Operation(summary = "Obtener producto", description = "Obtiene un producto por su id")
 	@ApiResponse(responseCode = "200", description = "Producto encontrado y devuelto correctamente.")
-	public EntityModel<ProductoDTO> getProducto(
+	public EntityModel<ProductoResDTO> getProducto(
 			@Parameter(description = "Identificador del producto", required = true) @PathVariable String id)
 			throws Exception;
 
 	@Operation(summary = "Listado de productos", description = "Obtiene un listado paginado de productos")
 	@ApiResponse(responseCode = "200", description = "Listado devuelto correctamente.")
-	public PagedModel<EntityModel<ProductoDTO>> getProductos(@RequestParam int page, @RequestParam int size)
+	public PagedModel<EntityModel<ProductoResDTO>> getProductos(@RequestParam int page, @RequestParam int size)
 			throws Exception;
 
 	@Operation(summary = "Asignar lugar de recogida", description = "Asigna un lugar de recogida a un producto existente")

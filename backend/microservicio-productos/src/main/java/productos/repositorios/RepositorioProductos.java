@@ -2,21 +2,22 @@ package productos.repositorios;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import productos.modelo.Categoria;
 import productos.modelo.Producto;
 
-// JpaRepository hereda a parte de crudrepo, de PagingAndSortingRepository
-@Repository
-public interface RepositorioProductos extends JpaRepository<Producto, String> {
+@NoRepositoryBean
+public interface RepositorioProductos extends CrudRepository<Producto, String> {
 
-	@Query("SELECT p FROM Producto p WHERE MONTH(p.fechaPubli) = :mes AND YEAR(p.fechaPubli) = :year")
-	List<Producto> getByFecha(@Param("mes") Integer mes, @Param("year") Integer year);
+	List<Producto> findAll();
 
-	@Query("SELECT p FROM Producto p WHERE p.categoria IN :categorias OR p.categoria.id = :idCategoria")
-	List<Producto> getByCategorias(@Param("idCategoria") String idCategoria, @Param("categorias") List<Categoria> categorias);
+	Page<Producto> findAll(Pageable pageable);
+
+	List<Producto> getByFecha(Integer mes, Integer year);
+
+	List<Producto> getByCategorias(String idCategoria, List<Categoria> categorias);
 }

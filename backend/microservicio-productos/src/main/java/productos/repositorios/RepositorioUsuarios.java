@@ -1,17 +1,14 @@
 package productos.repositorios;
 
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import productos.modelo.Usuario;
 
-@Repository
-public interface RepositorioUsuarios extends JpaRepository<Usuario, String> {
-	
+@NoRepositoryBean
+public interface RepositorioUsuarios extends CrudRepository<Usuario, String> {
+
 	List<Usuario> findByEmail(String email);
-	
-	default boolean isRegistrado(String email) {
-		return !findByEmail(email).isEmpty();
-	}
 }
