@@ -10,7 +10,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Configuration
-public class RetrofitContrl {
+public class RetrofitConfig {
 
 	@Value("${retrofit.usuarios.baseUrl}")
 	private String usuariosBaseUrl;
