@@ -20,17 +20,17 @@ public class ServicioValoraciones : IServicioValoraciones
     }
 
     public Task<Resultado<Valoracion>> RegistrarValoracionVendedorAsync(
-        string idCompraventa, string idComprador, int puntuacion, string? comentario)
+        string idCompraventa, string idComprador, double puntuacion, string? comentario)
         => RegistrarAsync(idCompraventa, idComprador, puntuacion, comentario, RolValorado.Vendedor);
 
     public Task<Resultado<Valoracion>> RegistrarValoracionCompradorAsync(
-        string idCompraventa, string idVendedor, int puntuacion, string? comentario)
+        string idCompraventa, string idVendedor, double puntuacion, string? comentario)
         => RegistrarAsync(idCompraventa, idVendedor, puntuacion, comentario, RolValorado.Comprador);
 
     private async Task<Resultado<Valoracion>> RegistrarAsync(
         string idCompraventa,
         string idUsuarioValora,
-        int puntuacion,
+        double puntuacion,
         string? comentario,
         RolValorado rolValorado)
     {

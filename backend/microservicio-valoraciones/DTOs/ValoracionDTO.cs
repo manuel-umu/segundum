@@ -8,7 +8,7 @@ public record ValoracionDTO(
     string IdUsuarioValora,
     string IdUsuarioValorado,
     string RolUsuarioValorado,
-    int Puntuacion,
+    double Puntuacion,
     string? Comentario)
 {
     

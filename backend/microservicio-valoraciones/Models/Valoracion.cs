@@ -26,7 +26,7 @@ public class Valoracion
     public RolValorado RolUsuarioValorado { get; set; }
 
     [Range(1, 5)]
-    public int Puntuacion { get; set; }
+    public double Puntuacion { get; set; }
 
     [MaxLength(1000)]
     public string? Comentario { get; set; }

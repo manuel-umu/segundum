@@ -3,5 +3,5 @@ namespace MicroservicioValoraciones.DTOs;
 public record RegistrarValoracionDTO(
     string IdCompraventa,
     string IdUsuarioValora,
-    int Puntuacion,
+    double Puntuacion,
     string? Comentario);

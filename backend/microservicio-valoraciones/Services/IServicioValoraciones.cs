@@ -7,13 +7,13 @@ public interface IServicioValoraciones
     Task<Resultado<Valoracion>> RegistrarValoracionVendedorAsync(
         string idCompraventa,
         string idComprador,
-        int puntuacion,
+        double puntuacion,
         string? comentario);
 
     Task<Resultado<Valoracion>> RegistrarValoracionCompradorAsync(
         string idCompraventa,
         string idVendedor,
-        int puntuacion,
+        double puntuacion,
         string? comentario);
 
     Task<Valoracion?> GetByIdAsync(long id);

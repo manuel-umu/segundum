@@ -4,7 +4,7 @@ namespace MicroservicioValoraciones.DTOs;
 
 public record ValoracionResumenDTO(
     long Id,
-    int Puntuacion,
+    double Puntuacion,
     string Href)
 {
     public static ValoracionResumenDTO From(Valoracion v, string baseUrl) =>
