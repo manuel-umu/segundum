@@ -28,4 +28,8 @@ public interface IServicioUsuarios {
 	void sumarCompras(String idComprador) throws RepositorioException, EntidadNoEncontrada;
 
 	Usuario findByGithubId(String githubId) throws RepositorioException;
+	
+	void mediaComprador(String id, Double puntuacion) throws RepositorioException, EntidadNoEncontrada;
+	
+	void mediaVendedor(String id, Double puntuacion) throws RepositorioException, EntidadNoEncontrada;
 }

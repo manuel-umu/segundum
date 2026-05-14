@@ -15,4 +15,6 @@ public interface IServicioCompraventas {
 	public Page<CompraventaOutputDTO> recuperarVentas(String idUsuario, Pageable pageable);
 
 	public Page<CompraventaOutputDTO> recuperarCompraventas(String idComprador, String idVendedor, Pageable pageable);
+	
+	public CompraventaOutputDTO recuperarCompraventa(String id);
 }

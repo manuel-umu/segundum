@@ -115,5 +115,18 @@ public class ControladorCompraventas {
 		Page<CompraventaOutputDTO> resultado = servicio.recuperarCompraventas(idComprador, idVendedor, pageable);
 		return pagedResourcesAssembler.toModel(resultado);
 	}
+	
+	@Operation(summary = "Recuperar una compraventa por id", description = "Devuelve una compraventa a partir del id dado (usado para .NET)")
+	@ApiResponse(responseCode = "200", description = "Compraventa encontrada.")
+	@ApiResponse(responseCode = "404", description = "Compraventa no encontrada.")
+	@GetMapping("/{id}")
+	public ResponseEntity<CompraventaOutputDTO> recuperarCompraventa(@PathVariable String id){
+		try {
+			CompraventaOutputDTO compraventa = servicio.recuperarCompraventa(id);
+			return ResponseEntity.ok(compraventa);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
 }

@@ -25,6 +25,10 @@ public class Usuario implements Identificable {
 	private Integer contCompras;
 	private Integer contVentas;
 	private String githubId;
+	private Integer numValoracionesComprador;
+	private Integer numValoracionesVendedor;
+	private Double mediaComprador;
+	private Double mediaVendedor;
 
 	public Usuario() {
 	}
@@ -39,6 +43,10 @@ public class Usuario implements Identificable {
 		this.isAdmin = isAdmin;
 		this.contCompras = 0;
 		this.contVentas = 0;
+		this.numValoracionesComprador = 0;
+		this.numValoracionesVendedor = 0;
+		this.mediaComprador = 0.0;
+		this.mediaVendedor = 0.0;
 	}
 
 	@Override
@@ -131,11 +139,42 @@ public class Usuario implements Identificable {
 		this.githubId = githubId;
 	}
 
+	public Integer getNumValoracionesComprador() {
+		return numValoracionesComprador;
+	}
+
+	public void setNumValoracionesComprador(Integer numValoracionesComprador) {
+		this.numValoracionesComprador = numValoracionesComprador;
+	}
+
+	public Integer getNumValoracionesVendedor() {
+		return numValoracionesVendedor;
+	}
+
+	public void setNumValoracionesVendedor(Integer numValoracionesVendedor) {
+		this.numValoracionesVendedor = numValoracionesVendedor;
+	}
+
+	public Double getMediaComprador() {
+		return mediaComprador;
+	}
+
+	public void setMediaComprador(Double mediaComprador) {
+		this.mediaComprador = mediaComprador;
+	}
+
+	public Double getMediaVendedor() {
+		return mediaVendedor;
+	}
+
+	public void setMediaVendedor(Double mediaVendedor) {
+		this.mediaVendedor = mediaVendedor;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + ", clave="
 				+ clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin
 				+ ", contCompras=" + contCompras + ", contVentas=" + contVentas + ", githubId=" + githubId + "]";
 	}
-
 }

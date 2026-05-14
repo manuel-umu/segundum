@@ -54,6 +54,7 @@ public class ConsumidorRabbitMQ implements ServletContextListener{
 			Map<String, Object> properties = null; 
 			channel.queueDeclare(queueName, durable, exclusive, autodelete, properties);
 			channel.queueBind(queueName, exchangeName, bindingKey);
+			channel.queueBind(queueName, exchangeName, "bus.valoraciones.#");
 			
 		
 			boolean autoAck = false;
@@ -82,6 +83,21 @@ public class ConsumidorRabbitMQ implements ServletContextListener{
 							e.printStackTrace();
 						}
 			        }
+			        
+			        if (objeto.get("tipo").getAsString().equals("valoracion-creada")) {
+			        	
+			        	// ejecutar operación del puerto ...
+			        	String id = objeto.get("id").getAsString();
+			        	String rol = objeto.get("rol").getAsString();
+			        	double puntuacion = objeto.get("puntuacion").getAsDouble();
+			        	
+			        	try {
+							manejadorEventos.valoracionCreada(id, rol, puntuacion);
+						} catch (RepositorioException | EntidadNoEncontrada e) {
+							e.printStackTrace();
+						}
+			        }
+			        
 			        
 			        // Confirma el procesamiento
 			        channel.basicAck(deliveryTag, false);

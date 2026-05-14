@@ -37,6 +37,20 @@ services:
       - mongo
       - rabbitmq
 
+  valoraciones:
+    build: ./microservicio-valoraciones
+    ports:
+      - "8083:8083"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=db_valoraciones;User=root;Password=***REMOVED***;
+      - RabbitMQ__Host=rabbitmq
+      - Compraventas__BaseUrl=http://compraventas:8082/
+    depends_on:
+      - mysql
+      - rabbitmq
+      - compraventas
+
   pasarela:
     build: ./pasarela
     ports:
@@ -46,10 +60,12 @@ services:
       - ZUUL_ROUTES_PRODUCTOS_URL=http://productos:8081/productos
       - ZUUL_ROUTES_CATEGORIAS_URL=http://productos:8081/categorias
       - ZUUL_ROUTES_COMPRAVENTAS_URL=http://compraventas:8082/api/compraventas
+      - ZUUL_ROUTES_VALORACIONES_URL=http://valoraciones:8083/api/valoraciones
     depends_on:
       - usuarios
       - productos
       - compraventas
+      - valoraciones
 
   mysql:
     image: mysql:8

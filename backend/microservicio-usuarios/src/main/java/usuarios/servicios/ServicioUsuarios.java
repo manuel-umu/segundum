@@ -140,4 +140,24 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	public Usuario findByGithubId(String githubId) throws RepositorioException {
 		return repositorio.getByGithubId(githubId);
 	}
+
+	@Override
+	public void mediaComprador(String id, Double puntuacion) throws RepositorioException, EntidadNoEncontrada {
+		Usuario usuario = repositorio.getById(id);
+		int nuevo = usuario.getNumValoracionesComprador() + 1;
+		double totalAntiguo = (usuario.getMediaComprador() * usuario.getNumValoracionesComprador());
+		usuario.setMediaComprador((totalAntiguo + puntuacion) / nuevo);
+		usuario.setNumValoracionesComprador(nuevo);
+		repositorio.update(usuario);
+	}
+
+	@Override
+	public void mediaVendedor(String id, Double puntuacion) throws RepositorioException, EntidadNoEncontrada {
+		Usuario usuario = repositorio.getById(id);
+		int nuevo = usuario.getNumValoracionesVendedor() + 1;
+		double totalAntiguo = (usuario.getMediaVendedor() * usuario.getNumValoracionesVendedor());
+		usuario.setMediaVendedor((totalAntiguo + puntuacion) / nuevo);
+		usuario.setNumValoracionesVendedor(nuevo);
+		repositorio.update(usuario);
+	}
 }

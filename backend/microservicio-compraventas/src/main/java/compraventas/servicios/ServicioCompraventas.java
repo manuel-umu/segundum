@@ -37,6 +37,7 @@ public class ServicioCompraventas implements IServicioCompraventas {
 		this.repo = repo;
 	}
 
+	@Override
 	public String registrarCompraventa(String idProducto, String idComprador) throws IOException {
 		if (idProducto == null || idProducto.isEmpty())
 			throw new IllegalArgumentException("idProducto: no debe ser nulo ni vacio");
@@ -77,24 +78,36 @@ public class ServicioCompraventas implements IServicioCompraventas {
 		return compraventa.getId();
 	}
 
+	@Override
 	public Page<CompraventaOutputDTO> recuperarCompras(String idUsuario, Pageable pageable) {
 		if (idUsuario == null || idUsuario.isEmpty())
 			throw new IllegalArgumentException("idUsuario: no debe ser nulo ni vacio");
 		return repo.findByIdComprador(idUsuario, pageable).map(CompraventaOutputDTO::toDto);
 	}
 
+	@Override
 	public Page<CompraventaOutputDTO> recuperarVentas(String idUsuario, Pageable pageable) {
 		if (idUsuario == null || idUsuario.isEmpty())
 			throw new IllegalArgumentException("idUsuario: no debe ser nulo ni vacio");
 		return repo.findByIdVendedor(idUsuario, pageable).map(CompraventaOutputDTO::toDto);
 	}
 
+	@Override
 	public Page<CompraventaOutputDTO> recuperarCompraventas(String idComprador, String idVendedor, Pageable pageable) {
 		if (idComprador == null || idComprador.isEmpty())
 			throw new IllegalArgumentException("idComprador: no debe ser nulo ni vacio");
 		if (idVendedor == null || idVendedor.isEmpty())
 			throw new IllegalArgumentException("idVendedor: no debe ser nulo ni vacio");
 		return repo.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable).map(CompraventaOutputDTO::toDto);
+	}
+
+	@Override
+	public CompraventaOutputDTO recuperarCompraventa(String id) {
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+		Compraventa compraventa = repo.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Compraventa no encontrada: " + id));
+		return CompraventaOutputDTO.toDto(compraventa);
 	}
 
 }
