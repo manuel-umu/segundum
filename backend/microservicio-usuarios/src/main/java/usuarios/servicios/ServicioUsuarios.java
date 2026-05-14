@@ -94,7 +94,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		List<UsuarioDTO> dtos = new LinkedList<UsuarioDTO>();
 		List<Usuario> usuarios = repositorio.getAll();
 		for (Usuario u : usuarios) {
-			dtos.add(toDto(u));
+			dtos.add(Usuario.toDto(u));
 		}
 		return dtos;
 	}
@@ -117,10 +117,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		return usuario;
 	}
 
-	private UsuarioDTO toDto(Usuario usuario) {
-		return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(),
-				usuario.getClave(), usuario.getFechaNac(), usuario.getTelefono());
-	}
+	
 
 	@Override
 	public void sumarVentas(String idVendedor) throws RepositorioException, EntidadNoEncontrada {

@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import usuarios.dto.UsuarioDTO;
 import usuarios.repositorios.Identificable;
 
 @Entity
@@ -33,7 +34,8 @@ public class Usuario implements Identificable {
 	public Usuario() {
 	}
 
-	public Usuario(String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono, boolean isAdmin) {
+	public Usuario(String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono,
+			boolean isAdmin) {
 		this.email = email;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -176,5 +178,12 @@ public class Usuario implements Identificable {
 		return "Usuario [id=" + id + ", email=" + email + ", nombre=" + nombre + ", apellidos=" + apellidos + ", clave="
 				+ clave + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", isAdmin=" + isAdmin
 				+ ", contCompras=" + contCompras + ", contVentas=" + contVentas + ", githubId=" + githubId + "]";
+	}
+
+	public static UsuarioDTO toDto(Usuario usuario) {
+		return new UsuarioDTO(usuario.getId(), usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(),
+				usuario.getClave(), usuario.getFechaNac(), usuario.getTelefono(), usuario.isAdmin(),
+				usuario.getContCompras(), usuario.getContVentas(), usuario.getNumValoracionesComprador(),
+				usuario.getNumValoracionesVendedor(), usuario.getMediaComprador(), usuario.getMediaVendedor());
 	}
 }

@@ -12,6 +12,7 @@ public class UsuarioDTO {
 	private String telefono;
 	private boolean isAdmin;
 	private String githubId;
+	private Integer contCompras, contVentas;
 	private Integer numValoracionesComprador;
 	private Integer numValoracionesVendedor;
 	private Double mediaComprador;
@@ -19,9 +20,10 @@ public class UsuarioDTO {
 
 	public UsuarioDTO() {
 	}
-	
+
 	public UsuarioDTO(String id, String email, String nombre, String apellidos, String clave, LocalDate fechaNac,
-			String telefono) {
+			String telefono, boolean isAdmin, Integer contCompras, Integer contVentas, Integer numValoracionesComprador,
+			Integer numValoracionesVendedor, Double mediaComprador, Double mediaVendedor) {
 		this.id = id;
 		this.email = email;
 		this.nombre = nombre;
@@ -29,17 +31,19 @@ public class UsuarioDTO {
 		this.clave = clave;
 		this.fechaNac = fechaNac;
 		this.telefono = telefono;
-		this.isAdmin = false;
-		this.numValoracionesComprador = 0;
-		this.numValoracionesVendedor = 0;
-		this.mediaComprador = 0.0;
-		this.mediaVendedor = 0.0;
+		this.isAdmin = isAdmin;
+		this.contCompras = contCompras;
+		this.contVentas = contVentas;
+		this.numValoracionesComprador = numValoracionesComprador;
+		this.numValoracionesVendedor = numValoracionesVendedor;
+		this.mediaComprador = mediaComprador;
+		this.mediaVendedor = mediaVendedor;
 	}
 
 	public String getId() {
 		return id;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -95,7 +99,7 @@ public class UsuarioDTO {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-	
+
 	public String getGithubId() {
 		return githubId;
 	}
@@ -103,7 +107,27 @@ public class UsuarioDTO {
 	public void setGithubId(String githubId) {
 		this.githubId = githubId;
 	}
-	
+
+	public Integer getContCompras() {
+		return contCompras;
+	}
+
+	public void setContCompras(Integer contCompras) {
+		this.contCompras = contCompras;
+	}
+
+	public Integer getContVentas() {
+		return contVentas;
+	}
+
+	public void setContVentas(Integer contVentas) {
+		this.contVentas = contVentas;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public Integer getNumValoracionesComprador() {
 		return numValoracionesComprador;
 	}
