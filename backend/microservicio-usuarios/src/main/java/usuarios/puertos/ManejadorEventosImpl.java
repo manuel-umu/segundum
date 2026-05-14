@@ -18,6 +18,7 @@ public class ManejadorEventosImpl implements ManejadorEventos{
 		servicio.sumarCompras(idComprador);
 		System.out.println("Contador de compras incrementado para el id de usuario: " + idComprador);
 	}
+	
 	@Override
 	public void valoracionCreada(String id, String rol, double puntuacion) 
 			throws RepositorioException, EntidadNoEncontrada{

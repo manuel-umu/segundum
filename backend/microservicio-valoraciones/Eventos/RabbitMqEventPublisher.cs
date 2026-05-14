@@ -8,11 +8,17 @@ public class PublicadorEventosRabbitMQ : IPublicadorEventos
 {
     private readonly IConnection _connection;
     private readonly string _exchangeName;
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 
-    public PublicadorEventosRabbitMQ(IConnection connection, IConfiguration config)
+    public PublicadorEventosRabbitMQ(
+        IConnection connection,
+        IConfiguration config)
     {
         _connection = connection;
-        _exchangeName = config["RabbitMQ:Exchange"] ?? "valoraciones";
+        _exchangeName = config["RabbitMQ:Exchange"] ?? "bus";
     }
 
     public async Task PublicarAsync(Evento evento)
@@ -24,7 +30,7 @@ public class PublicadorEventosRabbitMQ : IPublicadorEventos
             type: ExchangeType.Topic,
             durable: true);
 
-        var json = JsonSerializer.Serialize(evento, evento.GetType());
+        var json = JsonSerializer.Serialize(evento, evento.GetType(), JsonOptions);
         var body = Encoding.UTF8.GetBytes(json);
 
         var properties = new BasicProperties

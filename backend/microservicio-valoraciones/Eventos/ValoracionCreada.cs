@@ -2,12 +2,10 @@ namespace MicroservicioValoraciones.Eventos;
 
 public class ValoracionCreada : Evento
 {
-    public override string RoutingKey => "valoracion.creada";
+    public override string RoutingKey => "bus.valoraciones.creada";
 
-    public long IdValoracion { get; set; }
-    public string IdCompraventa { get; set; } = string.Empty;
-    public string IdUsuarioValora { get; set; } = string.Empty;
-    public string IdUsuarioValorado { get; set; } = string.Empty;
-    public string RolUsuarioValorado { get; set; } = string.Empty;
-    public int Puntuacion { get; set; }
+    public string tipo => "valoracion-creada";
+    public string id { get; set; } = string.Empty;
+    public string rol { get; set; } = string.Empty;
+    public int puntuacion { get; set; }
 }

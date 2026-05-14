@@ -4,6 +4,7 @@ services:
     build: ./microservicio-usuarios
     ports:
       - "8080:8080"
+    restart: always
     environment:
       - RABBITMQ_HOST=amqp://guest:guest@rabbitmq:5672
       - DB_URL=jdbc:mysql://mysql:3306/db_user?serverTimezone=CET
@@ -12,11 +13,11 @@ services:
     depends_on:
       - mysql
       - rabbitmq
-
   productos:
     build: ./microservicio-productos
     ports:
       - "8081:8081"
+    restart: on-failure
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/db_productos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
@@ -25,7 +26,7 @@ services:
     depends_on:
       - mysql
       - rabbitmq
-    
+
   compraventas:
     build: ./microservicio-compraventas
     ports:
@@ -47,7 +48,7 @@ services:
       - ConnectionStrings__MySql=Server=mysql;Port=3306;Database=db_valoraciones;User=root;Password=***REMOVED***
       - Compraventas__BaseUrl=http://compraventas:8082/api/compraventas/
       - RabbitMQ__ConnectionString=amqp://guest:guest@rabbitmq:5672/
-      - RabbitMQ__Exchange=valoraciones
+      - RabbitMQ__Exchange=bus
     depends_on:
       - mysql
       - rabbitmq

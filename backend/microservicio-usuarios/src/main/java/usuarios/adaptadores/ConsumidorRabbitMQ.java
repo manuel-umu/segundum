@@ -35,7 +35,7 @@ public class ConsumidorRabbitMQ implements ServletContextListener{
 		String uri = System.getenv().getOrDefault("RABBITMQ_HOST", "localhost");
 		
 		try {
-			Thread.sleep(15000);
+			Thread.sleep(30000);
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setUri(uri);
 	

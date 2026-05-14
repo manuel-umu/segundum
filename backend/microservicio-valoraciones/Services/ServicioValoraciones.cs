@@ -71,12 +71,9 @@ public class ServicioValoraciones : IServicioValoraciones
 
         var evento = new ValoracionCreada
         {
-            IdValoracion = valoracion.Id,
-            IdCompraventa = valoracion.IdCompraventa,
-            IdUsuarioValora = valoracion.IdUsuarioValora,
-            IdUsuarioValorado = valoracion.IdUsuarioValorado,
-            RolUsuarioValorado = valoracion.RolUsuarioValorado.ToString(),
-            Puntuacion = valoracion.Puntuacion
+            id = valoracion.IdUsuarioValorado,
+            rol = valoracion.RolUsuarioValorado.ToString().ToUpperInvariant(),
+            puntuacion = valoracion.Puntuacion
         };
         await _publicador.PublicarAsync(evento);
 
