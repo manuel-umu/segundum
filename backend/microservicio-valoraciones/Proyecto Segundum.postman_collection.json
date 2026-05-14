@@ -1,0 +1,825 @@
+{
+  "info": {
+    "_postman_id": "b8b3301d-36b1-4c67-a5e4-b6972c748d44",
+    "name": "Proyecto Segundum",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52336169",
+    "_collection_link": "https://go.postman.co/collection/52336169-b8b3301d-36b1-4c67-a5e4-b6972c748d44?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Crear Usuario Vendedor",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\": \"Emilio\",\r\n    \"apellidos\": \"González\",\r\n    \"email\": \"emilio@gmail.com\",\r\n    \"fechaNac\": \"2026-01-01\",\r\n    \"clave\": \"aaaa\",\r\n    \"telefono\": \"666666666\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Usuario Comprador",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\": \"Manuel\",\r\n    \"apellidos\": \"Chica\",\r\n    \"email\": \"manuel@gmail.com\",\r\n    \"fechaNac\": \"2026-01-01\",\r\n    \"clave\": \"bbbb\",\r\n    \"telefono\": \"666666666\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Usuario Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\": \"Marcos\",\r\n    \"apellidos\": \"Gonzalez\",\r\n    \"email\": \"marcos@gmail.com\",\r\n    \"fechaNac\": \"2026-01-01\",\r\n    \"clave\": \"bbbb\",\r\n    \"telefono\": \"666666666\",\r\n    \"isAdmin\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Vendedor",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"emilio@gmail.com\",\r\n    \"password\": \"aaaa\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/auth/login",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Comprador",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"manuel@gmail.com\",\r\n    \"password\": \"bbbb\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/auth/login",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"marcos@gmail.com\",\r\n    \"password\": \"bbbb\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/auth/login",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listado Usuarios",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_comprador}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios/{{vendedor_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{vendedor_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Usuario Comprador",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios/{{vendedor_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{vendedor_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Nombre Usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios/{{vendedor_id}}/nombre",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{vendedor_id}}",
+                "nombre"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\": \"Emilio Nuevo\",\r\n    \"apellidos\": \"González\",\r\n    \"email\": \"emilio@gmail.com\",\r\n    \"fechaNac\": \"2026-01-01\",\r\n    \"clave\": \"aaaa\",\r\n    \"telefono\": \"666666666\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios/{{vendedor_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{vendedor_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/usuarios/{{vendedor_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{vendedor_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Recuperar Categorías Raíz",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/categorias",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "categorias"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Descendientes Categoría",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/categorias/{{categoria_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoria_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Producto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"iPhone 17\",\r\n    \"descripcion\": \"Rápido\",\r\n    \"precio\": 700.0,\r\n    \"estado\": \"NUEVO\",\r\n    \"fechaPubli\": \"2026-04-17T00:00:00\",\r\n    \"envioDispo\": false,\r\n    \"categoria\": {\r\n        \"id\": \"{{categoria_id}}\"\r\n    },\r\n    \"vendedor\": {\r\n        \"id\": \"{{vendedor_id}}\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/productos",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Producto 2",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"iPhone 17\",\r\n    \"descripcion\": \"Rápido\",\r\n    \"precio\": 700.0,\r\n    \"estado\": \"NUEVO\",\r\n    \"fechaPubli\": \"2026-04-17T00:00:00\",\r\n    \"envioDispo\": false,\r\n    \"categoria\": {\r\n        \"id\": \"{{categoria_id}}\"\r\n    },\r\n    \"vendedor\": {\r\n        \"id\": \"{{vendedor_id}}\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/productos",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Producto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/productos/{{producto_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos",
+                "{{producto_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listado Productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/productos?page=0&size=10",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Asignar Recogida Producto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"longitud\": 10.0,\r\n    \"latitud\": 10.0,\r\n    \"descripcion\": \"Plaza circular\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/productos/{{producto_id}}/recogida",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos",
+                "{{producto_id}}",
+                "recogida"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Producto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"descripcion\": \"No tan rápido\",\r\n    \"precio\": 600.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/productos/{{producto_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos",
+                "{{producto_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Añadir Visualización",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/productos/{{producto_id}}/visualizaciones",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos",
+                "{{producto_id}}",
+                "visualizaciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Historial Mes Productos",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/productos/historial/year/2026/mes/4",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "productos",
+                "historial",
+                "year",
+                "2026",
+                "mes",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Compraventas",
+      "item": [
+        {
+          "name": "Registrar Compraventa",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_comprador}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idProducto\": \"{{producto_id}}\",\r\n    \"idComprador\": \"{{comprador_id}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_pasarela}}/compraventas",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "compraventas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Compras",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_comprador}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/compraventas/compras/{{comprador_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "compraventas",
+                "compras",
+                "{{comprador_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Ventas",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_vendedor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/compraventas/ventas/{{vendedor_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "compraventas",
+                "ventas",
+                "{{vendedor_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Compraventas entre 2",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_pasarela}}/compraventas?idComprador={{comprador_id}}&idVendedor={{vendedor_id}}",
+              "host": [
+                "{{url_pasarela}}"
+              ],
+              "path": [
+                "compraventas"
+              ],
+              "query": [
+                {
+                  "key": "idComprador",
+                  "value": "{{comprador_id}}"
+                },
+                {
+                  "key": "idVendedor",
+                  "value": "{{vendedor_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Valoraciones",
+      "item": [
+        {
+          "name": "Valorar un Vendedor",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Valorar un Comprador",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Ver valoraciones usuario vendedor",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Ver valoraciones usuario comprador",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
