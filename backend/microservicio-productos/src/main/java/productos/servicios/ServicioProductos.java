@@ -203,6 +203,7 @@ public class ServicioProductos implements IServicioProductos {
 		productoRepo.save(p);
 	}
 	
+	@Override
 	public void crearUsuario(String id, String nombre, String apellidos, String email) throws RepositorioException{
 		// Control de integridad de los datos
 		if (nombre == null || nombre.isEmpty())
@@ -216,6 +217,7 @@ public class ServicioProductos implements IServicioProductos {
 		usuarioRepo.save(usuario);
 	}
 	
+	@Override
 	public void modificarUsuario(String id, String nombre, String apellidos) throws RepositorioException, EntidadNoEncontrada{
 		// Control de integridad de los datos
 		if (id == null || id.isEmpty())
