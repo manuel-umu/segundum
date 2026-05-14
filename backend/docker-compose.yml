@@ -41,11 +41,13 @@ services:
     build: ./microservicio-valoraciones
     ports:
       - "8083:8083"
+    restart: on-failure
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=db_valoraciones;User=root;Password=***REMOVED***;
-      - RabbitMQ__Host=rabbitmq
-      - Compraventas__BaseUrl=http://compraventas:8082/
+      - ConnectionStrings__MySql=Server=mysql;Port=3306;Database=db_valoraciones;User=root;Password=***REMOVED***
+      - Compraventas__BaseUrl=http://compraventas:8082/api/compraventas/
+      - RabbitMQ__ConnectionString=amqp://guest:guest@rabbitmq:5672/
+      - RabbitMQ__Exchange=valoraciones
     depends_on:
       - mysql
       - rabbitmq
