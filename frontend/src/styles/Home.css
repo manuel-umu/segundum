@@ -1,49 +1,330 @@
-/* Altura fija para las imagenes del carrusel */
+/* GENERAL */
+.home {
+  padding-bottom: 3rem;
+}
+
+.home__section {
+  margin-top: 3rem;
+}
+
+.home__section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: #212529;
+}
+
+.home__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.25rem;
+}
+
+.home__section-link {
+  font-size: 0.9rem;
+  color: #6c757d;
+  text-decoration: none;
+}
+
+.home__section-link:hover {
+  color: #212529;
+}
+
+
+/* CARRUSEL */
+.home__carousel-section {
+  width: 100%;
+  background: #111;
+}
+
+.home__carousel {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+}
+
+.home__carousel-track {
+  width: 100%;
+  height: 100%;
+}
+
+.home__carousel-slide {
+  position: absolute;
+  inset: 0;                   
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.home__carousel-slide--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .home__carousel-img {
-  height: 350px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-/* CSS Grid para las categorias */
-.home__categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 0.75rem;
+/* Degradado oscuro sobre la imagen para que el texto sea legible */
+.home__carousel-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 100%);
 }
 
-/* CSS Grid para los productos destacados con media queries */
-.home__destacados-grid {
+.home__carousel-caption {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 2.5rem;
+  color: #fff;
+  max-width: 480px;
+}
+
+.home__carousel-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.home__carousel-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.home__carousel-price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  opacity: 0.95;
+}
+
+/* Botones anterior/siguiente */
+.home__carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 2.2rem;
+  line-height: 1;
+  padding: 0.2rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.home__carousel-control:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.home__carousel-control--prev { left: 1rem; }
+.home__carousel-control--next { right: 1rem; }
+
+/* Puntos indicadores */
+.home__carousel-indicators {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+
+.home__carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.home__carousel-dot--active {
+  background: #fff;
+  transform: scale(1.3);
+}
+
+
+/* CATEGORÍAS — CSS GRID */
+.home__categories-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  /* auto-fill: crea tantas columnas como quepan de mínimo 120px */
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 1rem;
 }
 
+.home__category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.2rem 0.5rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #495057;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  text-align: center;
+}
+
+.home__category-card:hover {
+  background: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  color: #212529;
+}
+
+.home__category-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.home__category-name {
+  line-height: 1.2;
+}
+
+
+/* DESTACADOS — CSS GRID con media queries  */
+.home__destacados-grid {
+  display: grid;
+  gap: 1.25rem;
+
+  /* Móvil: 1 columna */
+  grid-template-columns: 1fr;
+}
+
+/* Tablet (≥576px): 2 columnas */
 @media (min-width: 576px) {
   .home__destacados-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* Escritorio medio (≥768px): 3 columnas */
 @media (min-width: 768px) {
   .home__destacados-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
+/* Escritorio grande (≥1200px): 4 columnas */
 @media (min-width: 1200px) {
   .home__destacados-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-/* Imagen de los productos destacados */
-.home__destacado-img {
-  height: 160px;
-  object-fit: cover;
+.home__destacado-card {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
-@media (max-width: 400px) {
-  .home__carousel-img {
-    height: 200px;
+.home__destacado-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.home__destacado-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;   /* proporción fija sin importar el tamaño */
+  overflow: hidden;
+}
+
+.home__destacado-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.home__destacado-card:hover .home__destacado-img {
+  transform: scale(1.04);
+}
+
+.home__destacado-envio {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #198754;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.home__destacado-body {
+  padding: 0.75rem 1rem;
+}
+
+.home__destacado-categoria {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.home__destacado-titulo {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  /* Trunca a 2 líneas con ellipsis */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #212529;
+}
+
+.home__destacado-precio {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 0;
+}
+
+
+/* RESPONSIVE PARA MOVIL */
+@media (max-width: 575px) {
+  .home__carousel {
+    height: 260px;
+  }
+
+  .home__carousel-title {
+    font-size: 1.2rem;
+  }
+
+  .home__carousel-caption {
+    bottom: 1.5rem;
+    left: 1rem;
+    right: 4rem;
+  }
+
+  .home__carousel-price {
+    font-size: 1rem;
   }
 }

@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import useFetch from '../hooks/useFetch';
 import { getProduct, deleteProduct } from '../services/productService';
 import { requestPurchase } from '../services/saleService';
 import { CATEGORIAS } from '../services/mockData';
@@ -29,19 +30,11 @@ export default function ProductDetail() {
   const [showModal, setShowModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-   const [producto, setProducto] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: producto, loading, error } = useFetch(
+    () => getProduct(id),
+    [id]
+  );
 
-  // Carga el producto cada vez que cambia el id
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    getProduct(id)
-      .then(p => setProducto(p))
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [id]);
   // --- Acciones ---
 
   // Función que realiza la compra
