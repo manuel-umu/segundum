@@ -1,0 +1,107 @@
+import { NavLink } from 'react-router-dom';
+import '../styles/Navbar.css';
+
+// En Fase 2 estos valores vendrán de useAuth()
+const isAuthenticated = true;
+const isAdmin = true;
+
+function navLinkClass({ isActive }) {
+  return 'nav-link' + (isActive ? ' active' : '');
+}
+
+export default function Navbar() {
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container">
+        <NavLink className="navbar-brand" to="/">
+          2ª Mano
+        </NavLink>
+
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarMain"
+          aria-controls="navbarMain"
+          aria-expanded="false"
+          aria-label="Abrir menú de navegación"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarMain">
+          {/* Enlaces principales — izquierda */}
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink className={navLinkClass} to="/" end>
+                Inicio
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className={navLinkClass} to="/productos">
+                Productos
+              </NavLink>
+            </li>
+
+            {isAuthenticated && (
+              <>
+                <li className="nav-item">
+                  <NavLink className={navLinkClass} to="/mis-ventas">
+                    Mis Ventas
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className={navLinkClass} to="/mis-compras">
+                    Mis Compras
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {isAdmin && (
+              <>
+                <li className="nav-item">
+                  <NavLink className={navLinkClass} to="/admin/usuarios">
+                    Admin Usuarios
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className={navLinkClass} to="/admin/ventas">
+                    Admin Ventas
+                  </NavLink>
+                </li>
+              </>
+            )}
+          </ul>
+
+          {/* Sesión — derecha */}
+          <ul className="navbar-nav ms-auto">
+            {isAuthenticated ? (
+              <>
+                <li className="nav-item">
+                  <NavLink className={navLinkClass} to="/perfil">
+                    Perfil
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-outline-light ms-2"
+                    onClick={() => {}}
+                  >
+                    Cerrar sesión
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item">
+                <NavLink className="btn btn-outline-light ms-2" to="/login">
+                  Login
+                </NavLink>
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+}
