@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import '../styles/Navbar.css';
+import '../App.css';
 
 // En Fase 2 estos valores vendrán de useAuth()
 const isAuthenticated = true;
