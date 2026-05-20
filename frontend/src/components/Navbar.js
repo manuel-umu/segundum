@@ -13,7 +13,7 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
         <NavLink className="navbar-brand" to="/">
-          2ª Mano
+          SegundUM
         </NavLink>
 
         <button

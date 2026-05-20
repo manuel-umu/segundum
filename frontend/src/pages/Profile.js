@@ -79,7 +79,7 @@ export default function Profile() {
       hayError = true;
     }
     if (!passwordRegex.test(passwordNueva)) {
-      setErrorPasswordNueva("Minimo 6 caracteres con letras y numeros.");
+      setErrorPasswordNueva("Minimo 6 caracteres con letras y números.");
       hayError = true;
     }
     if (passwordNueva !== passwordConfirmar) {

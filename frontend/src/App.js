@@ -18,7 +18,6 @@ export default function App() {
           <Route index element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/productos" element={<ProductList />} />/*
-          {/* /nuevo debe ir antes que /:id para no ser capturado como id */}
           <Route path="/mis-ventas" element={<MySales />} />
           <Route path="/mis-compras" element={<MyPurchases />} />
           <Route path="/perfil" element={<Profile />} />

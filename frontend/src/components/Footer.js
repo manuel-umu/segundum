@@ -26,15 +26,15 @@ export default function Footer() {
           {/* Columna 3 — grupo */}
           <div className="col-12 col-md-4">
             <h6 className="text-white fw-bold mb-1">Grupo</h6>
-            <p className="mb-0">Alumno 1 (placeholder)</p>
-            <p className="mb-0">Alumno 2 (placeholder)</p>
+            <p className="mb-0">Manuel Chica Piñera</p>
+            <p className="mb-0">Emilio González Fernández-Piqueras</p>
           </div>
         </div>
 
         <hr className="footer-divider my-3" />
 
         <p className="text-center mb-0">
-          &copy; {AÑO} 2ª Mano &mdash; Segundum 25/26 · Universidad de Murcia
+          &copy; {AÑO} SegundUM · Universidad de Murcia
         </p>
       </div>
     </footer>
