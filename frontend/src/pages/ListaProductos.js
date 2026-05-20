@@ -21,7 +21,7 @@ export default function ListaProductos() {
       {/* Grid de tarjetas - cada tarjeta abre el popup al hacer clic */}
       <div className="grid-productos mt-3">
         {PRODUCTOS.map(function (p) {
-          // Buscamos el nombre de la categoria del producto
+          // TEMPORAL: Buscamos el nombre de la categoria del producto
           var nombreCategoria = "";
           for (var j = 0; j < CATEGORIAS.length; j++) {
             if (CATEGORIAS[j].id === p.categoria_id) {

@@ -7,6 +7,7 @@ export default function TarjetaProducto({ producto, onCerrar }) {
   var esMiProducto = producto.vendedor_id === usuarioId;
 
   var textoEstado = "";
+  // TEMPORAL
   if (producto.estado === "nuevo") {
     textoEstado = "Nuevo";
   }
