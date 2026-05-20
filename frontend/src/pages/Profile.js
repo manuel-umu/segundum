@@ -2,7 +2,7 @@ import { useState } from "react";
 
 // Regex para validar email
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Regex para validar contrasena: minimo 6 caracteres con letras y numeros
+// Regex para validar contrasena: minimo 6 caracteres con letras y números
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
 export default function Profile() {
@@ -17,12 +17,12 @@ export default function Profile() {
   const [errorEmail, setErrorEmail] = useState("");
   const [perfilGuardado, setPerfilGuardado] = useState(false);
 
-  // Campos de contrasena
+  // Campos de contraseña
   const [passwordActual, setPasswordActual] = useState("");
   const [passwordNueva, setPasswordNueva] = useState("");
   const [passwordConfirmar, setPasswordConfirmar] = useState("");
 
-  // Errores del formulario de contrasena
+  // Errores del formulario de contraseña
   const [errorPasswordActual, setErrorPasswordActual] = useState("");
   const [errorPasswordNueva, setErrorPasswordNueva] = useState("");
   const [errorPasswordConfirmar, setErrorPasswordConfirmar] = useState("");
