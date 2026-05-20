@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function ProductoTarjeta({ producto, onCerrar }) {
+export default function TarjetaProducto({ producto, onCerrar }) {
   const [comprado, setComprado] = useState(false);
 
   var usuarioId = 1;

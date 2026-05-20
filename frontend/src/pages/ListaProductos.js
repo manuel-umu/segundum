@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { PRODUCTOS, CATEGORIAS } from "../services/mockData";
-import ProductoTarjeta from "../components/ProductoTarjeta";
+import ProductoTarjeta from "../components/TarjetaProducto";
 
-export default function ProductList() {
+export default function ListaProductos() {
   // Producto seleccionado para el popup (null = cerrado)
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 

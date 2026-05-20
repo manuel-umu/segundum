@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { USUARIOS_MOCK } from '../services/mockData';
 
-export default function AdminUsers() {
+export default function AdminUsuarios() {
 
   const [usuarios, setUsuarios] = useState([]);
   
@@ -12,6 +12,8 @@ export default function AdminUsers() {
 
   return (
     <section className="container py-4">
+
+      {/* Cabecera */}
       <div className="row align-items-center mb-4">
         <div className="col">
           <h2>Usuarios registrados</h2>
@@ -21,6 +23,7 @@ export default function AdminUsers() {
         </div>
       </div>
 
+      {/* Tabla */}
       <div className="table-responsive">
         <table className="table table-hover table-striped text-center">
           <thead className="table-dark">
@@ -43,8 +46,8 @@ export default function AdminUsers() {
               usuarios.map(usuario => (
                 <tr key={usuario.id}>
                   <td>{usuario.nombre}</td>
-                  <td className="admin-users__col">{usuario.apellidos}</td>
-                  <td className="text-center admin-users__col">{usuario.email}</td>
+                  <td className="col-ocultar">{usuario.apellidos}</td>
+                  <td className="text-center col-ocultar">{usuario.email}</td>
                   <td>{usuario.num_compras}</td>
                   <td>{usuario.num_ventas}</td>
                 </tr>
@@ -53,7 +56,6 @@ export default function AdminUsers() {
           </tbody>
         </table>
       </div>
-
     </section>
   );
 }

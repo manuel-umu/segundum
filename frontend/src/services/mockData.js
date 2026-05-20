@@ -8,6 +8,7 @@ export const CATEGORIAS = [
   { id: 7, nombre: 'Vehículos' },
   { id: 8, nombre: 'Informática' },
 ];
+
 export const PRODUCTOS = [
   {
     id: 1,
@@ -80,6 +81,7 @@ export const PRODUCTOS = [
     imagen: 'https://picsum.photos/seed/prod5/400/300',
   }
 ];
+
 export const USUARIOS_MOCK = [
   {
     id: 1,
@@ -112,7 +114,9 @@ export const VENTAS_MOCK = [
     id: 1,
     producto: 'iPhone 13 128GB Azul',
     precio: 550,
+    comprador_id: 1,
     comprador: 'Emilio González',
+    vendedor_id: 2,
     vendedor: 'Manuel Chica',
     fecha: '2026-03-15',
   },
@@ -120,7 +124,9 @@ export const VENTAS_MOCK = [
     id: 2,
     producto: 'MacBook Pro 14" M1 Pro',
     precio: 1400,
+    comprador_id: 2,
     comprador: 'Manuel Chica',
+    vendedor_id: 1,
     vendedor: 'Emilio González',
     fecha: '2026-04-02',
   },
@@ -128,8 +134,10 @@ export const VENTAS_MOCK = [
     id: 3,
     producto: 'Teclado mecánico Keychron K2',
     precio: 75,
+    comprador_id: 1,
     comprador: 'Emilio González',
-    vendedor: 'Manuel Chica',
+    vendedor_id: 3,
+    vendedor: 'Laura Martínez',
     fecha: '2026-05-10',
   },
 ];

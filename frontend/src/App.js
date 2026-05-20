@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 
 import Login from './pages/Login';
-import Register from './pages/Register';
-import ProductList from './pages/ProductList';
-import MySales from './pages/MySales';
-import MyPurchases from './pages/MyPurchases';
-import Profile from './pages/Profile';
-import AdminUsers from './pages/AdminUsers';
-import AdminSales from './pages/AdminSales';
+import Registro from './pages/Registro';
+import ListaProductos from './pages/ListaProductos';
+import MisVentas from './pages/MisVentas';
+import MisCompras from './pages/MisCompras';
+import Perfil from './pages/Perfil';
+import AdminUsuarios from './pages/AdminUsuarios';
+import AdminCompraventas from './pages/AdminCompraventas';
 
 export default function App() {
   return (
@@ -16,13 +16,13 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/productos" element={<ProductList />} />/*
-          <Route path="/mis-ventas" element={<MySales />} />
-          <Route path="/mis-compras" element={<MyPurchases />} />
-          <Route path="/perfil" element={<Profile />} />
-          <Route path="/admin/usuarios" element={<AdminUsers />} />
-          <Route path="/admin/ventas" element={<AdminSales />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/productos" element={<ListaProductos />} />/*
+          <Route path="/ventas" element={<MisVentas />} />
+          <Route path="/compras" element={<MisCompras />} />
+          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/admin/usuarios" element={<AdminUsuarios />} />
+          <Route path="/admin/compraventas" element={<AdminCompraventas />} />
         </Route>
       </Routes>
     </BrowserRouter>

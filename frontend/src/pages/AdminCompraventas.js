@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { VENTAS_MOCK } from '../services/mockData';
 
-export default function AdminSales() {
+export default function AdminCompraventas() {
 
   const [compraventas, setCompraventas] = useState([]);
 
@@ -12,6 +12,8 @@ export default function AdminSales() {
 
   return (
     <section className="container py-4">
+
+      {/* Cabecera */}
       <div className="row align-items-center mb-4">
         <div className="col">
           <h2>Compraventas entre usuarios</h2>
@@ -20,6 +22,8 @@ export default function AdminSales() {
           <span className="badge bg-primary fs-6">{compraventas.length} compraventas</span>
         </div>
       </div>
+
+      {/* Tabla */}
       <div className="table-responsive">
         <table className="table table-hover table-striped text-center">
           <thead className="table-dark">
@@ -56,9 +60,6 @@ export default function AdminSales() {
           </tbody>
         </table>
       </div>
-
-
-
     </section>
   );
 }
