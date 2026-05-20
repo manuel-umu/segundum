@@ -20,7 +20,7 @@ export default function Login() {
 
     // TODO: conectar con el backend
     console.log("Login con:", email, password);
-    window.location.href = "/productos";
+    navigate("/productos");
   }
 
   return (
