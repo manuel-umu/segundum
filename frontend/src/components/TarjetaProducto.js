@@ -36,9 +36,7 @@ export default function TarjetaProducto({ producto, onCerrar }) {
   }
 
   return (
-    <div
-      className="modal d-block modal-fondo"
-    >
+    <div className="modal d-block modal-fondo">
       <div className="modal-dialog modal-lg modal-dialog-scrollable">
         <div className="modal-content">
           <div className="modal-header">
@@ -85,7 +83,6 @@ export default function TarjetaProducto({ producto, onCerrar }) {
 
             {/* Descripcion completa */}
             <p className="mt-3">{producto.descripcion}</p>
-
           </div>
 
           <div className="modal-footer">

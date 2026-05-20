@@ -1,11 +1,11 @@
-import { NavLink } from 'react-router-dom';
-import '../App.css';
+import { NavLink } from "react-router-dom";
+import "../App.css";
 
-const isAuthenticated = false;
+const isAuthenticated = true;
 const isAdmin = true;
 
 function navLinkClass({ isActive }) {
-  return 'nav-link' + (isActive ? ' active' : '');
+  return "nav-link" + (isActive ? " active" : "");
 }
 
 export default function Navbar() {
@@ -31,7 +31,6 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarMain">
           {/* Enlaces principales — izquierda */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-           
             <li className="nav-item">
               <NavLink className={navLinkClass} to="/productos">
                 Productos
@@ -69,28 +68,23 @@ export default function Navbar() {
             )}
           </ul>
 
-          {/* Sesión — derecha */}
+          {/* Sesion — derecha */}
           <ul className="navbar-nav ms-auto">
-            {isAuthenticated ? (
-              <>
-                <li className="nav-item">
-                  <NavLink className={navLinkClass} to="/perfil">
-                    Perfil
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-light ms-2"
-                    onClick={() => {}}
-                  >
-                    Cerrar sesión
-                  </button>
-                </li>
-              </>
-            ) : (
-              <li className="nav-item">
-              </li>
-            )}
+            <li className="nav-item">
+              <NavLink className={navLinkClass} to="/perfil">
+                Perfil
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <button
+                className="btn btn-outline-light ms-2"
+                onClick={function () {
+                  console.log("Logout");
+                }}
+              >
+                Logout
+              </button>
+            </li>
           </ul>
         </div>
       </div>

@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { USUARIOS_MOCK } from '../services/mockData';
+import { USUARIOS_MOCK } from "../services/mockData";
 
 export default function AdminUsuarios() {
-
   const [usuarios, setUsuarios] = useState([]);
-  
+
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
     setUsuarios(USUARIOS_MOCK);
@@ -12,14 +11,15 @@ export default function AdminUsuarios() {
 
   return (
     <section className="container py-4">
-
       {/* Cabecera */}
       <div className="row align-items-center mb-4">
         <div className="col">
           <h2>Usuarios registrados</h2>
         </div>
         <div className="col-auto">
-          <span className="badge bg-primary fs-6">{usuarios.length} usuarios</span>
+          <span className="badge bg-primary fs-6">
+            {usuarios.length} usuarios
+          </span>
         </div>
       </div>
 
@@ -28,11 +28,21 @@ export default function AdminUsuarios() {
         <table className="table table-hover table-striped text-center">
           <thead className="table-dark">
             <tr>
-              <th scope='col' style={{ width: '15%' }}>Nombre</th>
-              <th className="col-ocultar" scope='col' style={{ width: '30%' }}>Apellidos</th>
-              <th className="col-ocultar" scope='col' style={{ width: '25%' }}>Email</th>
-              <th scope='col' style={{ width: '15%' }}>Nº compras</th>
-              <th scope='col' style={{ width: '15%' }}>Nº ventas</th>
+              <th scope="col" style={{ width: "15%" }}>
+                Nombre
+              </th>
+              <th className="col-ocultar" scope="col" style={{ width: "30%" }}>
+                Apellidos
+              </th>
+              <th className="col-ocultar" scope="col" style={{ width: "25%" }}>
+                Email
+              </th>
+              <th scope="col" style={{ width: "15%" }}>
+                Nº compras
+              </th>
+              <th scope="col" style={{ width: "15%" }}>
+                Nº ventas
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -43,7 +53,7 @@ export default function AdminUsuarios() {
                 </td>
               </tr>
             ) : (
-              usuarios.map(usuario => (
+              usuarios.map((usuario) => (
                 <tr key={usuario.id}>
                   <td>{usuario.nombre}</td>
                   <td className="col-ocultar">{usuario.apellidos}</td>

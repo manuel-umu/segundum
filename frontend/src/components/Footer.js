@@ -1,4 +1,4 @@
-import '../App.css';
+import "../App.css";
 
 const AÑO = new Date().getFullYear();
 
@@ -7,7 +7,6 @@ export default function Footer() {
     <footer className="footer py-4 mt-auto">
       <div className="container">
         <div className="row gy-3 align-items-start">
-
           {/* Marca */}
           <div className="col-12 col-md-4">
             <h6 className="text-white fw-bold mb-1">SegundUM</h6>

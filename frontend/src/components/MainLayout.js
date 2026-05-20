@@ -1,11 +1,11 @@
-import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export default function MainLayout() {
   return (
     <>
-      <Navbar />
+      <Header />
       <main className="container-fluid py-4 flex-grow-1">
         <Outlet />
       </main>

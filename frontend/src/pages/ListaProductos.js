@@ -53,7 +53,10 @@ export default function ListaProductos() {
 
       {/* Popup de detalle - solo visible si hay un producto seleccionado */}
       {productoSeleccionado && (
-        <ProductoTarjeta producto={productoSeleccionado} onCerrar={cerrarPopup} />
+        <ProductoTarjeta
+          producto={productoSeleccionado}
+          onCerrar={cerrarPopup}
+        />
       )}
     </section>
   );

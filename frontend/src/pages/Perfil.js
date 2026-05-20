@@ -102,7 +102,6 @@ export default function Profile() {
       <h1 className="mb-4">Mi perfil</h1>
 
       <div className="row">
-
         {/* Columna izquierda: datos personales */}
         <div className="col-12 col-lg-6">
           <div className="card">
@@ -116,9 +115,7 @@ export default function Profile() {
 
               <form onSubmit={guardarPerfil}>
                 <div className="mb-3">
-                  <label className="form-label">
-                    Nombre
-                  </label>
+                  <label className="form-label">Nombre</label>
                   <input
                     type="text"
                     id="nombre"
@@ -132,9 +129,7 @@ export default function Profile() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">
-                    Apellidos
-                  </label>
+                  <label className="form-label">Apellidos</label>
                   <input
                     type="text"
                     id="apellidos"
@@ -150,9 +145,7 @@ export default function Profile() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">
-                    Email
-                  </label>
+                  <label className="form-label">Email</label>
                   <input
                     type="email"
                     id="email"
@@ -186,9 +179,7 @@ export default function Profile() {
 
               <form onSubmit={cambiarPassword}>
                 <div className="mb-3">
-                  <label className="form-label">
-                    Contraseña actual
-                  </label>
+                  <label className="form-label">Contraseña actual</label>
                   <input
                     type="password"
                     id="passwordActual"
@@ -204,9 +195,7 @@ export default function Profile() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">
-                    Nueva contraseña
-                  </label>
+                  <label className="form-label">Nueva contraseña</label>
                   <input
                     type="password"
                     id="passwordNueva"
@@ -225,9 +214,7 @@ export default function Profile() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">
-                    Confirmar contraseña
-                  </label>
+                  <label className="form-label">Confirmar contraseña</label>
                   <input
                     type="password"
                     id="passwordConfirmar"
