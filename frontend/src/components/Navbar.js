@@ -1,8 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import '../App.css';
 
-// En Fase 2 estos valores vendrán de useAuth()
-const isAuthenticated = true;
+const isAuthenticated = false;
 const isAdmin = true;
 
 function navLinkClass({ isActive }) {
@@ -32,11 +31,7 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarMain">
           {/* Enlaces principales — izquierda */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink className={navLinkClass} to="/" end>
-                Inicio
-              </NavLink>
-            </li>
+           
             <li className="nav-item">
               <NavLink className={navLinkClass} to="/productos">
                 Productos
@@ -94,9 +89,6 @@ export default function Navbar() {
               </>
             ) : (
               <li className="nav-item">
-                <NavLink className="btn btn-outline-light ms-2" to="/login">
-                  Login
-                </NavLink>
               </li>
             )}
           </ul>
