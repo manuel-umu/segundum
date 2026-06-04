@@ -8,7 +8,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  function iniciarSesion(e) {
+  async function iniciarSesion(e) {
     e.preventDefault();
     setError("");
 
@@ -18,9 +18,32 @@ export default function Login() {
       return;
     }
 
-    // TODO: conectar con el backend
     console.log("Login con:", email, password);
-    navigate("/productos");
+
+    try {
+      const res = await fetch("/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("usuario", JSON.stringify(data));
+        navigate("/productos");
+      } else {
+        setError("Error iniciando sesión: " + data.mensaje);
+      }
+    } catch (error) {
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
+    }
   }
 
   return (

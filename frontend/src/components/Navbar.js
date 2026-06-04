@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../App.css";
 
 const isAuthenticated = true;
@@ -9,6 +9,15 @@ function navLinkClass({ isActive }) {
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
+  
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  const logout = () => {
+    localStorage.removeItem("usuario");
+    navigate("/");
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -78,9 +87,7 @@ export default function Navbar() {
             <li className="nav-item">
               <button
                 className="btn btn-outline-light ms-2"
-                onClick={function () {
-                  console.log("Logout");
-                }}
+                onClick={logout}
               >
                 Logout
               </button>
