@@ -109,7 +109,8 @@ export default function ListaProductos() {
   }
 
   // Indica si hay algun filtro activo (para habilitar el boton "Limpiar")
-  const hayFiltros = categoria !== "" || descripcion !== "" || estado !== "" || precio !== "";
+  const hayFiltros =
+    categoria !== "" || descripcion !== "" || estado !== "" || precio !== "";
 
   const productosFiltrados = productos.filter(function (p) {
     if (idVendedor !== null) {
@@ -151,7 +152,6 @@ export default function ListaProductos() {
         </div>
         <div className="card-body">
           <div className="row g-3">
-
             {/* Categoria */}
             <div className="col-12 col-md-6 col-lg-3">
               <label htmlFor="f-categoria" className="form-label">

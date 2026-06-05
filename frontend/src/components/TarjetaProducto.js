@@ -100,12 +100,14 @@ export default function TarjetaProducto({ producto, onCerrar }) {
               {producto.envioDispo && (
                 <p className="text-success">Envio disponible</p>
               )}
-              {producto.vendedor && producto.vendedor.nombre && !esMiProducto && (
-                <p>
-                  <span className="text-muted">Vendedor: </span>
-                  {producto.vendedor.nombre}
-                </p>
-              )}
+              {producto.vendedor &&
+                producto.vendedor.nombre &&
+                !esMiProducto && (
+                  <p>
+                    <span className="text-muted">Vendedor: </span>
+                    {producto.vendedor.nombre}
+                  </p>
+                )}
               {esMiProducto && (
                 <p className="text-muted">
                   <small>Este anuncio es tuyo.</small>
@@ -114,7 +116,7 @@ export default function TarjetaProducto({ producto, onCerrar }) {
             </div>
             <p className="mt-3">{producto.descripcion}</p>
           </div>
-          
+
           {/* Botones */}
           <div className="modal-footer">
             <button className="btn btn-secondary" onClick={onCerrar}>

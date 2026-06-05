@@ -11,7 +11,10 @@ export default function Navbar() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
   const isAuthenticated = usuario !== null;
-  const isAdmin = isAuthenticated && usuario.roles && usuario.roles.indexOf("ADMINISTRADOR") !== -1;
+  const isAdmin =
+    isAuthenticated &&
+    usuario.roles &&
+    usuario.roles.indexOf("ADMINISTRADOR") !== -1;
 
   const logout = () => {
     localStorage.removeItem("usuario");
@@ -88,10 +91,7 @@ export default function Navbar() {
             )}
             <li className="nav-item">
               {usuario ? (
-                <button
-                  className="btn btn-outline-light ms-2"
-                  onClick={logout}
-                >
+                <button className="btn btn-outline-light ms-2" onClick={logout}>
                   Logout
                 </button>
               ) : (
