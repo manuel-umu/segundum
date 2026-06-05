@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  // Estado para los campos del formulario
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,8 +17,6 @@ export default function Login() {
       return;
     }
 
-    console.log("Login con:", email, password);
-
     try {
       const res = await fetch("/auth/login", {
         method: "POST",
@@ -28,21 +25,25 @@ export default function Login() {
         },
         body: JSON.stringify({
           username: email,
-          password,
+          password: password,
         }),
       });
 
-      const data = await res.json();
-
       if (res.ok) {
+        const data = await res.json();
         localStorage.setItem("usuario", JSON.stringify(data));
         navigate("/");
-      } else {
-        setError("Error iniciando sesión: " + data.mensaje);
+        return;
       }
-    } catch (error) {
-      console.log("STATUS:", error.response?.status);
-      console.log("DATA:", error.response?.data);
+      if (res.status === 401) {
+        setError("Email o contraseña incorrectos.");
+      } else if (res.status === 400) {
+        setError("Datos del formulario no validos.");
+      } else {
+        setError("No se pudo iniciar sesion. Intentalo de nuevo más tarde.");
+      }
+    } catch (err) {
+      setError("No se pudo conectar con el servidor.");
     }
   }
 

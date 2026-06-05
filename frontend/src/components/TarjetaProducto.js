@@ -1,39 +1,58 @@
 import { useState } from "react";
 
+function textoEstado(estado) {
+  if (estado === "NUEVO") return "Nuevo";
+  if (estado === "COMONUEVO") return "Como nuevo";
+  if (estado === "BUENESTADO") return "Buen estado";
+  if (estado === "ACEPTABLE") return "Aceptable";
+  if (estado === "PARAPIEZAS_O_REPARAR") return "Para piezas o reparar";
+  return "";
+}
+
 export default function TarjetaProducto({ producto, onCerrar }) {
   const [comprado, setComprado] = useState(false);
+  const [errorAccion, setErrorAccion] = useState("");
 
-  var usuarioId = 1;
-  var esMiProducto = producto.vendedor_id === usuarioId;
+  // Usuario logueado (puede ser null si no hay sesion)
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const usuarioId = usuario === null ? null : usuario.id;
 
-  var textoEstado = "";
-  // TEMPORAL
-  if (producto.estado === "nuevo") {
-    textoEstado = "Nuevo";
-  }
-  if (producto.estado === "como_nuevo") {
-    textoEstado = "Como nuevo";
-  }
-  if (producto.estado === "buen_estado") {
-    textoEstado = "Buen estado";
-  }
-  if (producto.estado === "aceptable") {
-    textoEstado = "Aceptable";
-  }
-  if (producto.estado === "para_piezas_o_reparar") {
-    textoEstado = "Para piezas o reparar";
+  // Comprobamos si el producto es del usuario actual
+  var esMiProducto = false;
+  if (producto.vendedor && producto.vendedor.id === usuarioId) {
+    esMiProducto = true;
   }
 
-  function comprar() {
-    // TODO: llamada al backend para registrar la compra
-    console.log("Comprando producto:", producto.id);
-    setComprado(true);
+  const estadoTxt = textoEstado(producto.estado);
+
+  var lugarRecogida = "";
+  if (producto.recogida && producto.recogida.descripcion) {
+    lugarRecogida = producto.recogida.descripcion;
   }
 
-  function eliminarProducto() {
-    // TODO: llamada al backend para eliminar
-    console.log("Eliminando producto:", producto.id);
-    onCerrar();
+  async function comprar() {
+    setErrorAccion("");
+    if (usuarioId === null) {
+      setErrorAccion("Debes iniciar sesion para comprar.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/compraventas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idProducto: producto.id,
+          idComprador: usuarioId,
+        }),
+      });
+      if (res.ok) {
+        setComprado(true);
+      } else {
+        setErrorAccion("No se pudo registrar la compra.");
+      }
+    } catch (err) {
+      setErrorAccion("Error de red al comprar.");
+    }
   }
 
   return (
@@ -46,60 +65,64 @@ export default function TarjetaProducto({ producto, onCerrar }) {
           </div>
 
           <div className="modal-body">
-            {/* Aviso si la compra ya se realizo */}
             {comprado && (
               <div className="alert alert-success">
-                Compra realizada. El vendedor se pondrá en contacto contigo.
+                Compra realizada. El vendedor se pondra en contacto contigo.
               </div>
+            )}
+
+            {errorAccion !== "" && (
+              <div className="alert alert-danger">{errorAccion}</div>
             )}
 
             {/* Datos del producto */}
             <div>
               <p className="fs-3 fw-bold text-success">{producto.precio} €</p>
 
-              {textoEstado !== "" && (
+              {estadoTxt !== "" && (
                 <p>
                   <span className="text-muted">Estado: </span>
-                  {textoEstado}
+                  {estadoTxt}
                 </p>
               )}
-
-              {producto.lugar_recogida && (
+              {producto.categoria && producto.categoria.nombre && (
+                <p>
+                  <span className="text-muted">Categoria: </span>
+                  {producto.categoria.nombre}
+                </p>
+              )}
+              {lugarRecogida !== "" && (
                 <p>
                   <span className="text-muted">Recogida en: </span>
-                  {producto.lugar_recogida}
+                  {lugarRecogida}
                 </p>
               )}
-
-              {producto.envio_disponible && (
+              {producto.envioDispo && (
                 <p className="text-success">Envio disponible</p>
               )}
-
+              {producto.vendedor && producto.vendedor.nombre && !esMiProducto && (
+                <p>
+                  <span className="text-muted">Vendedor: </span>
+                  {producto.vendedor.nombre}
+                </p>
+              )}
               {esMiProducto && (
                 <p className="text-muted">
                   <small>Este anuncio es tuyo.</small>
                 </p>
               )}
             </div>
-
-            {/* Descripcion completa */}
             <p className="mt-3">{producto.descripcion}</p>
           </div>
-
+          
+          {/* Botones */}
           <div className="modal-footer">
             <button className="btn btn-secondary" onClick={onCerrar}>
               Cerrar
             </button>
-
             {!esMiProducto && !comprado && (
               <button className="btn btn-primary" onClick={comprar}>
                 Comprar
-              </button>
-            )}
-
-            {esMiProducto && (
-              <button className="btn btn-danger" onClick={eliminarProducto}>
-                Eliminar anuncio
               </button>
             )}
           </div>
