@@ -1,16 +1,36 @@
 import { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import { VENTAS_MOCK, USUARIOS_MOCK } from "../services/mockData";
 
 const USUARIO_ACTUAL_ID = 1;
 
 export default function MisVentas() {
   const [ventas, setVentas] = useState([]);
+  const { id } = useParams();
 
+  // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
-    const misVentas = VENTAS_MOCK.filter(
-      (v) => v.vendedor_id === USUARIO_ACTUAL_ID,
-    );
-    setVentas(misVentas);
+    async function getUserVentas() {
+      const url = `http://localhost:8090/compraventas/ventas/${id}/?page=0&size=10`;
+      try {
+        const response = await fetch(url, {
+          headers: {
+            // 'Authorization': `Bearer ${cookies.get('token')}`
+          }
+        });
+        const body = await response.json();
+        if(response.status === 404){
+          // TODO cuando tengamos handlebars
+        } else if(response.status !== 200){
+          throw Error(body.message)
+        }
+        setVentas(body);
+      } catch (error){
+        console.error(`Error al obtener las ventas del usuario con ID ${id}:`, error);
+      }
+    }
+
+    getUserVentas();
   }, []);
 
   return (

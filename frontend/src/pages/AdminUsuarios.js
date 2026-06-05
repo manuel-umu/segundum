@@ -6,7 +6,26 @@ export default function AdminUsuarios() {
 
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
-    setUsuarios(USUARIOS_MOCK);
+    async function getAllUsuarios() {
+      const url = `http://localhost:8090/usuarios`;
+      try {
+        const response = await fetch(url, {
+          headers: {
+            // 'Authorization': `Bearer ${cookies.get('token')}`
+          }
+        });
+        const body = await response.json();
+        if(response.status === 404){
+          // TODO cuando tengamos handlebars
+        } else if(response.status !== 200){
+          throw Error(body.message)
+        }
+        setUsuarios(body);
+      } catch (error){
+        console.error("Error al obtener la lista de usuarios:", error);
+      }
+    }
+    getAllUsuarios();
   }, []);
 
   return (

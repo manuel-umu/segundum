@@ -1,16 +1,35 @@
 import { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import { VENTAS_MOCK, USUARIOS_MOCK } from "../services/mockData";
 
 const USUARIO_ACTUAL_ID = 1;
 
 export default function MisCompras() {
   const [compras, setCompras] = useState([]);
-
+  var { id } = useParams();
+  
+  // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
-    const misCompras = VENTAS_MOCK.filter(
-      (v) => v.comprador_id === USUARIO_ACTUAL_ID,
-    );
-    setCompras(misCompras);
+    async function getUserCompras() {
+      const url = `http://localhost:8090/compraventas/compras/${id}/?page=0&size=10`;
+      try {
+        const response = await fetch(url, {
+          headers: {
+            // 'Authorization': `Bearer ${cookies.get('token')}`
+          }
+        });
+        const body = await response.json();
+        if(response.status === 404){
+          // TODO cuando tengamos handlebars
+        } else if(response.status !== 200){
+          throw Error(body.message)
+        }
+        setCompras(body);
+      } catch (error){
+        console.error(`Error al obtener las compras del usuario con ID ${id}:`, error);
+      }
+    }
+    getUserCompras();
   }, []);
 
   return (

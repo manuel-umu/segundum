@@ -6,7 +6,26 @@ export default function AdminCompraventas() {
 
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
-    setCompraventas(VENTAS_MOCK);
+    async function getAllCompraventas() {
+      const url = `http://localhost:8090/compraventas`;
+      try {
+        const response = await fetch(url, {
+          headers: {
+            // 'Authorization': `Bearer ${cookies.get('token')}`
+          }
+        });
+        const body = await response.json();
+        if(response.status === 404){
+          // TODO cuando tengamos handlebars
+        } else if(response.status !== 200){
+          throw Error(body.message)
+        }
+        setCompraventas(body);
+      } catch (error){
+        console.error("Error al obtener la lista de compraventas:", error);
+      }
+    }
+    getAllCompraventas();
   }, []);
 
   return (
