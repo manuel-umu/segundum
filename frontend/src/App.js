@@ -4,11 +4,11 @@ import MainLayout from './components/MainLayout';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import ListaProductos from './pages/ListaProductos';
-import MisVentas from './pages/MisVentas';
 import MisCompras from './pages/MisCompras';
 import Perfil from './pages/Perfil';
 import AdminUsuarios from './pages/AdminUsuarios';
 import AdminCompraventas from './pages/AdminCompraventas';
+import MisProductos from './pages/MisProductos';
 
 export default function App() {
   return (
@@ -20,8 +20,8 @@ export default function App() {
           <Route index element={<ListaProductos />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
-          <Route path="/ventas" element={<MisVentas />} />
-          <Route path="/compras" element={<MisCompras />} />
+          <Route path="/misproductos" element={<MisProductos />} />
+          <Route path="/miscompras" element={<MisCompras />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/admin/usuarios" element={<AdminUsuarios />} />
           <Route path="/admin/compraventas" element={<AdminCompraventas />} />

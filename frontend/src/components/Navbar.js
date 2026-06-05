@@ -52,12 +52,12 @@ export default function Navbar() {
             {isAuthenticated && (
               <>
                 <li className="nav-item">
-                  <NavLink className={navLinkClass} to="/ventas">
-                    Mis Ventas
+                  <NavLink className={navLinkClass} to="/misproductos">
+                    Mis Productos
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={navLinkClass} to="/compras">
+                  <NavLink className={navLinkClass} to="/miscompras">
                     Mis Compras
                   </NavLink>
                 </li>

@@ -3,11 +3,13 @@ import { VENTAS_MOCK } from "../services/mockData";
 
 export default function AdminCompraventas() {
   const [compraventas, setCompraventas] = useState([]);
+  const [pagina, setPagina] = useState(0);
+  const [size] = useState(10);
 
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
     async function getAllCompraventas() {
-      const url = `http://localhost:8090/compraventas`;
+      const url = `/compraventas?page=${pagina}&size=${size}`;
       try {
         const response = await fetch(url, {
           headers: {
@@ -20,7 +22,9 @@ export default function AdminCompraventas() {
         } else if(response.status !== 200){
           throw Error(body.message)
         }
-        setCompraventas(body);
+        // Extraemos la lista del formato HATEOAS
+        const lista = body._embedded?.compraventaOutputDTOList ?? [];
+        setCompraventas(lista);
       } catch (error){
         console.error("Error al obtener la lista de compraventas:", error);
       }
@@ -42,44 +46,32 @@ export default function AdminCompraventas() {
         </div>
       </div>
 
+      {/* Mensaje vacío */}
+      {compraventas.length === 0 && (
+        <p className="text-center text-muted py-4">
+          No hay compraventas registradas
+        </p>
+      )}
+
       {/* Tabla */}
-      <div className="table-responsive">
-        <table className="table table-hover table-striped text-center">
-          <thead className="table-dark">
-            <tr>
-              <th scope="col" style={{ width: "30%" }}>
-                Producto
-              </th>
-              <th scope="col" style={{ width: "10%" }}>
-                Precio
-              </th>
-              <th scope="col" className="col-ocultar" style={{ width: "20%" }}>
-                Comprador
-              </th>
-              <th scope="col" className="col-ocultar" style={{ width: "20%" }}>
-                Vendedor
-              </th>
-              <th scope="col" style={{ width: "20%" }}>
-                Fecha
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {compraventas.length === 0 ? (
+      {compraventas.length > 0 && (
+        <div className="table-responsive">
+          <table className="table table-hover table-striped text-center">
+            <thead className="table-dark">
               <tr>
-                <td colSpan={5} className="text-muted py-4">
-                  {" "}
-                  No hay compraventas registradas.
-                </td>
+                <th scope="col" style={{ width: "30%" }}>Producto</th>
+                <th scope="col" style={{ width: "10%" }}>Precio</th>
+                <th scope="col" className="col-ocultar" style={{ width: "20%" }}>Comprador</th>
+                <th scope="col" className="col-ocultar" style={{ width: "20%" }}>Vendedor</th>
+                <th scope="col" style={{ width: "20%" }}>Fecha</th>
               </tr>
-            ) : (
-              compraventas.map((compraventa) => {
+            </thead>
+            <tbody>
+              {compraventas.map((compraventa) => {
                 const fecha = new Date(
-                  compraventa.fecha + "T00:00:00",
+                  compraventa.fecha + "T00:00:00"
                 ).toLocaleDateString("es-ES", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
+                  day: "2-digit", month: "short", year: "numeric",
                 });
 
                 return (
@@ -91,11 +83,11 @@ export default function AdminCompraventas() {
                     <td>{fecha}</td>
                   </tr>
                 );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }
