@@ -15,12 +15,11 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         {/* Login sin layout: sin header ni footer */}
-        
 
         <Route element={<MainLayout />}>
           <Route index element={<ListaProductos />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
-          <Route path="/productos" element={<ListaProductos />} />
           <Route path="/ventas" element={<MisVentas />} />
           <Route path="/compras" element={<MisCompras />} />
           <Route path="/perfil" element={<Perfil />} />

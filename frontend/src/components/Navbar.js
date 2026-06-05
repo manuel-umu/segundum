@@ -1,17 +1,17 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../App.css";
 
-const isAuthenticated = true;
-const isAdmin = true;
-
 function navLinkClass({ isActive }) {
   return "nav-link" + (isActive ? " active" : "");
 }
 
 export default function Navbar() {
   const navigate = useNavigate();
-  
+
   const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  const isAuthenticated = usuario !== null;
+  const isAdmin = isAuthenticated && usuario.roles && usuario.roles.indexOf("ADMINISTRADOR") !== -1;
 
   const logout = () => {
     localStorage.removeItem("usuario");
@@ -41,7 +41,7 @@ export default function Navbar() {
           {/* Enlaces principales — izquierda */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink className={navLinkClass} to="/productos">
+              <NavLink className={navLinkClass} to="/">
                 Productos
               </NavLink>
             </li>
@@ -79,18 +79,26 @@ export default function Navbar() {
 
           {/* Sesion — derecha */}
           <ul className="navbar-nav ms-auto">
+            {isAuthenticated && (
+              <li className="nav-item">
+                <NavLink className={navLinkClass} to="/perfil">
+                  Perfil
+                </NavLink>
+              </li>
+            )}
             <li className="nav-item">
-              <NavLink className={navLinkClass} to="/perfil">
-                Perfil
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <button
-                className="btn btn-outline-light ms-2"
-                onClick={logout}
-              >
-                Logout
-              </button>
+              {usuario ? (
+                <button
+                  className="btn btn-outline-light ms-2"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              ) : (
+                <NavLink className="btn btn-outline-light ms-2" to="/login">
+                  Login
+                </NavLink>
+              )}
             </li>
           </ul>
         </div>

@@ -1,21 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-// Regex para validar email
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Regex para validar contrasena: minimo 6 caracteres con letras y números
+// Minimo 6 caracteres con letras y números
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
 export default function Profile() {
-  // Datos personales (TODO: cargar del contexto cuando este listo)
-  const [nombre, setNombre] = useState("Manuel");
-  const [apellidos, setApellidos] = useState("Chica");
-  const [email, setEmail] = useState("manuel@ejemplo.com");
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  // Datos personales
+  const [nombre, setNombre] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [fechaNac, setFechaNac] = useState("");
 
   // Errores del formulario de datos personales
   const [errorNombre, setErrorNombre] = useState("");
   const [errorApellidos, setErrorApellidos] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [perfilGuardado, setPerfilGuardado] = useState(false);
+  const [errorCarga, setErrorCarga] = useState("");
 
   // Campos de contraseña
   const [passwordActual, setPasswordActual] = useState("");
@@ -28,17 +32,41 @@ export default function Profile() {
   const [errorPasswordConfirmar, setErrorPasswordConfirmar] = useState("");
   const [passwordGuardada, setPasswordGuardada] = useState(false);
 
-  // Guarda los datos personales
-  function guardarPerfil(e) {
+  useEffect(function () {
+    if (usuario === null) {
+      setErrorCarga("No hay sesion iniciada.");
+      return;
+    }
+
+    async function cargarDatos() {
+      try {
+        const res = await fetch("/usuarios/" + usuario.id);
+        if (!res.ok) {
+          setErrorCarga("No se pudieron cargar los datos del usuario.");
+          return;
+        }
+        const data = await res.json();
+        setNombre(data.nombre === null ? "" : data.nombre);
+        setApellidos(data.apellidos === null ? "" : data.apellidos);
+        setEmail(data.email === null ? "" : data.email);
+        setTelefono(data.telefono === null ? "" : data.telefono);
+        setFechaNac(data.fechaNac === null ? "" : data.fechaNac);
+      } catch (err) {
+        setErrorCarga("Error de red al cargar el usuario.");
+      }
+    }
+
+    cargarDatos();
+  }, []);
+
+  async function guardarPerfil(e) {
     e.preventDefault();
 
-    // Limpiar errores anteriores
     setErrorNombre("");
     setErrorApellidos("");
     setErrorEmail("");
     setPerfilGuardado(false);
 
-    // Validacion
     var hayError = false;
 
     if (nombre.trim() === "") {
@@ -56,22 +84,38 @@ export default function Profile() {
 
     if (hayError) return;
 
-    // TODO: conectar con el backend
-    console.log("Guardando perfil:", nombre, apellidos, email);
-    setPerfilGuardado(true);
+    try {
+      const res = await fetch("/usuarios/" + usuario.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: nombre,
+          apellidos: apellidos,
+          telefono: telefono,
+          fechaNac: fechaNac === "" ? null : fechaNac,
+        }),
+      });
+
+      if (res.ok) {
+        setPerfilGuardado(true);
+      } else {
+        setErrorNombre("Error al guardar los cambios.");
+      }
+    } catch (err) {
+      setErrorNombre("Error de red al guardar.");
+    }
   }
 
-  // Cambiar la contraseña
-  function cambiarPassword(e) {
+  async function cambiarPassword(e) {
     e.preventDefault();
 
-    // Limpiar errores anteriores
     setErrorPasswordActual("");
     setErrorPasswordNueva("");
     setErrorPasswordConfirmar("");
     setPasswordGuardada(false);
 
-    // Validacion
     var hayError = false;
 
     if (passwordActual === "") {
@@ -89,12 +133,42 @@ export default function Profile() {
 
     if (hayError) return;
 
-    // TODO: conectar con el backend
-    console.log("Cambiando contraseña");
-    setPasswordGuardada(true);
-    setPasswordActual("");
-    setPasswordNueva("");
-    setPasswordConfirmar("");
+    // Comprobar contraseña actual
+    try {
+      const resCheck = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: email, password: passwordActual }),
+      });
+      if (!resCheck.ok) {
+        setErrorPasswordActual("La contraseña actual no es correcta.");
+        return;
+      }
+
+      // Si la actual era valida, actualizamos con la nueva
+      const res = await fetch("/usuarios/" + usuario.id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: nombre,
+          apellidos: apellidos,
+          clave: passwordNueva,
+          telefono: telefono,
+          fechaNac: fechaNac === "" ? null : fechaNac,
+        }),
+      });
+
+      if (res.ok) {
+        setPasswordGuardada(true);
+        setPasswordActual("");
+        setPasswordNueva("");
+        setPasswordConfirmar("");
+      } else {
+        setErrorPasswordNueva("Error al actualizar la contraseña.");
+      }
+    } catch (err) {
+      setErrorPasswordNueva("Error de red al cambiar la contraseña.");
+    }
   }
 
   return (
@@ -107,6 +181,9 @@ export default function Profile() {
           <div className="card">
             <div className="card-header">Datos personales</div>
             <div className="card-body">
+              {errorCarga && (
+                <div className="alert alert-danger">{errorCarga}</div>
+              )}
               {perfilGuardado && (
                 <div className="alert alert-success">
                   Perfil actualizado correctamente.
@@ -151,11 +228,38 @@ export default function Profile() {
                     id="email"
                     className="form-control"
                     value={email}
+                    readOnly
+                  />
+                  <small className="text-muted">
+                    El email no se puede modificar.
+                  </small>
+                  {errorEmail && <p className="text-danger">{errorEmail}</p>}
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Telefono</label>
+                  <input
+                    type="tel"
+                    id="telefono"
+                    className="form-control"
+                    value={telefono}
                     onChange={function (e) {
-                      setEmail(e.target.value);
+                      setTelefono(e.target.value);
                     }}
                   />
-                  {errorEmail && <p className="text-danger">{errorEmail}</p>}
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Fecha de nacimiento</label>
+                  <input
+                    type="date"
+                    id="fechaNac"
+                    className="form-control"
+                    value={fechaNac}
+                    onChange={function (e) {
+                      setFechaNac(e.target.value);
+                    }}
+                  />
                 </div>
 
                 <button type="submit" className="btn btn-primary">

@@ -36,7 +36,7 @@ export default function Login() {
 
       if (res.ok) {
         localStorage.setItem("usuario", JSON.stringify(data));
-        navigate("/productos");
+        navigate("/");
       } else {
         setError("Error iniciando sesión: " + data.mensaje);
       }
