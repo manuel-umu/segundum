@@ -1,18 +1,14 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { VENTAS_MOCK, USUARIOS_MOCK } from "../services/mockData";
 import CrearProducto from "../components/CrearProducto";
+
+const usuario = JSON.parse(localStorage.getItem("usuario"));
 
 export default function MisProductos() {
   const [productos, setProductos] = useState([]);
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const [pagina, setPagina] = useState(0);
-  const [size] = useState(10);
-
   const [modalCrearProducto, setModalCrearProducto] = useState(false);
 
   async function getUserProductos() {
-    const url = `/productos?page=${pagina}&size=${size}`;
+    const url = `/productos?page=0&size=10`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -29,7 +25,7 @@ export default function MisProductos() {
       const lista = body._embedded?.productoResDTOList ?? [];
 
       // Filtramos por el vendedor actual
-      const misProductos = lista.filter((p) => p.vendedor.id == usuario.id);
+      const misProductos = lista.filter((p) => p.vendedor.id === usuario.id);
       setProductos(misProductos);
     } catch (error) {
       console.error(
@@ -38,8 +34,7 @@ export default function MisProductos() {
       );
     }
   }
-
-  // Cargamos la lista solo cuando cargamos la vista
+    // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
     getUserProductos();
   }, []);

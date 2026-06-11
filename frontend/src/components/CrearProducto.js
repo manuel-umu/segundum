@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const ESTADOS = [
   { value: "NUEVO", label: "Nuevo" },
@@ -10,7 +9,6 @@ const ESTADOS = [
 ];
 
 function CrearProducto({ onCerrar, onSuccess }) {
-  const navigate = useNavigate();
 
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
