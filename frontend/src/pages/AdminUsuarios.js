@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { USUARIOS_MOCK } from "../services/mockData";
 
 export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -68,8 +67,8 @@ export default function AdminUsuarios() {
                   <td>{usuario.nombre}</td>
                   <td className="col-ocultar">{usuario.apellidos}</td>
                   <td className="col-ocultar">{usuario.email}</td>
-                  <td>{usuario.num_compras}</td>
-                  <td>{usuario.num_ventas}</td>
+                  <td>{usuario.contCompras}</td>
+                  <td>{usuario.contVentas}</td>
                 </tr>
               ))}
             </tbody>

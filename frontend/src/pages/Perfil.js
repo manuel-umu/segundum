@@ -4,8 +4,9 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Minimo 6 caracteres con letras y números
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
+const usuario = JSON.parse(localStorage.getItem("usuario"));
+
 export default function Profile() {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
 
   // Datos personales
   const [nombre, setNombre] = useState("");

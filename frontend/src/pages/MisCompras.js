@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
-import { VENTAS_MOCK, USUARIOS_MOCK } from "../services/mockData";
 
-
+const usuario = JSON.parse(localStorage.getItem("usuario"));
 
 export default function MisCompras() {
   const [compras, setCompras] = useState([]);
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const [pagina, setPagina] = useState(0);
-  const [size] = useState(10);
-
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
     async function getUserCompras() {

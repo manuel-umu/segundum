@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
-import { VENTAS_MOCK } from "../services/mockData";
 
 export default function AdminCompraventas() {
   const [compraventas, setCompraventas] = useState([]);
-  const [pagina, setPagina] = useState(0);
-  const [size] = useState(10);
 
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
     async function getAllCompraventas() {
-      const url = `/compraventas?page=${pagina}&size=${size}`;
+      const url = `/compraventas?page=0&size=10`;
       try {
         const response = await fetch(url, {
           headers: {
@@ -68,18 +65,15 @@ export default function AdminCompraventas() {
             </thead>
             <tbody>
               {compraventas.map((compraventa) => {
-                const fecha = new Date(
-                  compraventa.fecha + "T00:00:00"
-                ).toLocaleDateString("es-ES", {
+                const fecha = new Date(compraventa.fecha).toLocaleDateString("es-ES", {
                   day: "2-digit", month: "short", year: "numeric",
                 });
-
                 return (
                   <tr key={compraventa.id}>
-                    <td>{compraventa.producto}</td>
+                    <td>{compraventa.titulo}</td>
                     <td>{compraventa.precio}</td>
-                    <td className="col-ocultar">{compraventa.comprador}</td>
-                    <td className="col-ocultar">{compraventa.vendedor}</td>
+                    <td className="col-ocultar">{compraventa.nombreComprador}</td>
+                    <td className="col-ocultar">{compraventa.nombreVendedor}</td>
                     <td>{fecha}</td>
                   </tr>
                 );
