@@ -14,7 +14,6 @@ export default function Login() {
       setError("Por favor, rellena todos los campos.");
       return;
     }
-
     try {
       const res = await fetch("/auth/login", {
         method: "POST",
@@ -27,7 +26,6 @@ export default function Login() {
           password: password,
         }),
       });
-
       if (res.ok) {
         const data = await res.json();
         localStorage.setItem("usuario", JSON.stringify(data));
@@ -57,7 +55,7 @@ export default function Login() {
           <form onSubmit={iniciarSesion}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label fw-medium">
-                Email
+                Email:
               </label>
               <input
                 type="email"
@@ -73,7 +71,7 @@ export default function Login() {
 
             <div className="mb-4">
               <label htmlFor="password" className="form-label fw-medium">
-                Contraseña
+                Contraseña:
               </label>
               <input
                 type="password"

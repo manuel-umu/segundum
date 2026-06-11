@@ -12,17 +12,21 @@ export default function Registro() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const hoy = new Date().toISOString().split(".")[0];
+
   async function registrar(e) {
     e.preventDefault();
     setError("");
 
     // Validacion basica
     if (
-      email === "" ||
       nombre === "" ||
       apellidos === "" ||
+      email === "" ||
+      clave === "" ||
       confirmarClave === "" ||
-      clave === ""
+      fechaNacimiento === "" ||
+      telefono === ""
     ) {
       setError("Por favor, rellena todos los campos.");
       return;
@@ -31,6 +35,12 @@ export default function Registro() {
       setError("Las contraseñas no coinciden.");
       return;
     }
+
+    if (fechaNacimiento > hoy) {
+      setError("La fecha de nacimiento no puede ser posterior a hoy.");
+      return;
+    }
+
     try {
       const res = await fetch("/auth/register", {
         method: "POST",
@@ -38,12 +48,13 @@ export default function Registro() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email,
           nombre: nombre,
           apellidos: apellidos,
+          email: email,
+          fechaNac: new Date().toISOString().split(".")[0],
           clave: clave,
-          fechaNac: fechaNacimiento,
           telefono: telefono,
+          admin: false
         }),
       });
 
@@ -58,7 +69,10 @@ export default function Registro() {
       } else if (res.status === 400) {
         setError("Datos del formulario no validos.");
       } else {
-        setError("No se pudo registrar. Intentalo de nuevo más tarde.");
+        setError(
+          "No se pudo registrar. Intentalo de nuevo más tarde. Error " +
+            res.status,
+        );
       }
     } catch (err) {
       setError("No se pudo conectar con el servidor.");
@@ -67,7 +81,6 @@ export default function Registro() {
 
   return (
     <div className="col-12 col-md-8 col-lg-6 mx-auto mb-5">
-      {/* Contenedor principal estilo Tarjeta */}
       <div className="card shadow border-1 rounded-4">
         <div className="card-body p-4 p-md-5">
           <h2 className="text-center">Registro</h2>

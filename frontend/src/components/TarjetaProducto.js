@@ -122,7 +122,7 @@ export default function TarjetaProducto({ producto, onCerrar }) {
             <button className="btn btn-secondary" onClick={onCerrar}>
               Cerrar
             </button>
-            {!esMiProducto && !comprado && (
+            {!esMiProducto && !comprado && usuarioId !== null && (
               <button className="btn btn-primary" onClick={comprar}>
                 Comprar
               </button>
