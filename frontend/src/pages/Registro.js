@@ -51,7 +51,7 @@ export default function Registro() {
           nombre: nombre,
           apellidos: apellidos,
           email: email,
-          fechaNac: new Date().toISOString().split(".")[0],
+          fechaNac: fechaNacimiento,
           clave: clave,
           telefono: telefono,
           admin: false
@@ -59,9 +59,7 @@ export default function Registro() {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem("usuario", JSON.stringify(data));
-        navigate("/");
+        navigate("/login");
         return;
       }
       if (res.status === 409) {
