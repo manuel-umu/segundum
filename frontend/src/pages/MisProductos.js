@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { VENTAS_MOCK, USUARIOS_MOCK } from "../services/mockData";
-
-
+import CrearProducto from "../components/CrearProducto";
 
 export default function MisProductos() {
   const [productos, setProductos] = useState([]);
@@ -10,34 +9,39 @@ export default function MisProductos() {
   const [pagina, setPagina] = useState(0);
   const [size] = useState(10);
 
+  const [modalCrearProducto, setModalCrearProducto] = useState(false);
+
+  async function getUserProductos() {
+    const url = `/productos?page=${pagina}&size=${size}`;
+    try {
+      const response = await fetch(url, {
+        headers: {
+          // 'Authorization': `Bearer ${cookies.get('token')}`
+        },
+      });
+      const body = await response.json();
+      if (response.status === 404) {
+        // TODO cuando tengamos handlebars
+      } else if (response.status !== 200) {
+        throw Error(body.message);
+      }
+      // Extraemos la lista del formato HATEOAS
+      const lista = body._embedded?.productoResDTOList ?? [];
+
+      // Filtramos por el vendedor actual
+      const misProductos = lista.filter((p) => p.vendedor.id == usuario.id);
+      setProductos(misProductos);
+    } catch (error) {
+      console.error(
+        `Error al obtener los productos del usuario con ID ${usuario.id}:`,
+        error,
+      );
+    }
+  }
+
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
-    async function getUserProductos() {
-      const url = `/productos?page=${pagina}&size=${size}`;
-      try {
-        const response = await fetch(url, {
-          headers: {
-            // 'Authorization': `Bearer ${cookies.get('token')}`
-          }
-        });
-        const body = await response.json();
-        if(response.status === 404){
-          // TODO cuando tengamos handlebars
-        } else if(response.status !== 200){
-          throw Error(body.message)
-        }
-        // Extraemos la lista del formato HATEOAS
-        const lista = body._embedded?.productoResDTOList ?? [];
-
-        // Filtramos por el vendedor actual
-        const misProductos = lista.filter(p => p.vendedor.id == usuario.id);
-        setProductos(misProductos);
-      } catch (error){
-        console.error(`Error al obtener los productos del usuario con ID ${usuario.id}:`, error);
-      }
-    }
     getUserProductos();
-    
   }, []);
 
   return (
@@ -47,8 +51,20 @@ export default function MisProductos() {
         <div className="col">
           <h2>Mis productos</h2>
         </div>
-        <div className="col-auto">
-          <span className="badge bg-primary fs-6">{productos.length} productos</span>
+        {/* Contador de productos y boton de Crear Producto */}
+        <div className="col-auto d-flex gap-2">
+          <span
+            className="btn btn-primary fw-bold"
+            style={{ pointerEvents: "none" }} // Para que no se marque como boton
+          >
+            {productos.length} productos
+          </span>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setModalCrearProducto(true)}
+          >
+            Crear Producto
+          </button>
         </div>
       </div>
 
@@ -77,27 +93,41 @@ export default function MisProductos() {
               </tr>
             </thead>
             <tbody>
-              {productos.map(producto => (
+              {productos.map((producto) => (
                 <tr key={producto.id}>
                   <td>{producto.titulo}</td>
                   <td className="col-oculta">{producto.categoria.nombre}</td>
                   <td>{producto.precio} €</td>
                   <td className="col-oculta">
-                      {new Date(producto.fechaPubli).toLocaleDateString('es-ES', {
-                        day: '2-digit', month: 'short', year: 'numeric',
-                      })}
+                    {new Date(producto.fechaPubli).toLocaleDateString("es-ES", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
                   </td>
                   <td>
-                    {producto.vendido
-                      ? <span className="badge bg-success">Vendido</span>
-                      : <span className="badge bg-warning text-dark">En venta</span>
-                    }
+                    {producto.vendido ? (
+                      <span className="badge bg-success">Vendido</span>
+                    ) : (
+                      <span className="badge bg-warning text-dark">
+                        En venta
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      )}
+      {modalCrearProducto && (
+        <CrearProducto
+          onCerrar={() => setModalCrearProducto(false)}
+          onSuccess={() => {
+            setModalCrearProducto(false);
+            getUserProductos(); // Recargar la tabla
+          }}
+        />
       )}
     </section>
   );
