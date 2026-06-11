@@ -48,47 +48,54 @@ export default function Login() {
   }
 
   return (
-    <div className="col-12 col-md-6 col-lg-4 mx-auto mt-5">
-      <h2 className="text-center">Iniciar sesion</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {/*Formulario */}
-      <form onSubmit={iniciarSesion}>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="form-control"
-            value={email}
-            onChange={function (e) {
-              setEmail(e.target.value);
-            }}
-          />
-        </div>
+    <div className="col-12 col-md-8 col-lg-6 mx-auto mb-5">
+      <div className="card shadow border-1 rounded-4">
+        <div className="card-body p-4 p-md-5">
+          {" "}
+          <h2 className="text-center">Iniciar sesion</h2>
+          {error && <div className="alert alert-danger">{error}</div>}
+          {/*Formulario */}
+          <form onSubmit={iniciarSesion}>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label fw-medium">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="form-control"
+                value={email}
+                onChange={function (e) {
+                  setEmail(e.target.value);
+                }}
+                placeholder="Introduce tu email"
+              />
+            </div>
 
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Contraseña
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="form-control"
-            value={password}
-            onChange={function (e) {
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
+            <div className="mb-4">
+              <label htmlFor="password" className="form-label fw-medium">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="form-control"
+                value={password}
+                onChange={function (e) {
+                  setPassword(e.target.value);
+                }}
+                placeholder="Introduce tu contraseña"
+              />
+            </div>
 
-        <button type="submit" className="btn btn-primary w-100">
-          Entrar
-        </button>
-      </form>
+            <button type="submit" className="btn btn-primary w-100">
+              Entrar
+            </button>
+          </form>
+        </div>
+      </div>
       <p className="text-center mt-3">
-        ¿No tienes cuenta? <a href="/register">Registrate</a>
+        ¿No tienes cuenta? <a href="/registro">Registrate</a>
       </p>
     </div>
   );
