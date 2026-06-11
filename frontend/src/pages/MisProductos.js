@@ -14,6 +14,7 @@ export default function MisProductos() {
         headers: {
           // 'Authorization': `Bearer ${cookies.get('token')}`
         },
+        credentials: "include"
       });
       const body = await response.json();
       if (response.status === 404) {

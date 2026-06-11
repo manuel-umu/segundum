@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   async function iniciarSesion(e) {
     e.preventDefault();
@@ -23,6 +21,7 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           username: email,
           password: password,
@@ -32,7 +31,7 @@ export default function Login() {
       if (res.ok) {
         const data = await res.json();
         localStorage.setItem("usuario", JSON.stringify(data));
-        navigate("/");
+        window.location.href = "/";
         return;
       }
       if (res.status === 401) {

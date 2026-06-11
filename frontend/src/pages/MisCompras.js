@@ -12,7 +12,8 @@ export default function MisCompras() {
         const response = await fetch(url, {
           headers: {
             // 'Authorization': `Bearer ${cookies.get('token')}`
-          }
+          },
+          credentials: "include"
         });
         const body = await response.json();
         if(response.status === 404){

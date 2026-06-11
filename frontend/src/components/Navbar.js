@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../App.css";
 
 function navLinkClass({ isActive }) {
@@ -6,8 +6,6 @@ function navLinkClass({ isActive }) {
 }
 
 export default function Navbar() {
-  const navigate = useNavigate();
-
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
   const isAuthenticated = usuario !== null;
@@ -16,10 +14,14 @@ export default function Navbar() {
     usuario.roles &&
     usuario.roles.indexOf("ADMINISTRADOR") !== -1;
 
-  const logout = () => {
+  async function logout() {
+    await fetch("/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
     localStorage.removeItem("usuario");
-    navigate("/");
-  };
+    window.location.href = "/";
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
