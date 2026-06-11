@@ -110,4 +110,9 @@ public class ServicioCompraventas implements IServicioCompraventas {
 		return CompraventaOutputDTO.toDto(compraventa);
 	}
 
+	@Override
+	public Page<CompraventaOutputDTO> recuperarTodasCompraventas(Pageable pageable) {
+	    return repo.findAll(pageable).map(CompraventaOutputDTO::toDto);
+	}
+
 }

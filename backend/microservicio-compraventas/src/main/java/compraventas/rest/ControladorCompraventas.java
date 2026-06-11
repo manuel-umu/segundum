@@ -107,13 +107,21 @@ public class ControladorCompraventas {
 	@GetMapping
 	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	public PagedModel<EntityModel<CompraventaOutputDTO>> obtenerCompraventas(
-			@Parameter(description = "Identificador del comprador", required = true) @RequestParam String idComprador,
-			@Parameter(description = "Identificador del vendedor", required = true) @RequestParam String idVendedor,
-			@Parameter(description = "Número de página", required = true) @RequestParam int page,
-			@Parameter(description = "Tamaño de página", required = true) @RequestParam int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<CompraventaOutputDTO> resultado = servicio.recuperarCompraventas(idComprador, idVendedor, pageable);
-		return pagedResourcesAssembler.toModel(resultado);
+	    @Parameter(description = "Identificador del comprador") @RequestParam(required = false) String idComprador,
+	    @Parameter(description = "Identificador del vendedor") @RequestParam(required = false) String idVendedor,
+	    @RequestParam int page,
+	    @RequestParam int size) {
+	    
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<CompraventaOutputDTO> resultado;
+	    
+	    if (idComprador != null && idVendedor != null) {
+	        resultado = servicio.recuperarCompraventas(idComprador, idVendedor, pageable);
+	    } else {
+	        resultado = servicio.recuperarTodasCompraventas(pageable);
+	    }
+	    
+	    return pagedResourcesAssembler.toModel(resultado);
 	}
 	
 	@Operation(summary = "Recuperar una compraventa por id", description = "Devuelve una compraventa a partir del id dado (usado para .NET)")
@@ -128,5 +136,5 @@ public class ControladorCompraventas {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
-
+	
 }

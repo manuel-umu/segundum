@@ -15,4 +15,6 @@ public interface RepositorioCompraventas extends CrudRepository<Compraventa, Str
 	Page<Compraventa> findByIdVendedor(String idVendedor, Pageable pageable);
 
 	Page<Compraventa> findByIdCompradorAndIdVendedor(String idComprador, String idVendedor, Pageable pageable);
+	
+	Page<Compraventa> findAll(Pageable pageable);
 }

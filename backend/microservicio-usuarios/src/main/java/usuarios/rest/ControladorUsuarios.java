@@ -137,7 +137,7 @@ public class ControladorUsuarios {
 	}
 
 	private UsuarioResDTO toResDto(UsuarioDTO usuario, URI uri) {
-		return new UsuarioResDTO(usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(), uri.toString());
+		return new UsuarioResDTO(usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(), uri.toString(), usuario.getContCompras(), usuario.getContVentas());
 	}
 
 	@GET
