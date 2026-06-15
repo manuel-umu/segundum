@@ -20,4 +20,6 @@ public interface RepositorioProductos extends CrudRepository<Producto, String> {
 	List<Producto> getByFecha(Integer mes, Integer year);
 
 	List<Producto> getByCategorias(String idCategoria, List<Categoria> categorias);
+
+	Page<Producto> getByVendedor(String idVendedor, Pageable pageable);
 }

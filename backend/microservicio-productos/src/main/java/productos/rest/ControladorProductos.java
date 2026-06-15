@@ -120,6 +120,21 @@ public class ControladorProductos implements ProductosApi {
 		return ResponseEntity.ok(servicio.historialMes(mes, year));
 	}
 
+	// Recuperar los productos (paginados) de un usuario (vendedor) dado
+	@GetMapping("/usuario/{idUsuario}")
+	@PreAuthorize("hasAuthority('USUARIO')")
+	@Override
+	public ResponseEntity<PagedModel<EntityModel<ProductoResDTO>>> getProductosUsuario(@PathVariable String idUsuario,
+			@RequestParam int page, @RequestParam int size, HttpServletRequest request) throws Exception {
+		Claims claims = (Claims) request.getAttribute("claims");
+		if (!claims.getSubject().equals(idUsuario)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		Pageable paginacion = PageRequest.of(page, size, Sort.by("titulo").ascending());
+		Page<ProductoResDTO> resultado = servicio.productosDeUsuario(idUsuario, paginacion);
+		return ResponseEntity.ok(this.pagedResourcesAssembler.toModel(resultado));
+	}
+
 	// Modifica ciertas propiedades de un producto
 	@PatchMapping("/{id}")
 	@PreAuthorize("hasAuthority('USUARIO')")

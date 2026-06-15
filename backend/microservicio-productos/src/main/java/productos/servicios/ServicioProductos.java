@@ -185,6 +185,20 @@ public class ServicioProductos implements IServicioProductos {
 	}
 
 	@Override
+	public Page<ProductoResDTO> productosDeUsuario(String idVendedor, Pageable pageable)
+			throws RepositorioException, EntidadNoEncontrada {
+		// Control de integridad de los datos
+		if (idVendedor == null || idVendedor.isEmpty())
+			throw new IllegalArgumentException("idVendedor: no debe ser nulo ni vacio");
+
+		// Comprobamos que el usuario existe para devolver un 404 si no es así
+		usuarioRepo.findById(idVendedor)
+				.orElseThrow(() -> new EntidadNoEncontrada("Usuario no encontrado: " + idVendedor));
+
+		return productoRepo.getByVendedor(idVendedor, pageable).map(ProductoResDTO::toDto);
+	}
+
+	@Override
 	public void modificarProducto(String id, Float precio, String descripcion)
 			throws RepositorioException, EntidadNoEncontrada {
 		// Control de integridad de los datos

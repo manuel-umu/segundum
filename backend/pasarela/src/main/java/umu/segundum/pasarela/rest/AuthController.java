@@ -12,6 +12,7 @@ import retrofit2.Response;
 import umu.segundum.pasarela.dto.AuthResponseDTO;
 import umu.segundum.pasarela.dto.LoginDTO;
 import umu.segundum.pasarela.dto.UsuarioDTO;
+import umu.segundum.pasarela.dto.UsuarioRegistroDTO;
 import umu.segundum.pasarela.utils.JwtUtils;
 import umu.segundum.pasarela.utils.CookieHelper;
 import javax.servlet.http.HttpServletResponse;
@@ -63,5 +64,22 @@ public class AuthController {
 	public ResponseEntity<Void> logout(HttpServletResponse response) {
 		CookieHelper.clearJwtCookie(response, cookieName);
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("/register")
+	public ResponseEntity<?> registrar(@RequestBody UsuarioRegistroDTO nuevoUsuario) {
+		try {
+			Response<Void> retrofitResponse = usuariosRestClient.createUsuario(nuevoUsuario).execute();
+
+			if (retrofitResponse.isSuccessful()) {
+				return ResponseEntity.status(HttpStatus.CREATED).build();
+			} else if (retrofitResponse.code() == 409) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			}
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 }

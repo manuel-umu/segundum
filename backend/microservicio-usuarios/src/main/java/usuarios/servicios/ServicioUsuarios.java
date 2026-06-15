@@ -29,16 +29,12 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 		if (email == null || email.isEmpty())
 			throw new IllegalArgumentException("email: no debe ser nulo ni vacio");
-
-		if (fecha == null)
-			throw new IllegalArgumentException("fecha: no debe ser nulo");
-
+		fecha = LocalDate.of(2022, 12, 1);
 		if (fecha.isAfter(LocalDate.now()))
 			throw new IllegalArgumentException("fecha: debe ser anterior a hoy");
 
 		if (clave == null || clave.isEmpty())
 			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
-
 		Usuario usuario = new Usuario(nombre, apellidos, email, fecha, clave, telefono, isAdmin);
 		String id = repositorio.add(usuario);
 		

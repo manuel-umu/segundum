@@ -34,6 +34,9 @@ public interface IServicioProductos {
 
 	List<ProductoRes> historialMes(Integer mes, Integer year) throws RepositorioException;
 
+	Page<ProductoResDTO> productosDeUsuario(String idVendedor, Pageable pageable)
+			throws RepositorioException, EntidadNoEncontrada;
+
 	void modificarProducto(String id, Float precio, String descripcion)
 			throws RepositorioException, EntidadNoEncontrada;
 	

@@ -7,6 +7,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import umu.segundum.pasarela.dto.LoginDTO;
 import umu.segundum.pasarela.dto.UsuarioDTO;
+import umu.segundum.pasarela.dto.UsuarioRegistroDTO;
 
 // Interfaz Retrofit para comunicacion con el microservicio usuarios y verificar credenciales
 public interface UsuariosRestClient {
@@ -16,4 +17,7 @@ public interface UsuariosRestClient {
 
 	@GET("usuarios/github/{githubId}")
 	Call<UsuarioDTO> getByGithubId(@Path("githubId") String githubId);
+
+	@POST("usuarios")
+	Call<Void> createUsuario(@Body UsuarioRegistroDTO usuario);
 }

@@ -61,6 +61,14 @@ public interface ProductosApi {
 			@Parameter(description = "Mes del historial (1-12)", required = true, example = "3") @PathVariable Integer mes)
 			throws Exception;
 
+	@Operation(summary = "Productos de un usuario", description = "Devuelve un listado paginado de los productos publicados por un usuario (vendedor) concreto.")
+	@ApiResponse(responseCode = "200", description = "Listado de productos del usuario devuelto correctamente.")
+	public ResponseEntity<PagedModel<EntityModel<ProductoResDTO>>> getProductosUsuario(
+			@Parameter(description = "Identificador del usuario vendedor", required = true) @PathVariable String idUsuario,
+			@Parameter(description = "Número de página (empieza en 0)", example = "0") @RequestParam int page,
+			@Parameter(description = "Tamaño de página", example = "10") @RequestParam int size,
+			HttpServletRequest request) throws Exception;
+
 	@Operation(summary = "Modificar producto", description = "Actualiza un producto (precio y descripción)")
 	@ApiResponse(responseCode = "200", description = "Producto modificado correctamente.")
 	public ResponseEntity<Void> modificarProducto(

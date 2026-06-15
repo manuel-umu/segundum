@@ -2,6 +2,8 @@ package productos.repositorios;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +21,7 @@ public interface RepositorioProductosJPA extends RepositorioProductos, JpaReposi
 	@Query("SELECT p FROM Producto p WHERE p.categoria IN :categorias OR p.categoria.id = :idCategoria")
 	List<Producto> getByCategorias(@Param("idCategoria") String idCategoria,
 			@Param("categorias") List<Categoria> categorias);
+
+	@Query("SELECT p FROM Producto p WHERE p.vendedor.id = :idVendedor")
+	Page<Producto> getByVendedor(@Param("idVendedor") String idVendedor, Pageable pageable);
 }

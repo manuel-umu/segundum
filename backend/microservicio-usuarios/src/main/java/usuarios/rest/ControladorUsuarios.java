@@ -130,6 +130,7 @@ public class ControladorUsuarios {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response createUsuario(UsuarioDTO u) throws Exception {
+		System.err.println(u.toString());
 		String id = servicio.crear(u.getNombre(), u.getApellidos(), u.getEmail(), u.getFechaNac(), u.getClave(),
 				u.getTelefono(), u.isAdmin());
 		URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
