@@ -6,9 +6,13 @@ const usuario = JSON.parse(localStorage.getItem("usuario"));
 export default function MisProductos() {
   const [productos, setProductos] = useState([]);
   const [modalCrearProducto, setModalCrearProducto] = useState(false);
+  const [pagina, setPagina] = useState(0);
+  const [size] = useState(10);
+  const [totalPaginas, setTotalPaginas] = useState(0);
+  const [totalElementos, setTotalElementos] = useState(0);
 
   async function getUserProductos() {
-    const url = `/productos?page=0&size=10`;
+    const url = `/productos/usuario/${usuario.id}?page=${pagina}&size=${size}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -23,11 +27,15 @@ export default function MisProductos() {
         throw Error(body.message);
       }
       // Extraemos la lista del formato HATEOAS
-      const lista = body._embedded?.productoResDTOList ?? [];
-
-      // Filtramos por el vendedor actual
-      const misProductos = lista.filter((p) => p.vendedor.id === usuario.id);
-      setProductos(misProductos);
+      const lista = body._embedded && body._embedded.productoResDTOList ? body._embedded.productoResDTOList : [];
+      setProductos(lista);
+      if (body.page) {
+        setTotalPaginas(body.page.totalPages);
+        setTotalElementos(body.page.totalElements);
+      } else {
+        setTotalPaginas(1);
+        setTotalElementos(lista.length);
+      }
     } catch (error) {
       console.error(
         `Error al obtener los productos del usuario con ID ${usuario.id}:`,
@@ -36,9 +44,18 @@ export default function MisProductos() {
     }
   }
     // Cargamos la lista solo cuando cargamos la vista
-  useEffect(() => {
+  function paginaAnterior() {
+    if (pagina > 0) setPagina(pagina - 1);
+  }
+
+  function paginaSiguiente() {
+    if (pagina < totalPaginas - 1) setPagina(pagina + 1);
+  }
+
+  // Recargamos la lista cada vez que cambia la pagina
+  useEffect(function () {
     getUserProductos();
-  }, []);
+  }, [pagina]);
 
   return (
     <section className="container py-4">
@@ -53,7 +70,7 @@ export default function MisProductos() {
             className="btn btn-primary fw-bold"
             style={{ pointerEvents: "none" }} // Para que no se marque como boton
           >
-            {productos.length} productos
+            {totalElementos} productos
           </span>
           <button
             className="btn btn-secondary"
@@ -116,6 +133,41 @@ export default function MisProductos() {
           </table>
         </div>
       )}
+      {/* Paginacion */}
+      {totalPaginas > 1 && (
+        <nav aria-label="Navegacion de paginas" className="mt-3">
+          <ul className="pagination justify-content-center">
+            {/* Boton anterior */}
+            <li className={`page-item ${pagina === 0 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={paginaAnterior}>
+                Anterior
+              </button>
+            </li>
+
+            {/* Paginas numeradas */}
+            {Array.from({ length: totalPaginas }, function (_, i) {
+              return (
+                <li
+                  key={i}
+                  className={`page-item ${pagina === i ? "active" : ""}`}
+                >
+                  <button className="page-link" onClick={function () { setPagina(i); }}>
+                    {i + 1}
+                  </button>
+                </li>
+              );
+            })}
+
+            {/* Boton siguiente */}
+            <li className={`page-item ${pagina === totalPaginas - 1 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={paginaSiguiente}>
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
+
       {modalCrearProducto && (
         <CrearProducto
           onCerrar={() => setModalCrearProducto(false)}

@@ -293,25 +293,37 @@ export default function ListaProductos() {
 
       {/* Controles de paginacion */}
       {totalPaginas > 1 && (
-        <div className="d-flex justify-content-center align-items-center mt-4 gap-2">
-          <button
-            className="btn btn-outline-primary"
-            onClick={paginaAnterior}
-            disabled={pagina === 0}
-          >
-            Anterior
-          </button>
-          <span>
-            Pagina {pagina + 1} de {totalPaginas}
-          </span>
-          <button
-            className="btn btn-outline-primary"
-            onClick={paginaSiguiente}
-            disabled={pagina >= totalPaginas - 1}
-          >
-            Siguiente
-          </button>
-        </div>
+        <nav aria-label="Navegacion de paginas" className="mt-4">
+          <ul className="pagination justify-content-center">
+            {/* Boton anterior */}
+            <li className={`page-item ${pagina === 0 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={paginaAnterior}>
+                Anterior
+              </button>
+            </li>
+
+            {/* Paginas numeradas */}
+            {Array.from({ length: totalPaginas }, function (_, i) {
+              return (
+                <li
+                  key={i}
+                  className={`page-item ${pagina === i ? "active" : ""}`}
+                >
+                  <button className="page-link" onClick={function () { setPagina(i); }}>
+                    {i + 1}
+                  </button>
+                </li>
+              );
+            })}
+
+            {/* Boton siguiente */}
+            <li className={`page-item ${pagina >= totalPaginas - 1 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={paginaSiguiente}>
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
       )}
 
       {/* Popup de detalle - solo visible si hay un producto seleccionado */}
