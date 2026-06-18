@@ -9,20 +9,18 @@ export default function AdminUsuarios() {
       const url = `/usuarios`;
       try {
         const response = await fetch(url, {
-          headers: {
-            // 'Authorization': `Bearer ${cookies.get('token')}`
-          },
           credentials: "include"
         });
-        const body = await response.json();
-        if(response.status === 404){
-          // TODO cuando tengamos handlebars
-        } else if(response.status !== 200){
-          throw Error(body.message)
+        // En caso de error, plantilla de express
+        if (!response.ok) {
+          window.location.href = "/error/" + response.status;
+          return;
         }
+        const body = await response.json();
         setUsuarios(body);
       } catch (error){
         console.error("Error al obtener la lista de usuarios:", error);
+        window.location.href = "/error/500";
       }
     }
     getAllUsuarios();

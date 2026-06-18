@@ -9,22 +9,20 @@ export default function AdminCompraventas() {
       const url = `/compraventas?page=0&size=10`;
       try {
         const response = await fetch(url, {
-          headers: {
-            // 'Authorization': `Bearer ${cookies.get('token')}`
-          },
           credentials: "include"
         });
-        const body = await response.json();
-        if(response.status === 404){
-          // TODO cuando tengamos handlebars
-        } else if(response.status !== 200){
-          throw Error(body.message)
+      // En caso de error, plantilla de express
+        if (!response.ok) {
+          window.location.href = "/error/" + response.status;
+          return;
         }
+        const body = await response.json();
         // Extraemos la lista del formato HATEOAS
         const lista = body._embedded?.compraventaOutputDTOList ?? [];
         setCompraventas(lista);
       } catch (error){
         console.error("Error al obtener la lista de compraventas:", error);
+        window.location.href = "/error/500";
       }
     }
     getAllCompraventas();

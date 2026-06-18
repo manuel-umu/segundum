@@ -13,17 +13,14 @@ export default function MisCompras() {
     const url = `/compraventas/compras/${usuario.id}/?page=${pagina}&size=${size}`;
     try {
       const response = await fetch(url, {
-        headers: {
-          // 'Authorization': `Bearer ${cookies.get('token')}`
-        },
         credentials: "include"
       });
-      const body = await response.json();
-      if (response.status === 404) {
-        // TODO cuando tengamos handlebars
-      } else if (response.status !== 200) {
-        throw Error(body.message);
+      // En caso de error, plantilla de express
+      if (!response.ok) {
+        window.location.href = "/error/" + response.status;
+        return;
       }
+      const body = await response.json();
       // Extraemos la lista del formato HATEOAS
       const lista = body._embedded?.compraventaOutputDTOList ?? [];
       setCompras(lista);
@@ -36,6 +33,7 @@ export default function MisCompras() {
       }
     } catch (error) {
       console.error(`Error al obtener las compras del usuario con ID ${usuario.id}:`, error);
+      window.location.href = "/error/500";
     }
   }
 

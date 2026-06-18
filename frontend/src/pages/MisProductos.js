@@ -15,17 +15,14 @@ export default function MisProductos() {
     const url = `/productos/usuario/${usuario.id}?page=${pagina}&size=${size}`;
     try {
       const response = await fetch(url, {
-        headers: {
-          // 'Authorization': `Bearer ${cookies.get('token')}`
-        },
         credentials: "include"
       });
-      const body = await response.json();
-      if (response.status === 404) {
-        // TODO cuando tengamos handlebars
-      } else if (response.status !== 200) {
-        throw Error(body.message);
+      // En caso de error, plantilla de express
+      if (!response.ok) {
+        window.location.href = "/error/" + response.status;
+        return;
       }
+      const body = await response.json();
       // Extraemos la lista del formato HATEOAS
       const lista = body._embedded && body._embedded.productoResDTOList ? body._embedded.productoResDTOList : [];
       setProductos(lista);
@@ -37,10 +34,12 @@ export default function MisProductos() {
         setTotalElementos(lista.length);
       }
     } catch (error) {
+      // Error de red u otro fallo inesperado: lo tratamos como error de servidor
       console.error(
         `Error al obtener los productos del usuario con ID ${usuario.id}:`,
         error,
       );
+      window.location.href = "/error/500";
     }
   }
     // Cargamos la lista solo cuando cargamos la vista
