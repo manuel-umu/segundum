@@ -113,7 +113,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
               {/* DESCRIPCIÓN */}
               <div className="mb-3">
                 <label htmlFor="descripcion" className="form-label fw-medium">
-                  Descripción
+                  Descripción <span className="text-danger">*</span>
                 </label>
                 <textarea
                   id="descripcion"
