@@ -58,6 +58,8 @@ services:
     build: ./pasarela
     ports:
       - "8090:8090"
+    env_file:
+      - .env
     environment:
       - ZUUL_ROUTES_USUARIOS_URL=http://usuarios:8080/api/usuarios
       - ZUUL_ROUTES_PRODUCTOS_URL=http://productos:8081/productos

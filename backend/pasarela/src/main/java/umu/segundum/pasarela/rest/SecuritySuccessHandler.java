@@ -70,9 +70,14 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 						+ (usuario.getApellidos() == null ? "" : " " + usuario.getApellidos()),
 				roles);
 
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().write(mapper.writeValueAsString(payload));
-		response.getWriter().flush();
+		String redirectUrl = "http://localhost:3000/login" +
+			    "?id=" + usuario.getId() +
+			    "&nombre=" + java.net.URLEncoder.encode(
+			        (usuario.getNombre() == null ? "" : usuario.getNombre()) +
+			        (usuario.getApellidos() == null ? "" : " " + usuario.getApellidos()), "UTF-8") +
+			    "&roles=" + roles +
+			    "&token=" + token;
+
+			response.sendRedirect(redirectUrl);
 	}
 }
