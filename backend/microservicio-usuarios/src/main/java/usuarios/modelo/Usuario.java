@@ -20,7 +20,7 @@ public class Usuario implements Identificable {
 	private String nombre;
 	private String apellidos;
 	private String clave;
-	private LocalDate fechaNac;
+	private String fechaNac;
 	private String telefono;
 	private boolean isAdmin;
 	private Integer contCompras;
@@ -34,7 +34,7 @@ public class Usuario implements Identificable {
 	public Usuario() {
 	}
 
-	public Usuario(String nombre, String apellidos, String email, LocalDate fechaNac, String clave, String telefono,
+	public Usuario(String nombre, String apellidos, String email, String fechaNac, String clave, String telefono,
 			boolean isAdmin) {
 		this.email = email;
 		this.nombre = nombre;
@@ -93,11 +93,11 @@ public class Usuario implements Identificable {
 		this.clave = clave;
 	}
 
-	public LocalDate getFechaNac() {
+	public String getFechaNac() {
 		return fechaNac;
 	}
 
-	public void setFechaNac(LocalDate fechaNac) {
+	public void setFechaNac(String fechaNac) {
 		this.fechaNac = fechaNac;
 	}
 

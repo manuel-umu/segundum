@@ -18,7 +18,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	private RepositorioUsuariosAdHoc repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
-	public String crear(String nombre, String apellidos, String email, LocalDate fecha, String clave, String telefono, boolean isAdmin)
+	public String crear(String nombre, String apellidos, String email, String fecha, String clave, String telefono, boolean isAdmin)
 			throws RepositorioException {
 		// Control de integridad de los datos
 		if (nombre == null || nombre.isEmpty())
@@ -29,9 +29,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 		if (email == null || email.isEmpty())
 			throw new IllegalArgumentException("email: no debe ser nulo ni vacio");
-		fecha = LocalDate.of(2022, 12, 1);
-		if (fecha.isAfter(LocalDate.now()))
-			throw new IllegalArgumentException("fecha: debe ser anterior a hoy");
+		
+	    LocalDate fechaNac = LocalDate.parse(fecha);
+	    if (fechaNac.isAfter(LocalDate.now()))
+	        throw new IllegalArgumentException("fecha: debe ser anterior a hoy");
 
 		if (clave == null || clave.isEmpty())
 			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
@@ -52,7 +53,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	 * Los parametros no cambiados deben de ser los originales
 	 */
 	@Override
-	public void actualizar(String id, String nombre, String apellidos, String clave, LocalDate fecha, String telefono)
+	public void actualizar(String id, String nombre, String apellidos, String clave, String fecha, String telefono)
 			throws RepositorioException, EntidadNoEncontrada {
 		Usuario u = recuperar(id);
 		if (nombre != null && !nombre.isEmpty()) {

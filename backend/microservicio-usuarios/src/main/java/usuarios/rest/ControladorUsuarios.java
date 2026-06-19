@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,6 +132,7 @@ public class ControladorUsuarios {
 	@PermitAll
 	public Response createUsuario(UsuarioDTO u) throws Exception {
 		System.err.println(u.toString());
+		LocalDate fecha = u.getFechaNac() != null ? LocalDate.parse(u.getFechaNac()) : null;
 		String id = servicio.crear(u.getNombre(), u.getApellidos(), u.getEmail(), u.getFechaNac(), u.getClave(),
 				u.getTelefono(), u.isAdmin());
 		URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();

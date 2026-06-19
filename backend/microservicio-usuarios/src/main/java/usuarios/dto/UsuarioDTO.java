@@ -8,7 +8,7 @@ public class UsuarioDTO {
 	private String nombre;
 	private String apellidos;
 	private String clave;
-	private LocalDate fechaNac;
+	private String fechaNac;
 	private String telefono;
 	private boolean isAdmin;
 	private String githubId;
@@ -21,7 +21,7 @@ public class UsuarioDTO {
 	public UsuarioDTO() {
 	}
 
-	public UsuarioDTO(String id, String email, String nombre, String apellidos, String clave, LocalDate fechaNac,
+	public UsuarioDTO(String id, String email, String nombre, String apellidos, String clave, String fechaNac,
 			String telefono, boolean isAdmin, Integer contCompras, Integer contVentas, Integer numValoracionesComprador,
 			Integer numValoracionesVendedor, Double mediaComprador, Double mediaVendedor) {
 		this.id = id;
@@ -76,11 +76,11 @@ public class UsuarioDTO {
 		this.clave = clave;
 	}
 
-	public LocalDate getFechaNac() {
+	public String getFechaNac() {
 		return fechaNac;
 	}
 
-	public void setFechaNac(LocalDate fechaNac) {
+	public void setFechaNac(String fechaNac) {
 		this.fechaNac = fechaNac;
 	}
 

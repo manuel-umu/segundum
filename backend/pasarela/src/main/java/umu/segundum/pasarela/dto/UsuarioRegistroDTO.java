@@ -8,13 +8,13 @@ public class UsuarioRegistroDTO {
 	private String email;
 	private String clave;
 	private String telefono;
-	private LocalDate fechaNac;
+	private String fechaNac;
 	private boolean isAdmin;
 
 	public UsuarioRegistroDTO() {
 	}
 
-	public UsuarioRegistroDTO(String nombre, String apellidos, String email, String clave, LocalDate fechaNac,
+	public UsuarioRegistroDTO(String nombre, String apellidos, String email, String clave, String fechaNac,
 			String telefono, boolean isAdmin) {
 		this.email = email;
 		this.nombre = nombre;
@@ -65,11 +65,11 @@ public class UsuarioRegistroDTO {
 		this.telefono = telefono;
 	}
 
-	public LocalDate getFechaNac() {
+	public String getFechaNac() {
 		return fechaNac;
 	}
 
-	public void setFechaNac(LocalDate fechaNac) {
+	public void setFechaNac(String fechaNac) {
 		this.fechaNac = fechaNac;
 	}
 

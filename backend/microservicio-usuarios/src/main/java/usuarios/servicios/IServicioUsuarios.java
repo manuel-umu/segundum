@@ -9,10 +9,10 @@ import usuarios.repositorios.EntidadNoEncontrada;
 import usuarios.repositorios.RepositorioException;
 
 public interface IServicioUsuarios {
-	String crear(String nombre, String apellidos, String email, LocalDate fecha, String clave, String telefono, boolean isAdmin)
+	String crear(String nombre, String apellidos, String email, String fecha, String clave, String telefono, boolean isAdmin)
 			throws RepositorioException;
 
-	void actualizar(String id, String nombre, String apellidos, String clave, LocalDate fecha, String telefono)
+	void actualizar(String id, String nombre, String apellidos, String clave, String fecha, String telefono)
 			throws RepositorioException, EntidadNoEncontrada;
 
 	Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
