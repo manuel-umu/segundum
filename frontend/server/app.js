@@ -1,36 +1,18 @@
-// Servidor Express que actua como host del frontend React en produccion:
-//  - sirve los ficheros estaticos del build de React (express.static)
-//  - reenvia las peticiones de datos a la pasarela de Segundum con fetch
-//  - renderiza con Handlebars las paginas de error del lado del servidor
-//    (por ejemplo un 502 si Segundum no responde)
-//
-// En desarrollo se usa el servidor de Create React App (npm start), que ya
-// reenvia a Segundum con su proxy; este servidor sirve la aplicacion una vez
-// construida con "npm run build" en la raiz del proyecto.
-
 const path = require('path');
 const express = require('express');
 const { engine } = require('express-handlebars');
 
 const app = express();
-// Puerto configurable por variable de entorno; 3001 por defecto
-// (3000 lo usa React en desarrollo y 8090 la pasarela de Segundum).
 const PORT = process.env.PORT || 3001;
-// URL de la pasarela de Segundum a la que reenviamos las peticiones de datos.
 const API_URL = process.env.API_URL || 'http://localhost:8090';
-// Carpeta con el build de React (se genera con "npm run build" en la raiz).
 const BUILD_DIR = path.join(__dirname, '..', 'build');
 
-// Helpers propios para las plantillas (mecanismo de express-handlebars).
-// 'anyo' devuelve el anio actual para el pie de pagina.
 const helpers = {
   anyo: function () {
     return new Date().getFullYear();
   },
 };
 
-// Devuelve un titulo y un mensaje en castellano para un codigo de error HTTP.
-// Se usa tanto en la ruta /error/:codigo como en el manejador de errores.
 function describirError(status) {
   if (status === 401) {
     return {
@@ -44,16 +26,22 @@ function describirError(status) {
       mensaje: 'No tienes permiso para acceder a este recurso.',
     };
   }
-  if (status === 404) {
-    return {
-      titulo: 'Pagina no encontrada',
-      mensaje: 'El recurso que buscas no existe o ha sido eliminado.',
-    };
-  }
   if (status === 502) {
     return {
       titulo: 'Servidor de datos no disponible',
       mensaje: 'No se pudo contactar con el servidor de datos. Intentalo mas tarde.',
+    };
+  }
+  if (status === 500) {
+    return {
+      titulo: 'Error interno del servidor',
+      mensaje: 'Se ha producido un error interno en el servidor.',
+    };
+  }
+  if (status === 404) {
+    return {
+      titulo: 'Pagina no encontrada',
+      mensaje: 'El recurso que buscas no existe o ha sido eliminado.',
     };
   }
   return {
@@ -62,8 +50,6 @@ function describirError(status) {
   };
 }
 
-// Configuracion del motor de plantillas Handlebars. El layout por defecto es
-// views/layout.hbs y los partials viven en views/partials.
 app.engine('hbs', engine({
   extname: '.hbs',
   defaultLayout: 'layout',
@@ -74,18 +60,13 @@ app.engine('hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middleware propio que registra por consola cada peticion recibida.
 app.use(function (req, res, next) {
   console.log(req.method + ' ' + req.url);
   next();
 });
 
-// Prefijos de la API de Segundum. Cualquier peticion a estas rutas se reenvia a
-// la pasarela; el resto de rutas las atiende el frontend React.
 const RUTAS_API = ['/auth', '/usuarios', '/productos', '/categorias', '/compraventas'];
 
-// Lee el cuerpo crudo de la peticion (sin parsearlo) para poder reenviarlo
-// intacto a Segundum. Solo se aplica a las rutas que se reenvian.
 function leerCuerpoCrudo(req, res, next) {
   const trozos = [];
   req.on('data', function (trozo) {
@@ -178,9 +159,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Ficheros estaticos del build de React.
 app.use(express.static(BUILD_DIR));
 
-// Cualquier otra peticion GET devuelve el index.html del build para que sea
-// React Router quien muestre la vista correspondiente en el cliente.
-app.get('*', function (req, res, next) {
+// Rutas validas del frontend React: solo para estas servimos el index.html
+// (React Router se encarga de mostrar la vista en el cliente). Debe
+// mantenerse en sintonia con las rutas declaradas en src/App.js. Cualquier
+// otra URL se considera no encontrada y la atiende el manejador 404 de abajo,
+// que muestra la pagina de error de Handlebars.
+const RUTAS_REACT = [
+  '/',
+  '/login',
+  '/registro',
+  '/misproductos',
+  '/miscompras',
+  '/perfil',
+  '/admin/usuarios',
+  '/admin/compraventas',
+];
+app.get(RUTAS_REACT, function (req, res, next) {
   res.sendFile(path.join(BUILD_DIR, 'index.html'), function (err) {
     // Si no existe el build (no se ha hecho "npm run build"), pasa al error.
     if (err) next(err);
