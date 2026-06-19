@@ -70,7 +70,7 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 						+ (usuario.getApellidos() == null ? "" : " " + usuario.getApellidos()),
 				roles);
 
-		String redirectUrl = "http://localhost:3000/login" +
+		String redirectUrl = "http://localhost:3001/login" +
 			    "?id=" + usuario.getId() +
 			    "&nombre=" + java.net.URLEncoder.encode(
 			        (usuario.getNombre() == null ? "" : usuario.getNombre()) +
