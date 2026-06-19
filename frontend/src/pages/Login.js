@@ -22,7 +22,7 @@ export default function Login() {
     } else if (localStorage.getItem("usuario")) {
       window.location.href = "/";
     }
-  }, []);
+  }, [searchParams]);
 
   async function iniciarSesion(e) {
     e.preventDefault();
@@ -70,6 +70,11 @@ export default function Login() {
           {" "}
           <h2 className="text-center">Iniciar sesion</h2>
           {error && <div className="alert alert-danger">{error}</div>}
+          {searchParams.get("registered") && (
+            <div className="alert alert-success">
+              Usuario creado correctamente. Inicia sesión para continuar.
+            </div>
+          )}
           {/*Formulario */}
           <form onSubmit={iniciarSesion}>
             <div className="mb-3">

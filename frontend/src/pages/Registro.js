@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Registro() {
   const [email, setEmail] = useState("");
@@ -10,7 +9,6 @@ export default function Registro() {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [telefono, setTelefono] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const hoy = new Date().toISOString().split(".")[0];
 
@@ -59,7 +57,7 @@ export default function Registro() {
       });
 
       if (res.ok) {
-        navigate("/login");
+        window.location.href = "/login?registered=true";
         return;
       }
       if (res.status === 409) {
