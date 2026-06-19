@@ -14,22 +14,16 @@ const helpers = {
 };
 
 function describirError(status) {
-  if (status === 401) {
-    return {
-      titulo: 'No has iniciado sesion',
-      mensaje: 'Necesitas identificarte para acceder a esta pagina.',
-    };
-  }
   if (status === 403) {
     return {
       titulo: 'Acceso denegado',
       mensaje: 'No tienes permiso para acceder a este recurso.',
     };
   }
-  if (status === 502) {
+  if (status === 404) {
     return {
-      titulo: 'Servidor de datos no disponible',
-      mensaje: 'No se pudo contactar con el servidor de datos. Intentalo mas tarde.',
+      titulo: 'Pagina no encontrada',
+      mensaje: 'El recurso que buscas no existe o ha sido eliminado.',
     };
   }
   if (status === 500) {
@@ -38,10 +32,10 @@ function describirError(status) {
       mensaje: 'Se ha producido un error interno en el servidor.',
     };
   }
-  if (status === 404) {
+  if (status === 502) {
     return {
-      titulo: 'Pagina no encontrada',
-      mensaje: 'El recurso que buscas no existe o ha sido eliminado.',
+      titulo: 'Servidor de datos no disponible',
+      mensaje: 'No se pudo contactar con el servidor de datos. Intentalo mas tarde.',
     };
   }
   return {

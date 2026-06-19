@@ -37,7 +37,7 @@ export default function TarjetaProducto({ producto, onCerrar }) {
       return;
     }
     try {
-      const res = await fetch("/api/compraventas", {
+      const res = await fetch("/compraventas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -48,7 +48,7 @@ export default function TarjetaProducto({ producto, onCerrar }) {
       if (res.ok) {
         setComprado(true);
       } else {
-        setErrorAccion("No se pudo registrar la compra.");
+        setErrorAccion("No se pudo registrar la compra. Error " + res.status);
       }
     } catch (err) {
       setErrorAccion("Error de red al comprar.");

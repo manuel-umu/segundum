@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "../App.css";
 
@@ -5,8 +6,23 @@ function navLinkClass({ isActive }) {
   return "nav-link" + (isActive ? " active" : "");
 }
 
+// Lee el usuario guardado en localStorage (o null si no hay sesion)
+function leerUsuario() {
+  return JSON.parse(localStorage.getItem("usuario"));
+}
+
 export default function Navbar() {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const [usuario, setUsuario] = useState(leerUsuario());
+
+  useEffect(function () {
+    function alCambiarStorage() {
+      setUsuario(leerUsuario());
+    }
+    window.addEventListener("storage", alCambiarStorage);
+    return function () {
+      window.removeEventListener("storage", alCambiarStorage);
+    };
+  }, []);
 
   const isAuthenticated = usuario !== null;
   const isAdmin =
@@ -20,6 +36,7 @@ export default function Navbar() {
       credentials: "include",
     });
     localStorage.removeItem("usuario");
+    setUsuario(null);
     window.location.href = "/";
   }
 
