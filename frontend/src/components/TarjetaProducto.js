@@ -9,8 +9,7 @@ function textoEstado(estado) {
   return "";
 }
 
-export default function TarjetaProducto({ producto, onCerrar }) {
-  const [comprado, setComprado] = useState(false);
+export default function TarjetaProducto({ producto, onCerrar, onEliminar, onComprar }) {
   const [errorAccion, setErrorAccion] = useState("");
 
   // Usuario logueado (puede ser null si no hay sesion)
@@ -30,6 +29,23 @@ export default function TarjetaProducto({ producto, onCerrar }) {
     lugarRecogida = producto.recogida.descripcion;
   }
 
+  async function eliminar() {
+    setErrorAccion("");
+    try {
+      const res = await fetch("/productos/" + producto.id, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (res.ok) {
+        onEliminar();
+      } else {
+        setErrorAccion("No se pudo eliminar el producto. Error " + res.status);
+      }
+    } catch (err) {
+      setErrorAccion("Error de red al eliminar.");
+    }
+  }
+
   async function comprar() {
     setErrorAccion("");
     if (usuarioId === null) {
@@ -46,7 +62,7 @@ export default function TarjetaProducto({ producto, onCerrar }) {
         }),
       });
       if (res.ok) {
-        setComprado(true);
+        onComprar();
       } else {
         setErrorAccion("No se pudo registrar la compra. Error " + res.status);
       }
@@ -65,12 +81,6 @@ export default function TarjetaProducto({ producto, onCerrar }) {
           </div>
 
           <div className="modal-body">
-            {comprado && (
-              <div className="alert alert-success">
-                Compra realizada. El vendedor se pondra en contacto contigo.
-              </div>
-            )}
-
             {errorAccion !== "" && (
               <div className="alert alert-danger">{errorAccion}</div>
             )}
@@ -122,9 +132,14 @@ export default function TarjetaProducto({ producto, onCerrar }) {
             <button className="btn btn-secondary" onClick={onCerrar}>
               Cerrar
             </button>
-            {!esMiProducto && !comprado && usuarioId !== null && (
+            {!esMiProducto && usuarioId !== null && (
               <button className="btn btn-primary" onClick={comprar}>
                 Comprar
+              </button>
+            )}
+            {esMiProducto && (
+              <button className="btn btn-danger" onClick={eliminar}>
+                Eliminar
               </button>
             )}
           </div>

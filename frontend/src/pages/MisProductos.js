@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import CrearProducto from "../components/CrearProducto";
+import ModificarProducto from "../components/ModificarProducto";
 
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 
 export default function MisProductos() {
   const [productos, setProductos] = useState([]);
   const [modalCrearProducto, setModalCrearProducto] = useState(false);
+  const [productoAModificar, setProductoAModificar] = useState(null);
   const [pagina, setPagina] = useState(0);
   const [size] = useState(10);
   const [totalPaginas, setTotalPaginas] = useState(0);
@@ -102,6 +104,7 @@ export default function MisProductos() {
                   Fecha
                 </th>
                 <th scope="col">¿Vendido?</th>
+                <th scope="col">Accion</th>
               </tr>
             </thead>
             <tbody>
@@ -125,6 +128,15 @@ export default function MisProductos() {
                         En venta
                       </span>
                     )}
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-outline-primary"
+                      disabled={producto.vendido}
+                      onClick={function () { setProductoAModificar(producto); }}
+                    >
+                      Modificar
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -165,6 +177,17 @@ export default function MisProductos() {
             </li>
           </ul>
         </nav>
+      )}
+
+      {productoAModificar !== null && (
+        <ModificarProducto
+          producto={productoAModificar}
+          onCerrar={function () { setProductoAModificar(null); }}
+          onSuccess={function () {
+            setProductoAModificar(null);
+            getUserProductos();
+          }}
+        />
       )}
 
       {modalCrearProducto && (

@@ -17,10 +17,11 @@ export default function ListaProductos() {
   const idVendedor = params.get("idVendedor");
 
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [errorCarga, setErrorCarga] = useState("");
+  const [mensajeExito, setMensajeExito] = useState("");
+  const [recarga, setRecarga] = useState(0);
 
   // Filtros
   const [categoria, setCategoria] = useState("");
@@ -29,7 +30,7 @@ export default function ListaProductos() {
   const [precio, setPrecio] = useState("");
 
   // Paginacion
-  const [size] = useState(10);
+  const SIZE = 10;
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(0);
 
@@ -56,7 +57,7 @@ export default function ListaProductos() {
         setErrorCarga("");
         try {
           const res = await fetch(
-            "/productos?page=" + pagina + "&size=" + size,
+            "/productos/enVenta?page=" + pagina + "&size=" + SIZE,
           );
           if (!res.ok) {
             setErrorCarga("No se pudieron cargar los productos.");
@@ -82,7 +83,7 @@ export default function ListaProductos() {
       }
       cargarProductos();
     },
-    [pagina, size],
+    [pagina, recarga],
   );
 
   function abrirPopup(producto) {
@@ -108,7 +109,7 @@ export default function ListaProductos() {
     setPrecio("");
   }
 
-  // Indica si hay algun filtro activo (para habilitar el boton "Limpiar")
+  // Indica si hay algun filtro activo para habilitar el boton de limpiar
   const hayFiltros =
     categoria !== "" || descripcion !== "" || estado !== "" || precio !== "";
 
@@ -130,8 +131,6 @@ export default function ListaProductos() {
     if (precio !== "" && p.precio > Number(precio)) {
       return false;
     }
-    // Solo mostramos productos no vendidos
-    if (p.vendido) return false;
     return true;
   });
 
@@ -254,6 +253,9 @@ export default function ListaProductos() {
       <h1>{idVendedor !== null ? "Mis productos" : "Productos en venta"}</h1>
 
       {errorCarga && <div className="alert alert-danger">{errorCarga}</div>}
+      {mensajeExito && (
+        <div className="alert alert-success">{mensajeExito}</div>
+      )}
 
       {/* Grid de tarjetas - cada tarjeta abre el popup al hacer clic */}
       <div className="grid-productos mt-3">
@@ -309,7 +311,12 @@ export default function ListaProductos() {
                   key={i}
                   className={`page-item ${pagina === i ? "active" : ""}`}
                 >
-                  <button className="page-link" onClick={function () { setPagina(i); }}>
+                  <button
+                    className="page-link"
+                    onClick={function () {
+                      setPagina(i);
+                    }}
+                  >
                     {i + 1}
                   </button>
                 </li>
@@ -317,7 +324,9 @@ export default function ListaProductos() {
             })}
 
             {/* Boton siguiente */}
-            <li className={`page-item ${pagina >= totalPaginas - 1 ? "disabled" : ""}`}>
+            <li
+              className={`page-item ${pagina >= totalPaginas - 1 ? "disabled" : ""}`}
+            >
               <button className="page-link" onClick={paginaSiguiente}>
                 Siguiente
               </button>
@@ -331,6 +340,18 @@ export default function ListaProductos() {
         <ProductoTarjeta
           producto={productoSeleccionado}
           onCerrar={cerrarPopup}
+          onEliminar={function () {
+            cerrarPopup();
+            setRecarga(recarga + 1);
+            setMensajeExito("Producto eliminado correctamente.");
+          }}
+          onComprar={function () {
+            cerrarPopup();
+            setRecarga(recarga + 1);
+            setMensajeExito(
+              "Compra solicitada correctamente. El vendedor se pondra en contacto contigo.",
+            );
+          }}
         />
       )}
     </section>
