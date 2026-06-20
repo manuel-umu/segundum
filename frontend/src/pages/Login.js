@@ -121,7 +121,7 @@ export default function Login() {
               className="btn btn-dark w-100"
               onClick={() => window.location.href = "http://localhost:8090/oauth2/authorization/github"}
             >
-              🐙 Entrar con GitHub
+              Entrar con GitHub
             </button>
           </form>
         </div>

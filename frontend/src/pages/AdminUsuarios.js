@@ -3,6 +3,20 @@ import { useState, useEffect } from "react";
 export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
 
+  // Paginacion
+  const SIZE = 10;
+  const [pagina, setPagina] = useState(0);
+  const totalPaginas = Math.ceil(usuarios.length / SIZE);
+  const usuariosPagina = usuarios.slice(pagina * SIZE, pagina * SIZE + SIZE);
+
+  function paginaAnterior() {
+    if (pagina > 0) setPagina(pagina - 1);
+  }
+
+  function paginaSiguiente() {
+    if (pagina < totalPaginas - 1) setPagina(pagina + 1);
+  }
+
   // Cargamos la lista solo cuando cargamos la vista
   useEffect(() => {
     async function getAllUsuarios() {
@@ -63,8 +77,8 @@ export default function AdminUsuarios() {
               </tr>
             </thead>
             <tbody>
-              {usuarios.map((usuario) => (
-                <tr key={usuario.id}>
+              {usuariosPagina.map((usuario) => (
+                <tr key={usuario.uri}>
                   <td>{usuario.nombre}</td>
                   <td className="col-ocultar">{usuario.apellidos}</td>
                   <td className="col-ocultar">{usuario.email}</td>
@@ -75,6 +89,41 @@ export default function AdminUsuarios() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {/* Paginacion */}
+      {totalPaginas > 1 && (
+        <nav aria-label="Navegacion de paginas" className="mt-3">
+          <ul className="pagination justify-content-center">
+            {/* Boton anterior */}
+            <li className={`page-item ${pagina === 0 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={paginaAnterior}>
+                Anterior
+              </button>
+            </li>
+
+            {/* Paginas numeradas */}
+            {Array.from({ length: totalPaginas }, function (_, i) {
+              return (
+                <li
+                  key={i}
+                  className={`page-item ${pagina === i ? "active" : ""}`}
+                >
+                  <button className="page-link" onClick={function () { setPagina(i); }}>
+                    {i + 1}
+                  </button>
+                </li>
+              );
+            })}
+
+            {/* Boton siguiente */}
+            <li className={`page-item ${pagina === totalPaginas - 1 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={paginaSiguiente}>
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
       )}
     </section>
   );

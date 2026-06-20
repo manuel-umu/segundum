@@ -45,14 +45,12 @@ export default function ListaProductos() {
     cargarCategorias();
   }, []);
 
-  // Carga de productos cada vez que cambie la pagina o algun filtro. El filtrado se
-  // hace en el backend para que la paginacion sea correcta sobre el resultado filtrado
+  // Carga de productos cada vez que cambie la pagina o algun filtro
   useEffect(
     function () {
       async function cargarProductos() {
         setErrorCarga("");
 
-        // Construimos la URL solo con los filtros que esten activos
         var url = "/productos/enVenta?page=" + pagina + "&size=" + SIZE;
         if (categoria !== "") {
           url += "&categoria=" + encodeURIComponent(categoria);

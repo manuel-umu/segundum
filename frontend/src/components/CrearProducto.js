@@ -143,7 +143,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
                 >
                   <option value="">
                     {!categorias.length
-                      ? "⏳ Cargando..."
+                      ? "Cargando..."
                       : "Selecciona categoría"}
                   </option>
                   {categorias.map((cat) => (
@@ -193,7 +193,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
                       id="precio"
                       className="form-control"
                       min="0.01"
-                      step="1.00"
+                      step="0.01"
                       value={precio}
                       onChange={(e) => setPrecio(e.target.value)}
                       required
@@ -225,7 +225,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
                   Cancelar
                 </button>
                 <button type="submit" className="btn btn-primary w-100">
-                  🚀 Publicar
+                  Publicar
                 </button>
               </div>
             </form>

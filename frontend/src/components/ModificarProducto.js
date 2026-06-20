@@ -74,7 +74,7 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
                     id="mod-precio"
                     className="form-control"
                     min="0.01"
-                    step="1.00"
+                    step="0.01"
                     value={precio}
                     onChange={function (e) { setPrecio(e.target.value); }}
                     required
