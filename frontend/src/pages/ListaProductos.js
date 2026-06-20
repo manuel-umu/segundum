@@ -338,8 +338,10 @@ export default function ListaProductos() {
             setMensajeExito("Producto eliminado correctamente.");
           }}
           onComprar={function () {
-            cerrarPopup();
-            setRecarga(recarga + 1);
+            setTimeout(function () {
+              cerrarPopup();
+              setRecarga(recarga + 1);
+            }, 800);
             setMensajeExito(
               "Compra solicitada correctamente. El vendedor se pondra en contacto contigo.",
             );
