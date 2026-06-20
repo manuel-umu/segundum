@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -88,6 +89,16 @@ public class ControladorProductos implements ProductosApi {
 		return this.pagedResourcesAssembler.toModel(resultado);
 	}
 
+	// Listado (paginado) de productos en venta (no vendidos)
+	@GetMapping("/enVenta")
+	@Override
+	public PagedModel<EntityModel<ProductoResDTO>> getProductosEnVenta(@RequestParam int page, @RequestParam int size)
+			throws Exception {
+		Pageable paginacion = PageRequest.of(page, size, Sort.by("titulo").ascending());
+		Page<ProductoResDTO> resultado = servicio.getListadoPaginadoEnVenta(paginacion);
+		return this.pagedResourcesAssembler.toModel(resultado);
+	}
+
 	// Asignar lugar de recogida a un producto
 	@PutMapping("/{id}/recogida")
 	@PreAuthorize("hasAuthority('USUARIO')")
@@ -133,6 +144,20 @@ public class ControladorProductos implements ProductosApi {
 		Pageable paginacion = PageRequest.of(page, size, Sort.by("titulo").ascending());
 		Page<ProductoResDTO> resultado = servicio.productosDeUsuario(idUsuario, paginacion);
 		return ResponseEntity.ok(this.pagedResourcesAssembler.toModel(resultado));
+	}
+
+	// Elimina un producto — solo puede hacerlo el vendedor propietario
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('USUARIO')")
+	@Override
+	public ResponseEntity<Void> deleteProducto(@PathVariable String id, HttpServletRequest request) throws Exception {
+		Producto producto = servicio.recuperar(id);
+		Claims claims = (Claims) request.getAttribute("claims");
+		if (!claims.getSubject().equals(producto.getVendedor().getId())) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		servicio.borrar(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	// Modifica ciertas propiedades de un producto

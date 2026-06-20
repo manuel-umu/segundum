@@ -24,4 +24,6 @@ public interface RepositorioProductosJPA extends RepositorioProductos, JpaReposi
 
 	@Query("SELECT p FROM Producto p WHERE p.vendedor.id = :idVendedor")
 	Page<Producto> getByVendedor(@Param("idVendedor") String idVendedor, Pageable pageable);
+
+	Page<Producto> findByVendidoFalse(Pageable pageable);
 }

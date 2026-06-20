@@ -136,6 +136,10 @@ public class ServicioProductos implements IServicioProductos {
 		return this.productoRepo.findAll(pageable).map(ProductoResDTO::toDto);
 	}
 
+	public Page<ProductoResDTO> getListadoPaginadoEnVenta(Pageable pageable) {
+		return this.productoRepo.findByVendidoFalse(pageable).map(ProductoResDTO::toDto);
+	}
+
 	@Override
 	public void ponerVendido(String id) throws RepositorioException, EntidadNoEncontrada {
 		Producto p = productoRepo.findById(id)

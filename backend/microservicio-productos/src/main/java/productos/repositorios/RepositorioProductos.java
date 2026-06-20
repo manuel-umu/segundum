@@ -22,4 +22,6 @@ public interface RepositorioProductos extends CrudRepository<Producto, String> {
 	List<Producto> getByCategorias(String idCategoria, List<Categoria> categorias);
 
 	Page<Producto> getByVendedor(String idVendedor, Pageable pageable);
+	
+	Page<Producto> findByVendidoFalse(Pageable pageable);
 }

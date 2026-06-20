@@ -41,6 +41,12 @@ public interface ProductosApi {
 			@Parameter(description = "Número de página (empieza en 0)", example = "0") @RequestParam int page,
 			@Parameter(description = "Tamaño de página", example = "10") @RequestParam int size) throws Exception;
 
+	@Operation(summary = "Listado de productos en venta", description = "Obtiene un listado paginado de productos no vendidos")
+	@ApiResponse(responseCode = "200", description = "Listado devuelto correctamente.")
+	public PagedModel<EntityModel<ProductoResDTO>> getProductosEnVenta(
+			@Parameter(description = "Número de página (empieza en 0)", example = "0") @RequestParam int page,
+			@Parameter(description = "Tamaño de página", example = "10") @RequestParam int size) throws Exception;
+
 	@Operation(summary = "Asignar lugar de recogida", description = "Asigna un lugar de recogida a un producto existente")
 	@ApiResponse(responseCode = "200", description = "Lugar de recogida asignado correctamente.")
 	public ResponseEntity<Void> asignRecogida(
@@ -74,6 +80,13 @@ public interface ProductosApi {
 	public ResponseEntity<Void> modificarProducto(
 			@Parameter(description = "Identificador del producto", required = true) @PathVariable String id,
 			@Parameter(description = "Campos a modificar del producto") @RequestBody ProductoDTO p,
+			HttpServletRequest request) throws Exception;
+
+	@Operation(summary = "Eliminar producto", description = "Elimina un producto. Solo puede hacerlo el vendedor propietario.")
+	@ApiResponse(responseCode = "204", description = "Producto eliminado correctamente.")
+	@ApiResponse(responseCode = "403", description = "El usuario no es el propietario del producto.")
+	public ResponseEntity<Void> deleteProducto(
+			@Parameter(description = "Identificador del producto", required = true) @PathVariable String id,
 			HttpServletRequest request) throws Exception;
 
 }
