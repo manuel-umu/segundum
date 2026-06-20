@@ -50,7 +50,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
     const fechaPubli = new Date().toISOString().split(".")[0];
 
     try {
-      const res = await fetch("http://localhost:3000/productos", {
+      const res = await fetch("/productos", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

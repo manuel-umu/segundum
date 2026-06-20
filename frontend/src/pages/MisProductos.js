@@ -108,9 +108,9 @@ export default function MisProductos() {
               {productos.map((producto) => (
                 <tr key={producto.id}>
                   <td>{producto.titulo}</td>
-                  <td className="col-oculta">{producto.categoria.nombre}</td>
+                  <td className="col-ocultar">{producto.categoria.nombre}</td>
                   <td>{producto.precio} €</td>
-                  <td className="col-oculta">
+                  <td className="col-ocultar">
                     {new Date(producto.fechaPubli).toLocaleDateString("es-ES", {
                       day: "2-digit",
                       month: "short",

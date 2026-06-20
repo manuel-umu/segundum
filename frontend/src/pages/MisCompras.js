@@ -96,9 +96,9 @@ export default function MisCompras() {
                 return (
                   <tr key={compra.idProducto}>
                     <td>{compra.titulo}</td>
-                    <td className="col-oculta">{compra.nombreVendedor}</td>
+                    <td className="col-ocultar">{compra.nombreVendedor}</td>
                     <td>{compra.precio} €</td>
-                    <td className="col-oculta">{fecha}</td>
+                    <td className="col-ocultar">{fecha}</td>
                   </tr>
                 );
               })}
