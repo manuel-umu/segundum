@@ -9,7 +9,6 @@ const ESTADOS = [
 ];
 
 function CrearProducto({ onCerrar, onSuccess }) {
-
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [estado, setEstado] = useState("");
@@ -34,7 +33,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
     cargarCategorias();
   }, []);
 
-  const crearProducto = async (e) => {
+  async function crearProducto(e) {
     e.preventDefault();
     if (!titulo || !estado || !categoriaId || !precio) {
       alert("Título, estado, categoría y precio son obligatorios");
@@ -46,9 +45,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
       alert("Error: No se ha encontrado la sesión del usuario.");
       return;
     }
-
     const fechaPubli = new Date().toISOString().split(".")[0];
-
     try {
       const res = await fetch("/productos", {
         method: "POST",
@@ -72,17 +69,14 @@ function CrearProducto({ onCerrar, onSuccess }) {
 
       if (res.ok) {
         alert("Producto creado!");
-        if (onSuccess) {
-          onSuccess();
-        }
+        onSuccess();
       } else {
         throw new Error(`Error ${res.status}`);
       }
     } catch (err) {
       alert("Error al crear producto: " + err.message);
-      console.error(err);
     }
-  };
+  }
 
   return (
     <div className="modal d-block modal-fondo">

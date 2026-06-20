@@ -26,12 +26,12 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
       });
 
       if (res.ok) {
-        if (onSuccess) onSuccess();
+        onSuccess();
       } else {
-        setError("No se pudo modificar el producto. Error " + res.status);
+        window.location.href = "/error/" + res.status;
       }
     } catch (err) {
-      setError("Error de red al modificar el producto.");
+      window.location.href = "/error/502";
     }
   }
 
@@ -46,10 +46,12 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
           <div className="modal-body">
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={modificar}>
-
               {/* DESCRIPCION */}
               <div className="mb-3">
-                <label htmlFor="mod-descripcion" className="form-label fw-medium">
+                <label
+                  htmlFor="mod-descripcion"
+                  className="form-label fw-medium"
+                >
                   Descripcion <span className="text-danger">*</span>
                 </label>
                 <textarea
@@ -57,7 +59,9 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
                   className="form-control"
                   rows="4"
                   value={descripcion}
-                  onChange={function (e) { setDescripcion(e.target.value); }}
+                  onChange={function (e) {
+                    setDescripcion(e.target.value);
+                  }}
                   placeholder="Describe tu producto..."
                   required
                 />
@@ -76,7 +80,9 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
                     min="0.01"
                     step="0.01"
                     value={precio}
-                    onChange={function (e) { setPrecio(e.target.value); }}
+                    onChange={function (e) {
+                      setPrecio(e.target.value);
+                    }}
                     required
                   />
                 </div>

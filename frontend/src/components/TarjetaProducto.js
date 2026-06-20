@@ -39,10 +39,10 @@ export default function TarjetaProducto({ producto, onCerrar, onEliminar, onComp
       if (res.ok) {
         onEliminar();
       } else {
-        setErrorAccion("No se pudo eliminar el producto. Error " + res.status);
+         window.location.href = "/error/" + res.status;
       }
     } catch (err) {
-      setErrorAccion("Error de red al eliminar.");
+         window.location.href = "/error/502";
     }
   }
 
@@ -64,10 +64,10 @@ export default function TarjetaProducto({ producto, onCerrar, onEliminar, onComp
       if (res.ok) {
         onComprar();
       } else {
-        setErrorAccion("No se pudo registrar la compra. Error " + res.status);
+         window.location.href = "/error/" + res.status;
       }
     } catch (err) {
-      setErrorAccion("Error de red al comprar.");
+         window.location.href = "/error/502";
     }
   }
 

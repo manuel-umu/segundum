@@ -34,7 +34,7 @@ function describirError(status) {
   }
   if (status === 502) {
     return {
-      titulo: 'Servidor de datos no disponible',
+      titulo: 'Error de comunicacion',
       mensaje: 'No se pudo contactar con el servidor de datos. Intentalo mas tarde.',
     };
   }

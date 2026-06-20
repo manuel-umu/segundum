@@ -67,8 +67,7 @@ export default function Login() {
     <div className="col-12 col-md-8 col-lg-6 mx-auto mb-5">
       <div className="card shadow border-1 rounded-4">
         <div className="card-body p-4 p-md-5">
-          {" "}
-          <h2 className="text-center">Iniciar sesion</h2>
+          <h2 className="text-center mb-5">Iniciar sesion</h2>
           {error && <div className="alert alert-danger">{error}</div>}
           {searchParams.get("registered") && (
             <div className="alert alert-success">
@@ -77,7 +76,7 @@ export default function Login() {
           )}
           {/*Formulario */}
           <form onSubmit={iniciarSesion}>
-            <div className="mb-3">
+            <div className="mb-4">
               <label htmlFor="email" className="form-label fw-medium">
                 Email:
               </label>
@@ -93,7 +92,7 @@ export default function Login() {
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-5">
               <label htmlFor="password" className="form-label fw-medium">
                 Contraseña:
               </label>
