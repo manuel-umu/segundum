@@ -89,7 +89,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
       <div className="modal-dialog modal-lg modal-dialog-scrollable">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">📦 Publicar Producto</h5>
+            <h5 className="modal-title">Publicar Producto</h5>
             <button className="btn-close" onClick={onCerrar}></button>
           </div>
           <div className="modal-body">

@@ -50,7 +50,9 @@ export default function AdminUsuarios() {
       {/* Tabla */}
       {usuarios.length > 0 && (
         <div className="table-responsive">
-          <table className="table table-hover table-striped text-center">
+          <table className="table table-hover table-striped text-center"
+            style={{ tableLayout: 'fixed', width: '100%' }}
+          >
             <thead className="table-dark">
               <tr>
                 <th scope="col" style={{ width: "15%" }}>Nombre</th>

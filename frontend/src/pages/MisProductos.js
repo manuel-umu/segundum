@@ -92,19 +92,21 @@ export default function MisProductos() {
       {/* Tabla */}
       {productos.length > 0 && (
         <div className="table-responsive">
-          <table className="table table-hover table-striped text-center">
+          <table className="table table-hover table-striped text-center"
+            style={{ tableLayout: 'fixed', width: '100%' }}
+          >
             <thead className="table-dark">
               <tr>
-                <th scope="col">Título</th>
-                <th scope="col" className="col-ocultar">
+                <th scope="col" style={{ width: "30%" }}>Título</th>
+                <th scope="col" style={{ width: "25%" }} className="col-ocultar">
                   Categoría
                 </th>
-                <th scope="col">Precio</th>
-                <th scope="col" className="col-ocultar">
+                <th scope="col" style={{ width: "10%" }}>Precio</th>
+                <th scope="col" style={{ width: "15%" }} className="col-ocultar">
                   Fecha
                 </th>
-                <th scope="col">¿Vendido?</th>
-                <th scope="col">Accion</th>
+                <th scope="col" style={{ width: "10%" }}>¿Vendido?</th>
+                <th scope="col" style={{ width: "10%" }}>Accion</th>
               </tr>
             </thead>
             <tbody>

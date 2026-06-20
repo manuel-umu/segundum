@@ -74,15 +74,17 @@ export default function MisCompras() {
       {/* Tabla */}
       {compras.length > 0 && (
         <div className="table-responsive">
-          <table className="table table-hover table-striped text-center">
+          <table className="table table-hover table-striped text-center"
+            style={{ tableLayout: 'fixed', width: '100%' }}
+          >
             <thead className="table-dark">
               <tr>
-                <th scope="col">Producto</th>
-                <th scope="col" className="col-ocultar">
+                <th scope="col" style={{ width: "30%" }} >Producto</th>
+                <th scope="col" style={{ width: "30%" }} className="col-ocultar">
                   Vendedor
                 </th>
-                <th scope="col">Precio</th>
-                <th scope="col" className="col-ocultar">
+                <th scope="col" style={{ width: "10%" }} >Precio</th>
+                <th scope="col" style={{ width: "30%" }} className="col-ocultar">
                   Fecha
                 </th>
               </tr>
