@@ -88,7 +88,7 @@ export default function AdminCompraventas() {
                 return (
                   <tr key={compraventa.id}>
                     <td>{compraventa.titulo}</td>
-                    <td>{compraventa.precio}</td>
+                    <td>{compraventa.precio} €</td>
                     <td className="col-ocultar">{compraventa.nombreComprador}</td>
                     <td className="col-ocultar">{compraventa.nombreVendedor}</td>
                     <td>{fecha}</td>
