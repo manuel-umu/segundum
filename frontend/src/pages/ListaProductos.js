@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 import ProductoTarjeta from "../components/TarjetaProducto";
 
@@ -12,10 +11,6 @@ const ESTADOS = [
 ];
 
 export default function ListaProductos() {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const idVendedor = params.get("idVendedor");
-
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -50,15 +45,30 @@ export default function ListaProductos() {
     cargarCategorias();
   }, []);
 
-  // Carga de productos cada vez que cambie la pagina o el tamaño
+  // Carga de productos cada vez que cambie la pagina o algun filtro. El filtrado se
+  // hace en el backend para que la paginacion sea correcta sobre el resultado filtrado
   useEffect(
     function () {
       async function cargarProductos() {
         setErrorCarga("");
+
+        // Construimos la URL solo con los filtros que esten activos
+        var url = "/productos/enVenta?page=" + pagina + "&size=" + SIZE;
+        if (categoria !== "") {
+          url += "&categoria=" + encodeURIComponent(categoria);
+        }
+        if (descripcion !== "") {
+          url += "&texto=" + encodeURIComponent(descripcion);
+        }
+        if (estado !== "") {
+          url += "&estado=" + encodeURIComponent(estado);
+        }
+        if (precio !== "") {
+          url += "&precioMax=" + encodeURIComponent(precio);
+        }
+
         try {
-          const res = await fetch(
-            "/productos/enVenta?page=" + pagina + "&size=" + SIZE,
-          );
+          const res = await fetch(url);
           if (!res.ok) {
             setErrorCarga("No se pudieron cargar los productos.");
             return;
@@ -83,7 +93,7 @@ export default function ListaProductos() {
       }
       cargarProductos();
     },
-    [pagina, recarga],
+    [pagina, categoria, descripcion, estado, precio, recarga],
   );
 
   function abrirPopup(producto) {
@@ -107,32 +117,12 @@ export default function ListaProductos() {
     setDescripcion("");
     setEstado("");
     setPrecio("");
+    setPagina(0);
   }
 
   // Indica si hay algun filtro activo para habilitar el boton de limpiar
   const hayFiltros =
     categoria !== "" || descripcion !== "" || estado !== "" || precio !== "";
-
-  const productosFiltrados = productos.filter(function (p) {
-    if (idVendedor !== null) {
-      if (!p.vendedor || p.vendedor.id !== idVendedor) return false;
-    }
-    if (categoria !== "") {
-      if (!p.categoria || p.categoria.id !== categoria) return false;
-    }
-    if (descripcion !== "") {
-      if (!p.descripcion) return false;
-      if (p.descripcion.toLowerCase().indexOf(descripcion.toLowerCase()) === -1)
-        return false;
-    }
-    if (estado !== "" && p.estado !== estado) {
-      return false;
-    }
-    if (precio !== "" && p.precio > Number(precio)) {
-      return false;
-    }
-    return true;
-  });
 
   return (
     <section className="container mt-4">
@@ -162,6 +152,7 @@ export default function ListaProductos() {
                 value={categoria}
                 onChange={function (e) {
                   setCategoria(e.target.value);
+                  setPagina(0);
                 }}
               >
                 <option value="">Todas</option>
@@ -188,6 +179,7 @@ export default function ListaProductos() {
                 value={descripcion}
                 onChange={function (e) {
                   setDescripcion(e.target.value);
+                  setPagina(0);
                 }}
               />
             </div>
@@ -203,6 +195,7 @@ export default function ListaProductos() {
                 value={estado}
                 onChange={function (e) {
                   setEstado(e.target.value);
+                  setPagina(0);
                 }}
               >
                 <option value="">Todos</option>
@@ -231,6 +224,7 @@ export default function ListaProductos() {
                   min={0}
                   onChange={function (e) {
                     setPrecio(e.target.value);
+                    setPagina(0);
                   }}
                 />
                 <span className="input-group-text">€</span>
@@ -242,15 +236,15 @@ export default function ListaProductos() {
           {hayFiltros && (
             <div className="mt-3 text-muted">
               <small>
-                Mostrando <strong>{productosFiltrados.length}</strong> producto
-                {productosFiltrados.length === 1 ? "" : "s"} en esta pagina.
+                Mostrando <strong>{productos.length}</strong> producto
+                {productos.length === 1 ? "" : "s"} en esta pagina.
               </small>
             </div>
           )}
         </div>
       </div>
 
-      <h1>{idVendedor !== null ? "Mis productos" : "Productos en venta"}</h1>
+      <h1>Productos en venta</h1>
 
       {errorCarga && <div className="alert alert-danger">{errorCarga}</div>}
       {mensajeExito && (
@@ -259,7 +253,7 @@ export default function ListaProductos() {
 
       {/* Grid de tarjetas - cada tarjeta abre el popup al hacer clic */}
       <div className="grid-productos mt-3">
-        {productosFiltrados.map(function (p) {
+        {productos.map(function (p) {
           var nombreCategoria = "";
           if (p.categoria && p.categoria.nombre) {
             nombreCategoria = p.categoria.nombre;
@@ -286,7 +280,7 @@ export default function ListaProductos() {
           );
         })}
 
-        {productosFiltrados.length === 0 && !errorCarga && (
+        {productos.length === 0 && !errorCarga && (
           <p className="text-muted">
             No hay productos que coincidan con los filtros.
           </p>

@@ -122,6 +122,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
                   placeholder="Describe tu producto..."
+                  required
                 />
               </div>
 
@@ -187,13 +188,12 @@ function CrearProducto({ onCerrar, onSuccess }) {
                     Precio <span className="text-danger">*</span>
                   </label>
                   <div className="input-group">
-                    <span className="input-group-text">€</span>
                     <input
                       type="number"
                       id="precio"
                       className="form-control"
                       min="0.01"
-                      step="0.01"
+                      step="1.00"
                       value={precio}
                       onChange={(e) => setPrecio(e.target.value)}
                       required

@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 function ModificarProducto({ producto, onCerrar, onSuccess }) {
-  const [descripcion, setDescripcion] = useState(producto.descripcion || "");
-  const [precio, setPrecio] = useState(producto.precio || "");
+  const [descripcion, setDescripcion] = useState(producto.descripcion);
+  const [precio, setPrecio] = useState(producto.precio);
   const [error, setError] = useState("");
 
   async function modificar(e) {
@@ -50,7 +50,7 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
               {/* DESCRIPCION */}
               <div className="mb-3">
                 <label htmlFor="mod-descripcion" className="form-label fw-medium">
-                  Descripcion
+                  Descripcion <span className="text-danger">*</span>
                 </label>
                 <textarea
                   id="mod-descripcion"
@@ -59,6 +59,7 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
                   value={descripcion}
                   onChange={function (e) { setDescripcion(e.target.value); }}
                   placeholder="Describe tu producto..."
+                  required
                 />
               </div>
 
@@ -68,13 +69,12 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
                   Precio <span className="text-danger">*</span>
                 </label>
                 <div className="input-group col-12 col-md-6">
-                  <span className="input-group-text">€</span>
                   <input
                     type="number"
                     id="mod-precio"
                     className="form-control"
                     min="0.01"
-                    step="0.01"
+                    step="1.00"
                     value={precio}
                     onChange={function (e) { setPrecio(e.target.value); }}
                     required
