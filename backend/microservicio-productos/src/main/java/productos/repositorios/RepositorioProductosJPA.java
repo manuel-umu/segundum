@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import productos.modelo.Categoria;
 import productos.modelo.Producto;
+import productos.enumerados.EnumEstado;
 
 @Repository
 public interface RepositorioProductosJPA extends RepositorioProductos, JpaRepository<Producto, String> {
@@ -25,5 +26,11 @@ public interface RepositorioProductosJPA extends RepositorioProductos, JpaReposi
 	@Query("SELECT p FROM Producto p WHERE p.vendedor.id = :idVendedor")
 	Page<Producto> getByVendedor(@Param("idVendedor") String idVendedor, Pageable pageable);
 
-	Page<Producto> findByVendidoFalse(Pageable pageable);
+	@Query("SELECT p FROM Producto p WHERE p.vendido = false "
+			+ "AND (:filtraCategoria = false OR p.categoria.id IN :categorias) "
+			+ "AND (:texto IS NULL OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%'))) "
+			+ "AND p.estado IN :estados " + "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
+	Page<Producto> buscar(@Param("filtraCategoria") boolean filtraCategoria,
+			@Param("categorias") List<String> categorias, @Param("texto") String texto,
+			@Param("estados") List<EnumEstado> estados, @Param("precioMax") Float precioMax, Pageable pageable);
 }

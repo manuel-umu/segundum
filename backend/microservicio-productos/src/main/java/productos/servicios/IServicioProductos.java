@@ -28,7 +28,8 @@ public interface IServicioProductos {
 
 	Page<ProductoResDTO> getListadoPaginado(Pageable pageable);
 
-	Page<ProductoResDTO> getListadoPaginadoEnVenta(Pageable pageable);
+	Page<ProductoResDTO> buscar(String idCategoria, String texto, EnumEstado estado, Float precioMax,
+			Pageable pageable) throws RepositorioException, EntidadNoEncontrada;
 
 	void ponerVendido(String id) throws RepositorioException, EntidadNoEncontrada;
 

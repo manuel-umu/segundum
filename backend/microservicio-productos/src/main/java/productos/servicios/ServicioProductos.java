@@ -1,6 +1,8 @@
 package productos.servicios;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,15 @@ public class ServicioProductos implements IServicioProductos {
 	private RepositorioUsuarios usuarioRepo;
 
 	@Autowired
+	private IServicioCategorias servicioCategorias;
+
+	@Autowired
 	public ServicioProductos(RepositorioProductos productoRepo, RepositorioCategorias categoriaRepo,
 			RepositorioUsuarios usuarioRepo, IServicioCategorias servicioC) {
 		this.productoRepo = productoRepo;
 		this.categoriaRepo = categoriaRepo;
 		this.usuarioRepo = usuarioRepo;
+		this.servicioCategorias = servicioC;
 	}
 
 	@Override
@@ -136,8 +142,37 @@ public class ServicioProductos implements IServicioProductos {
 		return this.productoRepo.findAll(pageable).map(ProductoResDTO::toDto);
 	}
 
-	public Page<ProductoResDTO> getListadoPaginadoEnVenta(Pageable pageable) {
-		return this.productoRepo.findByVendidoFalse(pageable).map(ProductoResDTO::toDto);
+	@Override
+	public Page<ProductoResDTO> buscar(String idCategoria, String texto, EnumEstado estado, Float precioMax,
+			Pageable pageable) throws RepositorioException, EntidadNoEncontrada {
+		// Categorias: la indicada mas todas sus descendientes (directas o no). Si no se
+		// filtra por categoria usamos un valor de relleno para que el IN sea valido
+		boolean filtraCategoria = idCategoria != null && !idCategoria.isEmpty();
+		List<String> categorias = new ArrayList<>();
+		if (filtraCategoria) {
+			categorias.add(idCategoria);
+			LinkedList<Categoria> descendientes = servicioCategorias.recuperarDescCategoria(idCategoria);
+			for (Categoria c : descendientes) {
+				categorias.add(c.getId());
+			}
+		} else {
+			categorias.add("");
+		}
+
+		// Estados: el indicado y todos los mejores. El orden del enum va de mejor a peor
+		// (NUEVO, COMONUEVO, ...), asi que "igual o mejor" es ordinal menor o igual
+		List<EnumEstado> estados = new ArrayList<>();
+		for (EnumEstado e : EnumEstado.values()) {
+			if (estado == null || e.ordinal() <= estado.ordinal()) {
+				estados.add(e);
+			}
+		}
+
+		// Un texto vacio se trata como ausencia de filtro
+		String textoBusqueda = (texto == null || texto.isEmpty()) ? null : texto;
+
+		return productoRepo.buscar(filtraCategoria, categorias, textoBusqueda, estados, precioMax, pageable)
+				.map(ProductoResDTO::toDto);
 	}
 
 	@Override

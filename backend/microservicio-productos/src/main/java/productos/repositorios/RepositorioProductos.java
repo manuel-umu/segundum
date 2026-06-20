@@ -9,6 +9,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import productos.modelo.Categoria;
 import productos.modelo.Producto;
+import productos.enumerados.EnumEstado;
 
 @NoRepositoryBean
 public interface RepositorioProductos extends CrudRepository<Producto, String> {
@@ -22,6 +23,7 @@ public interface RepositorioProductos extends CrudRepository<Producto, String> {
 	List<Producto> getByCategorias(String idCategoria, List<Categoria> categorias);
 
 	Page<Producto> getByVendedor(String idVendedor, Pageable pageable);
-	
-	Page<Producto> findByVendidoFalse(Pageable pageable);
+
+	Page<Producto> buscar(boolean filtraCategoria, List<String> categorias, String texto,
+			List<EnumEstado> estados, Float precioMax, Pageable pageable);
 }

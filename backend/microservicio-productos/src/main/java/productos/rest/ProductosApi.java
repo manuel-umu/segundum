@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import productos.dto.LugarRecogidaDTO;
 import productos.dto.ProductoDTO;
 import productos.dto.ProductoResDTO;
+import productos.enumerados.EnumEstado;
 import productos.modelo.ProductoRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,9 +42,13 @@ public interface ProductosApi {
 			@Parameter(description = "Número de página (empieza en 0)", example = "0") @RequestParam int page,
 			@Parameter(description = "Tamaño de página", example = "10") @RequestParam int size) throws Exception;
 
-	@Operation(summary = "Listado de productos en venta", description = "Obtiene un listado paginado de productos no vendidos")
+	@Operation(summary = "Listado de productos en venta", description = "Obtiene un listado paginado de productos no vendidos. Permite filtrar (todos opcionales) por categoria (incluyendo descendientes), texto en la descripcion, estado (igual o mejor) y precio maximo.")
 	@ApiResponse(responseCode = "200", description = "Listado devuelto correctamente.")
 	public PagedModel<EntityModel<ProductoResDTO>> getProductosEnVenta(
+			@Parameter(description = "Identificador de la categoria") @RequestParam(required = false) String categoria,
+			@Parameter(description = "Texto contenido en la descripcion") @RequestParam(required = false) String texto,
+			@Parameter(description = "Estado minimo aceptado (igual o mejor)") @RequestParam(required = false) EnumEstado estado,
+			@Parameter(description = "Precio maximo") @RequestParam(required = false) Float precioMax,
 			@Parameter(description = "Número de página (empieza en 0)", example = "0") @RequestParam int page,
 			@Parameter(description = "Tamaño de página", example = "10") @RequestParam int size) throws Exception;
 

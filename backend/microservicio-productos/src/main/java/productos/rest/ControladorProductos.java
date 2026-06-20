@@ -30,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import productos.modelo.Producto;
 import productos.modelo.ProductoRes;
+import productos.enumerados.EnumEstado;
 import productos.servicios.IServicioProductos;
 import io.jsonwebtoken.Claims;
 import javax.servlet.http.HttpServletRequest;
@@ -89,13 +90,16 @@ public class ControladorProductos implements ProductosApi {
 		return this.pagedResourcesAssembler.toModel(resultado);
 	}
 
-	// Listado (paginado) de productos en venta (no vendidos)
+	// Listado (paginado) de productos en venta (no vendidos) con filtros opcionales
+	// de categoria, texto, estado y precio maximo
 	@GetMapping("/enVenta")
 	@Override
-	public PagedModel<EntityModel<ProductoResDTO>> getProductosEnVenta(@RequestParam int page, @RequestParam int size)
-			throws Exception {
+	public PagedModel<EntityModel<ProductoResDTO>> getProductosEnVenta(
+			@RequestParam(required = false) String categoria, @RequestParam(required = false) String texto,
+			@RequestParam(required = false) EnumEstado estado, @RequestParam(required = false) Float precioMax,
+			@RequestParam int page, @RequestParam int size) throws Exception {
 		Pageable paginacion = PageRequest.of(page, size, Sort.by("titulo").ascending());
-		Page<ProductoResDTO> resultado = servicio.getListadoPaginadoEnVenta(paginacion);
+		Page<ProductoResDTO> resultado = servicio.buscar(categoria, texto, estado, precioMax, paginacion);
 		return this.pagedResourcesAssembler.toModel(resultado);
 	}
 
