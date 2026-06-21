@@ -25,7 +25,7 @@ export default function ListaProductos() {
   const [precio, setPrecio] = useState("");
 
   // Paginacion
-  const [size] = useState(10);
+  const [size] = useState(12);
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(0);
 
