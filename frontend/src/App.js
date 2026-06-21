@@ -40,7 +40,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Login sin layout: sin header ni footer */}
         <Route element={<MainLayout />}>
           <Route index element={<ListaProductos />} />
           <Route path="/login" element={<Login />} />
