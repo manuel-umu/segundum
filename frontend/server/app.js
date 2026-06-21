@@ -121,16 +121,9 @@ app.get('/error/:codigo', function (req, res) {
   mostrarError(res, status);
 });
 
-// Ficheros estaticos propios (CSS de las paginas de error).
 app.use(express.static(path.join(__dirname, 'public')));
-// Ficheros estaticos del build de React.
 app.use(express.static(BUILD_DIR));
 
-// Rutas validas del frontend React: solo para estas servimos el index.html
-// (React Router se encarga de mostrar la vista en el cliente). Debe
-// mantenerse en sintonia con las rutas declaradas en src/App.js. Cualquier
-// otra URL se considera no encontrada y la atiende el manejador 404 de abajo,
-// que muestra la pagina de error de Handlebars.
 const RUTAS_REACT = [
   '/',
   '/login',
@@ -141,11 +134,11 @@ const RUTAS_REACT = [
   '/admin/usuarios',
   '/admin/compraventas',
 ];
+
+// Todas las rutas de React se sirven con el mismo index
 app.get(RUTAS_REACT, function (req, res) {
-  // Leemos el index.html del build y lo enviamos (temario: fs.readFile).
   const rutaIndex = path.join(BUILD_DIR, 'index.html');
   fs.readFile(rutaIndex, function (err, datos) {
-    // Si no existe el build (no se ha hecho "npm run build"), mostramos error.
     if (err) {
       mostrarError(res, 500);
     } else {
@@ -154,11 +147,7 @@ app.get(RUTAS_REACT, function (req, res) {
   });
 });
 
-// Si la peticion llega hasta aqui, no coincide con ninguna ruta: es un 404.
+// Si la peticion llega hasta aqui, no coincide con ninguna ruta: es un 404
 app.use(function (req, res) {
   mostrarError(res, 404);
-});
-
-app.listen(PORT, function () {
-  console.log('Servidor escuchando en http://localhost:' + PORT);
 });
