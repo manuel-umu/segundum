@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import ProductoTarjeta from "../components/TarjetaProducto";
+import TarjetaProducto from "../components/TarjetaProducto";
 
 const ESTADOS = [
   { value: "NUEVO", label: "Nuevo" },
@@ -25,7 +25,7 @@ export default function ListaProductos() {
   const [precio, setPrecio] = useState("");
 
   // Paginacion
-  const SIZE = 10;
+  const [size] = useState(10);
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(0);
 
@@ -46,51 +46,50 @@ export default function ListaProductos() {
   }, []);
 
   // Carga de productos cada vez que cambie la pagina o algun filtro
-  useEffect(
-    function () {
-      async function cargarProductos() {
-        setErrorCarga("");
+  useEffect(function () {
+    async function cargarProductos() {
+      setErrorCarga("");
 
-        var url = "/productos/enVenta?page=" + pagina + "&size=" + SIZE;
-        if (categoria !== "") {
-          url += "&categoria=" + encodeURIComponent(categoria);
-        }
-        if (descripcion !== "") {
-          url += "&texto=" + encodeURIComponent(descripcion);
-        }
-        if (estado !== "") {
-          url += "&estado=" + encodeURIComponent(estado);
-        }
-        if (precio !== "") {
-          url += "&precioMax=" + encodeURIComponent(precio);
-        }
-
-        try {
-          const res = await fetch(url);
-          if (!res.ok) {
-            setErrorCarga("No se pudieron cargar los productos.");
-            return;
-          }
-          const data = await res.json();
-
-          // La respuesta viene en formato HATEOAS
-          var lista = [];
-          if (data._embedded && data._embedded.productoResDTOList) {
-            lista = data._embedded.productoResDTOList;
-          }
-          setProductos(lista);
-
-          var total = 0;
-          if (data.page && data.page.totalPages) {
-            total = data.page.totalPages;
-          }
-          setTotalPaginas(total);
-        } catch (err) {
-          setErrorCarga("Error de red al cargar los productos.");
-        }
+      var url = "/productos/enVenta?page=" + pagina + "&size=" + size;
+      if (categoria !== "") {
+        url += "&categoria=" + encodeURIComponent(categoria);
       }
-      cargarProductos();
-    },
+      if (descripcion !== "") {
+        url += "&texto=" + encodeURIComponent(descripcion);
+      }
+      if (estado !== "") {
+        url += "&estado=" + encodeURIComponent(estado);
+      }
+      if (precio !== "") {
+        url += "&precioMax=" + encodeURIComponent(precio);
+      }
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          setErrorCarga("No se pudieron cargar los productos.");
+          return;
+        }
+        const data = await res.json();
+
+        // La respuesta viene en formato HATEOAS
+        var lista = [];
+        if (data._embedded && data._embedded.productoResDTOList) {
+          lista = data._embedded.productoResDTOList;
+        }
+        setProductos(lista);
+
+        var total = 0;
+        if (data.page && data.page.totalPages) {
+          total = data.page.totalPages;
+        }
+        setTotalPaginas(total);
+      } catch (err) {
+        setErrorCarga("Error de red al cargar los productos.");
+      }
+    }
+    cargarProductos();
+  },
     [pagina, categoria, descripcion, estado, precio, recarga],
   );
 
@@ -249,7 +248,7 @@ export default function ListaProductos() {
         <div className="alert alert-success">{mensajeExito}</div>
       )}
 
-      {/* Grid de tarjetas - cada tarjeta abre el popup al hacer clic */}
+      {/* Grid CSS: Cada tarjeta abre el popup al hacer clic */}
       <div className="grid-productos mt-3">
         {productos.map(function (p) {
           var nombreCategoria = "";
@@ -289,6 +288,7 @@ export default function ListaProductos() {
       {totalPaginas > 1 && (
         <nav aria-label="Navegacion de paginas" className="mt-4">
           <ul className="pagination justify-content-center">
+
             {/* Boton anterior */}
             <li className={`page-item ${pagina === 0 ? "disabled" : ""}`}>
               <button className="page-link" onClick={paginaAnterior}>
@@ -327,9 +327,9 @@ export default function ListaProductos() {
         </nav>
       )}
 
-      {/* Popup de detalle - solo visible si hay un producto seleccionado */}
+      {/* Popup de detalle: Solo visible si hay un producto seleccionado */}
       {productoSeleccionado !== null && (
-        <ProductoTarjeta
+        <TarjetaProducto
           producto={productoSeleccionado}
           onCerrar={cerrarPopup}
           onEliminar={function () {

@@ -29,8 +29,7 @@ export default function AdminCompraventas() {
           setTotalElementos(lista.length);
         }
       } catch (error) {
-        console.error("Error al obtener la lista de compraventas:", error);
-        window.location.href = "/error/500";
+        window.location.href = "/error/502";
       }
     }
     getAllCompraventas();

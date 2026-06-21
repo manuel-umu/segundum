@@ -42,8 +42,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
 
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario || !usuario.id) {
-      alert("Error: No se ha encontrado la sesión del usuario.");
-      return;
+      window.location.href = "/error/401";
     }
     const fechaPubli = new Date().toISOString().split(".")[0];
     try {
@@ -71,10 +70,10 @@ function CrearProducto({ onCerrar, onSuccess }) {
         alert("Producto creado!");
         onSuccess();
       } else {
-        throw new Error(`Error ${res.status}`);
+        window.location.href = "/error/" + res.status;
       }
     } catch (err) {
-      alert("Error al crear producto: " + err.message);
+      window.location.href = "/error/502";
     }
   }
 
@@ -88,7 +87,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
           </div>
           <div className="modal-body">
             <form onSubmit={crearProducto}>
-              {/* TÍTULO */}
+              {/* Título */}
               <div className="mb-3">
                 <label htmlFor="titulo" className="form-label fw-medium">
                   Título del producto <span className="text-danger">*</span>
@@ -98,13 +97,13 @@ function CrearProducto({ onCerrar, onSuccess }) {
                   id="titulo"
                   className="form-control"
                   value={titulo}
-                  onChange={(e) => setTitulo(e.target.value)}
+                  onChange={function (e) { setTitulo(e.target.value); }}
                   required
                   placeholder="¿Que vendes?"
                 />
               </div>
 
-              {/* DESCRIPCIÓN */}
+              {/* Descripción */}
               <div className="mb-3">
                 <label htmlFor="descripcion" className="form-label fw-medium">
                   Descripción <span className="text-danger">*</span>
@@ -114,13 +113,13 @@ function CrearProducto({ onCerrar, onSuccess }) {
                   className="form-control"
                   rows="4"
                   value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
+                  onChange={function (e) { setDescripcion(e.target.value); }}
                   placeholder="Describe tu producto..."
                   required
                 />
               </div>
 
-              {/* CATEGORÍA */}
+              {/* Categoría */}
               <div className="mb-3">
                 <label
                   htmlFor="categoriaPrincipal"
@@ -132,7 +131,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
                   id="categoriaPrincipal"
                   className="form-select"
                   value={categoriaId}
-                  onChange={(e) => setCategoriaId(e.target.value)}
+                  onChange={function (e) { setCategoriaId(e.target.value); }}
                   required
                 >
                   <option value="">
@@ -140,15 +139,17 @@ function CrearProducto({ onCerrar, onSuccess }) {
                       ? "Cargando..."
                       : "Selecciona categoría"}
                   </option>
-                  {categorias.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.nombre}
-                    </option>
-                  ))}
+                  {categorias.map(function(cat) {
+                    return (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.nombre}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
 
-              {/* ESTADO */}
+              {/* Estado */}
               <div className="mb-3">
                 <div className="col-12 col-md-6 col-lg-3">
                   <label htmlFor="f-estado" className="form-label fw-medium">
@@ -175,7 +176,7 @@ function CrearProducto({ onCerrar, onSuccess }) {
                 </div>
               </div>
 
-              {/* PRECIO */}
+              {/* Precio */}
               <div className="mb-3">
                 <div className="col-12 col-md-6">
                   <label htmlFor="precio" className="form-label fw-medium">
@@ -189,21 +190,21 @@ function CrearProducto({ onCerrar, onSuccess }) {
                       min="0.01"
                       step="0.01"
                       value={precio}
-                      onChange={(e) => setPrecio(e.target.value)}
+                      onChange={function (e) { setPrecio(e.target.value); }}
                       required
                     />
                   </div>
                 </div>
               </div>
 
-              {/* ENVÍO */}
+              {/* Envío */}
               <div className="mb-4 form-check">
                 <input
                   type="checkbox"
                   id="envio"
                   className="form-check-input"
                   checked={envioDisponible}
-                  onChange={(e) => setEnvioDisponible(e.target.checked)}
+                  onChange={function (e) { setEnvioDisponible(e.target.checked); }}
                 />
                 <label htmlFor="envio" className="form-check-label">
                   Envío disponible

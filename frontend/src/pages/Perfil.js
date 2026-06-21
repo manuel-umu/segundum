@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 // Minimo 6 caracteres con letras y números
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
@@ -177,7 +178,7 @@ export default function Profile() {
       <h1 className="mb-4">Mi perfil</h1>
 
       <div className="row">
-        {/* Columna izquierda: datos personales */}
+        {/* Columna izquierda: Datos personales */}
         <div className="col-12 col-lg-6">
           <div className="card">
             <div className="card-header">Datos personales</div>
@@ -271,7 +272,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Columna derecha: cambio de contrasena */}
+        {/* Columna derecha: Cambio de contraseña */}
         <div className="col-12 col-lg-6">
           <div className="card">
             <div className="card-header">Cambiar contraseña</div>
@@ -314,7 +315,7 @@ export default function Profile() {
                     <p className="text-danger">{errorPasswordNueva}</p>
                   )}
                   <small className="text-muted">
-                    Minimo 6 caracteres con letras y numeros.
+                    Minimo 6 caracteres con letras y números.
                   </small>
                 </div>
 

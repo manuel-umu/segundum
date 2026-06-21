@@ -10,8 +10,6 @@ function textoEstado(estado) {
 }
 
 export default function TarjetaProducto({ producto, onCerrar, onEliminar, onComprar }) {
-  const [errorAccion, setErrorAccion] = useState("");
-
   // Usuario logueado (puede ser null si no hay sesion)
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const usuarioId = usuario === null ? null : usuario.id;
@@ -30,7 +28,6 @@ export default function TarjetaProducto({ producto, onCerrar, onEliminar, onComp
   }
 
   async function eliminar() {
-    setErrorAccion("");
     try {
       const res = await fetch("/productos/" + producto.id, {
         method: "DELETE",
@@ -39,18 +36,16 @@ export default function TarjetaProducto({ producto, onCerrar, onEliminar, onComp
       if (res.ok) {
         onEliminar();
       } else {
-         window.location.href = "/error/" + res.status;
+        window.location.href = "/error/" + res.status;
       }
     } catch (err) {
-         window.location.href = "/error/502";
+        window.location.href = "/error/502";
     }
   }
 
   async function comprar() {
-    setErrorAccion("");
     if (usuarioId === null) {
-      setErrorAccion("Debes iniciar sesion para comprar.");
-      return;
+      window.location.href = "/error/401";
     }
     try {
       const res = await fetch("/compraventas", {
@@ -81,10 +76,6 @@ export default function TarjetaProducto({ producto, onCerrar, onEliminar, onComp
           </div>
 
           <div className="modal-body">
-            {errorAccion !== "" && (
-              <div className="alert alert-danger">{errorAccion}</div>
-            )}
-
             {/* Datos del producto */}
             <div>
               <p className="fs-3 fw-bold text-success">{producto.precio} €</p>

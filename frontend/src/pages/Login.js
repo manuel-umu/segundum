@@ -11,9 +11,6 @@ export default function Login() {
     const id = searchParams.get("id");
     const token = searchParams.get("token");
     
-    console.log("localStorage usuario:", localStorage.getItem("usuario"));
-    console.log("searchParams id:", id);
-    
     if (id && token) {
       const nombre = searchParams.get("nombre");
       const roles = searchParams.get("roles");
@@ -118,7 +115,9 @@ export default function Login() {
             <button
               type="button"
               className="btn btn-dark w-100"
-              onClick={() => window.location.href = "http://localhost:8090/oauth2/authorization/github"}
+              onClick={function() {
+                window.location.href = "http://localhost:8090/oauth2/authorization/github"
+              }}
             >
               Entrar con GitHub
             </button>

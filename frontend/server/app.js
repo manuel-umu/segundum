@@ -3,17 +3,17 @@ const express = require('express');
 const { engine } = require('express-handlebars');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-const API_URL = process.env.API_URL || 'http://localhost:8090';
+const PORT = 3001;
+const API_URL = 'http://localhost:8090';
 const BUILD_DIR = path.join(__dirname, '..', 'build');
 
-const helpers = {
-  anyo: function () {
-    return new Date().getFullYear();
-  },
-};
-
 function describirError(status) {
+  if (status === 401) {
+    return {
+      titulo: 'Credenciales inválidas',
+      mensaje: 'Tus credenciales no son válidas.',
+    };
+  }
   if (status === 403) {
     return {
       titulo: 'Acceso denegado',
@@ -48,7 +48,6 @@ app.engine('hbs', engine({
   extname: '.hbs',
   defaultLayout: 'layout',
   layoutsDir: path.join(__dirname, 'views'),
-  partialsDir: path.join(__dirname, 'views', 'partials'),
   helpers: helpers,
 }));
 app.set('view engine', 'hbs');

@@ -7,7 +7,7 @@ const usuario = JSON.parse(localStorage.getItem("usuario"));
 export default function MisProductos() {
   const [productos, setProductos] = useState([]);
   const [modalCrearProducto, setModalCrearProducto] = useState(false);
-  const [productoAModificar, setProductoAModificar] = useState(null);
+  const [modalModificarProducto, setModalModificarProducto] = useState(null);
   const [pagina, setPagina] = useState(0);
   const [size] = useState(10);
   const [totalPaginas, setTotalPaginas] = useState(0);
@@ -44,7 +44,7 @@ export default function MisProductos() {
       window.location.href = "/error/500";
     }
   }
-    // Cargamos la lista solo cuando cargamos la vista
+  
   function paginaAnterior() {
     if (pagina > 0) setPagina(pagina - 1);
   }
@@ -75,7 +75,9 @@ export default function MisProductos() {
           </span>
           <button
             className="btn btn-secondary"
-            onClick={() => setModalCrearProducto(true)}
+            onClick={function(){
+               setModalCrearProducto(true) 
+            }}
           >
             Crear Producto
           </button>
@@ -135,7 +137,7 @@ export default function MisProductos() {
                     <button
                       className="btn btn-sm btn-outline-primary"
                       disabled={producto.vendido}
-                      onClick={function () { setProductoAModificar(producto); }}
+                      onClick={function() { setModalModificarProducto(producto); }}
                     >
                       Modificar
                     </button>
@@ -181,21 +183,21 @@ export default function MisProductos() {
         </nav>
       )}
 
-      {productoAModificar !== null && (
+      {modalModificarProducto !== null && (
         <ModificarProducto
-          producto={productoAModificar}
-          onCerrar={function () { setProductoAModificar(null); }}
-          onSuccess={function () {
-            setProductoAModificar(null);
-            getUserProductos();
+          producto={modalModificarProducto}
+          onCerrar={function() { setModalModificarProducto(null); }}
+          onSuccess={function() {
+            setModalModificarProducto(null);
+            getUserProductos(); // Recargar la tabla
           }}
         />
       )}
 
       {modalCrearProducto && (
         <CrearProducto
-          onCerrar={() => setModalCrearProducto(false)}
-          onSuccess={() => {
+          onCerrar={function() { setModalCrearProducto(false); }}
+          onSuccess={function() {
             setModalCrearProducto(false);
             getUserProductos(); // Recargar la tabla
           }}

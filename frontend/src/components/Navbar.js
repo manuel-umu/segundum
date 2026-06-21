@@ -1,26 +1,26 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import "../App.css";
 
+// Subraya el enlace activo
 function navLinkClass({ isActive }) {
   return "nav-link" + (isActive ? " active" : "");
 }
 
 // Lee el usuario guardado en localStorage (o null si no hay sesion)
-function leerUsuario() {
+function getUsuario() {
   return JSON.parse(localStorage.getItem("usuario"));
 }
 
 export default function Navbar() {
-  const [usuario, setUsuario] = useState(leerUsuario());
+  const [usuario, setUsuario] = useState(getUsuario());
 
   useEffect(function () {
-    function alCambiarStorage() {
-      setUsuario(leerUsuario());
+    function sincronizarSesion() {
+      setUsuario(getUsuario());
     }
-    window.addEventListener("storage", alCambiarStorage);
+    window.addEventListener("storage", sincronizarSesion);
     return function () {
-      window.removeEventListener("storage", alCambiarStorage);
+      window.removeEventListener("storage", sincronizarSesion);
     };
   }, []);
 
@@ -47,6 +47,7 @@ export default function Navbar() {
           SegundUM
         </NavLink>
 
+        {/* Botón para pantallas pequeñas */}
         <button
           className="navbar-toggler"
           type="button"
@@ -60,7 +61,7 @@ export default function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarMain">
-          {/* Enlaces principales — izquierda */}
+          {/* Enlaces principales */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink className={navLinkClass} to="/">
@@ -99,7 +100,7 @@ export default function Navbar() {
             )}
           </ul>
 
-          {/* Sesion — derecha */}
+          {/* Perfil y login/logout */}
           <ul className="navbar-nav ms-auto">
             {isAuthenticated && (
               <li className="nav-item">

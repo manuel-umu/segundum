@@ -32,8 +32,7 @@ export default function MisCompras() {
         setTotalElementos(lista.length);
       }
     } catch (error) {
-      console.error(`Error al obtener las compras del usuario con ID ${usuario.id}:`, error);
-      window.location.href = "/error/500";
+      window.location.href = "/error/502";
     }
   }
 
@@ -45,7 +44,6 @@ export default function MisCompras() {
     if (pagina < totalPaginas - 1) setPagina(pagina + 1);
   }
 
-  // Recargamos la lista cada vez que cambia la pagina
   useEffect(function () {
     getUserCompras();
   }, [pagina]);

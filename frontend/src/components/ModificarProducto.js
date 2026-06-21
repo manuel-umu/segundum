@@ -46,7 +46,7 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
           <div className="modal-body">
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={modificar}>
-              {/* DESCRIPCION */}
+              {/* Descripcion */}
               <div className="mb-3">
                 <label
                   htmlFor="mod-descripcion"
@@ -67,7 +67,7 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
                 />
               </div>
 
-              {/* PRECIO */}
+              {/* Precio */}
               <div className="mb-4">
                 <label htmlFor="mod-precio" className="form-label fw-medium">
                   Precio <span className="text-danger">*</span>
@@ -88,7 +88,7 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
                 </div>
               </div>
 
-              {/* BOTONES */}
+              {/* Botones */}
               <div className="d-flex gap-2">
                 <button
                   type="button"

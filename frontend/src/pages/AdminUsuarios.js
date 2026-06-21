@@ -4,10 +4,10 @@ export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
 
   // Paginacion
-  const SIZE = 10;
+  const [size] = useState(10);
   const [pagina, setPagina] = useState(0);
-  const totalPaginas = Math.ceil(usuarios.length / SIZE);
-  const usuariosPagina = usuarios.slice(pagina * SIZE, pagina * SIZE + SIZE);
+  const totalPaginas = Math.ceil(usuarios.length / size);
+  const usuariosPagina = usuarios.slice(pagina * size, pagina * size + size);
 
   function paginaAnterior() {
     if (pagina > 0) setPagina(pagina - 1);
@@ -33,8 +33,7 @@ export default function AdminUsuarios() {
         const body = await response.json();
         setUsuarios(body);
       } catch (error){
-        console.error("Error al obtener la lista de usuarios:", error);
-        window.location.href = "/error/500";
+        window.location.href = "/error/502";
       }
     }
     getAllUsuarios();
