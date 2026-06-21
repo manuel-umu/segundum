@@ -26,6 +26,7 @@ export default function ModificarProducto({ producto, onCerrar, onSuccess }) {
       });
 
       if (res.ok) {
+        alert("Producto modificado correctamente.");
         onSuccess();
       } else {
         window.location.href = "/error/" + res.status;
