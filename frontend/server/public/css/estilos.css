@@ -8,7 +8,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   font-family: "Segoe UI", sans-serif;
   color: #212529;
   background-color: #f8f9fa;
@@ -45,6 +44,7 @@ body {
 
 /* Contenido principal */
 .contenido {
+  flex: 1;
   box-sizing: border-box;
   width: 100%;
   max-width: 60rem;
