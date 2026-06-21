@@ -109,7 +109,7 @@ export default function Login() {
               Entrar
             </button>
             {/* Separador */}
-            <div className="text-center my-3 text-muted">——</div>
+            <div className="text-center my-3 text-muted">------------------------------------------------</div>
 
             {/* OAuth2 GitHub */}
             <button

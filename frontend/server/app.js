@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const { engine } = require('express-handlebars');
 
@@ -44,99 +45,7 @@ function describirError(status) {
   };
 }
 
-app.engine('hbs', engine({
-  extname: '.hbs',
-  defaultLayout: 'layout',
-  layoutsDir: path.join(__dirname, 'views'),
-  helpers: helpers,
-}));
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'views'));
-
-app.use(function (req, res, next) {
-  console.log(req.method + ' ' + req.url);
-  next();
-});
-
-const RUTAS_API = ['/auth', '/usuarios', '/productos', '/categorias', '/compraventas'];
-
-function leerCuerpoCrudo(req, res, next) {
-  const trozos = [];
-  req.on('data', function (trozo) {
-    trozos.push(trozo);
-  });
-  req.on('end', function () {
-    req.cuerpoCrudo = Buffer.concat(trozos);
-    next();
-  });
-  req.on('error', next);
-}
-
-// Reenvia la peticion a Segundum con fetch (incluido en Node) y devuelve al
-// cliente la respuesta de Segundum. Asi el navegador habla solo con nuestro
-// servidor (mismo origen) y nosotros hablamos con Segundum por detras.
-async function reenviarAApi(req, res, next) {
-  try {
-    // Reconstruimos la URL en Segundum conservando la ruta y los parametros.
-    const urlDestino = API_URL + req.originalUrl;
-
-    // Copiamos solo las cabeceras relevantes (entre ellas la cookie de sesion).
-    const cabeceras = {};
-    if (req.headers['content-type']) {
-      cabeceras['content-type'] = req.headers['content-type'];
-    }
-    if (req.headers['cookie']) {
-      cabeceras['cookie'] = req.headers['cookie'];
-    }
-    if (req.headers['authorization']) {
-      cabeceras['authorization'] = req.headers['authorization'];
-    }
-
-    // Preparamos las opciones de la peticion a Segundum.
-    const opciones = { method: req.method, headers: cabeceras };
-    // GET y HEAD no llevan cuerpo; el resto reenvia el cuerpo recibido.
-    if (req.method !== 'GET' && req.method !== 'HEAD') {
-      opciones.body = req.cuerpoCrudo;
-    }
-
-    const respuesta = await fetch(urlDestino, opciones);
-
-    // Reenviamos al cliente las cookies que Segundum quiera establecer.
-    const cookies = respuesta.headers.getSetCookie();
-    if (cookies.length > 0) {
-      res.setHeader('set-cookie', cookies);
-    }
-
-    // Reenviamos el tipo de contenido y el codigo de estado de Segundum.
-    const tipo = respuesta.headers.get('content-type');
-    if (tipo) {
-      res.setHeader('content-type', tipo);
-    }
-    res.status(respuesta.status);
-
-    // Enviamos el cuerpo tal cual lo devuelve Segundum.
-    const cuerpo = Buffer.from(await respuesta.arrayBuffer());
-    res.send(cuerpo);
-  } catch (error) {
-    // Si Segundum no responde, generamos un error 502 (puerta de enlace).
-    const err = new Error('No se pudo contactar con el servidor de datos');
-    err.status = 502;
-    next(err);
-  }
-}
-
-app.use(RUTAS_API, leerCuerpoCrudo, reenviarAApi);
-
-// Pagina de error que el frontend solicita (con una redireccion de pagina
-// completa) cuando una peticion al backend devuelve un error. El navegador
-// navega aqui de verdad, asi que Express puede renderizar el HTML que ve el
-// usuario. Ej.: un 403 de Segundum hace que React redirija a /error/403.
-app.get('/error/:codigo', function (req, res) {
-  let status = Number(req.params.codigo);
-  // Si el codigo no es un numero de error valido, usamos 500 por defecto.
-  if (isNaN(status) || status < 400 || status > 599) {
-    status = 500;
-  }
+function mostrarError(res, status) {
   const info = describirError(status);
   res.status(status);
   res.render('error', {
@@ -145,6 +54,71 @@ app.get('/error/:codigo', function (req, res) {
     titulo: info.titulo,
     mensaje: info.mensaje,
   });
+}
+
+app.engine('hbs', engine({
+  extname: '.hbs',
+  defaultLayout: 'layout',
+  layoutsDir: path.join(__dirname, 'views'),
+}));
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Parseo del cuerpo de la peticion
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const RUTAS_API = ['/auth', '/usuarios', '/productos', '/categorias', '/compraventas'];
+
+async function reenviarAApi(req, res) {
+  try {
+    const urlDestino = API_URL + req.originalUrl;
+
+    const cabeceras = {};
+    if (req.headers['cookie']) {
+      cabeceras['cookie'] = req.headers['cookie'];
+    }
+    if (req.headers['authorization']) {
+      cabeceras['authorization'] = req.headers['authorization'];
+    }
+
+    const opciones = { method: req.method, headers: cabeceras };
+    // GET y HEAD no llevan cuerpo, el resto reenvia el cuerpo recibido como JSON 
+    if (req.method !== 'GET' && req.method !== 'HEAD'
+        && req.body && Object.keys(req.body).length > 0) {
+      opciones.body = JSON.stringify(req.body);
+      cabeceras['content-type'] = 'application/json';
+    }
+
+    const respuesta = await fetch(urlDestino, opciones);
+
+    const cookies = respuesta.headers.getSetCookie();
+    if (cookies.length > 0) {
+      res.setHeader('set-cookie', cookies);
+    }
+
+    const tipo = respuesta.headers.get('content-type');
+    if (tipo) {
+      res.setHeader('content-type', tipo);
+    }
+    res.status(respuesta.status);
+
+    const cuerpo = await respuesta.text();
+    res.send(cuerpo);
+  } catch (error) {
+    mostrarError(res, 502);
+  }
+}
+
+app.use(RUTAS_API, reenviarAApi);
+
+// Paginas de error
+app.get('/error/:codigo', function (req, res) {
+  let status = Number(req.params.codigo);
+  if (isNaN(status) || status < 400 || status > 599) {
+    status = 500;
+  }
+  mostrarError(res, status);
 });
 
 // Ficheros estaticos propios (CSS de las paginas de error).
@@ -167,35 +141,22 @@ const RUTAS_REACT = [
   '/admin/usuarios',
   '/admin/compraventas',
 ];
-app.get(RUTAS_REACT, function (req, res, next) {
-  res.sendFile(path.join(BUILD_DIR, 'index.html'), function (err) {
-    // Si no existe el build (no se ha hecho "npm run build"), pasa al error.
-    if (err) next(err);
+app.get(RUTAS_REACT, function (req, res) {
+  // Leemos el index.html del build y lo enviamos (temario: fs.readFile).
+  const rutaIndex = path.join(BUILD_DIR, 'index.html');
+  fs.readFile(rutaIndex, function (err, datos) {
+    // Si no existe el build (no se ha hecho "npm run build"), mostramos error.
+    if (err) {
+      mostrarError(res, 500);
+    } else {
+      res.send(datos.toString());
+    }
   });
 });
 
-// Si la peticion llega hasta aqui (metodo no GET sin ruta), es un 404.
-app.use(function (req, res, next) {
-  const err = new Error('Pagina no encontrada');
-  err.status = 404;
-  next(err);
-});
-
-// Manejador de errores generico: cualquier error que llegue aqui se renderiza
-// con la plantilla error.hbs y el codigo de estado adecuado. Lleva cuatro
-// parametros (err, req, res, next), que es como Express distingue un
-// middleware de error de uno normal.
-app.use(function (err, req, res, next) {
-  // Si el error no trae estado, asumimos un 500 (error interno del servidor).
-  const status = err.status || 500;
-  const info = describirError(status);
-  res.status(status);
-  res.render('error', {
-    title: 'Error ' + status,
-    status: status,
-    titulo: info.titulo,
-    mensaje: info.mensaje,
-  });
+// Si la peticion llega hasta aqui, no coincide con ninguna ruta: es un 404.
+app.use(function (req, res) {
+  mostrarError(res, 404);
 });
 
 app.listen(PORT, function () {
