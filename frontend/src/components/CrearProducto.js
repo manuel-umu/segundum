@@ -8,7 +8,7 @@ const ESTADOS = [
   { value: "PARAPIEZAS_O_REPARAR", label: "Para piezas o reparar" },
 ];
 
-function CrearProducto({ onCerrar, onSuccess }) {
+export default function CrearProducto({ onCerrar, onSuccess }) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [estado, setEstado] = useState("");
@@ -230,5 +230,3 @@ function CrearProducto({ onCerrar, onSuccess }) {
     </div>
   );
 }
-
-export default CrearProducto;

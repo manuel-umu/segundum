@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function ModificarProducto({ producto, onCerrar, onSuccess }) {
+export default function ModificarProducto({ producto, onCerrar, onSuccess }) {
   const [descripcion, setDescripcion] = useState(producto.descripcion);
   const [precio, setPrecio] = useState(producto.precio);
   const [error, setError] = useState("");
@@ -109,4 +109,4 @@ function ModificarProducto({ producto, onCerrar, onSuccess }) {
   );
 }
 
-export default ModificarProducto;
+
