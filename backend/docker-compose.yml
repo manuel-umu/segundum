@@ -13,8 +13,10 @@ services:
       - DB_USER=root
       - DB_PASSWORD=${DB_PASSWORD}
     depends_on:
-      - mysql
-      - rabbitmq
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
   productos:
     build: ./microservicio-productos
     ports:
@@ -28,8 +30,10 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_RABBITMQ_HOST=rabbitmq
     depends_on:
-      - mysql
-      - rabbitmq
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   compraventas:
     build: ./microservicio-compraventas
@@ -41,8 +45,10 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://root:${DB_PASSWORD}@mongo:27017/db_compraventas?authSource=admin
       - SPRING_RABBITMQ_HOST=rabbitmq
     depends_on:
-      - mongo
-      - rabbitmq
+      mongo:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   valoraciones:
     build: ./microservicio-valoraciones
@@ -58,9 +64,12 @@ services:
       - RabbitMQ__ConnectionString=amqp://guest:guest@rabbitmq:5672/
       - RabbitMQ__Exchange=bus
     depends_on:
-      - mysql
-      - rabbitmq
-      - compraventas
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      compraventas:
+        condition: service_started
 
   pasarela:
     build: ./pasarela
@@ -88,6 +97,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: db_user
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
 
   mongo: 
     image: mongo
@@ -100,6 +115,12 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
       MONGO_INITDB_DATABASE: db_compraventas
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -107,6 +128,12 @@ services:
     ports:
      - "15672:15672"
      - "5672:5672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 20s
 
 volumes:
   mongo_data:
