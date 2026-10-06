@@ -5,11 +5,13 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    env_file:
+      - .env
     environment:
       - RABBITMQ_HOST=amqp://guest:guest@rabbitmq:5672
       - DB_URL=jdbc:mysql://mysql:3306/db_user?serverTimezone=CET
       - DB_USER=root
-      - DB_PASSWORD=***REMOVED***
+      - DB_PASSWORD=${DB_PASSWORD}
     depends_on:
       - mysql
       - rabbitmq
@@ -18,10 +20,12 @@ services:
     ports:
       - "8081:8081"
     restart: on-failure
+    env_file:
+      - .env
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/db_productos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=***REMOVED***
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_RABBITMQ_HOST=rabbitmq
     depends_on:
       - mysql
@@ -31,8 +35,10 @@ services:
     build: ./microservicio-compraventas
     ports:
       - "8082:8082"
+    env_file:
+      - .env
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://root:***REMOVED***@mongo:27017/db_compraventas?authSource=admin
+      - SPRING_DATA_MONGODB_URI=mongodb://root:${DB_PASSWORD}@mongo:27017/db_compraventas?authSource=admin
       - SPRING_RABBITMQ_HOST=rabbitmq
     depends_on:
       - mongo
@@ -43,9 +49,11 @@ services:
     ports:
       - "8083:8083"
     restart: on-failure
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__MySql=Server=mysql;Port=3306;Database=db_valoraciones;User=root;Password=***REMOVED***
+      - ConnectionStrings__MySql=Server=mysql;Port=3306;Database=db_valoraciones;User=root;Password=${DB_PASSWORD}
       - Compraventas__BaseUrl=http://compraventas:8082/api/compraventas/
       - RabbitMQ__ConnectionString=amqp://guest:guest@rabbitmq:5672/
       - RabbitMQ__Exchange=bus
@@ -78,7 +86,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ***REMOVED***
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: db_user
 
   mongo: 
@@ -90,7 +98,7 @@ services:
       - mongo_data:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: ***REMOVED***
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
       MONGO_INITDB_DATABASE: db_compraventas
 
   rabbitmq:

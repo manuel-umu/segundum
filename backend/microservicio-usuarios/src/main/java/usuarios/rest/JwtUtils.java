@@ -9,7 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtUtils {
 
-	private static final String SECRETO = "***REMOVED***";
+	private static final String SECRETO = System.getenv("JWT_SECRET");
 	private static final long TIEMPO = 3600;
 
 	public static String generateToken(Map<String, Object> claims) {
